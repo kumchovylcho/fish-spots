@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { validateUsername, validateEmail } from '../../util/registrationValidator';
 import FormError from '../FormError/FormError';
+import { register } from '../../services/users';
 
 
 const Register = () => {
@@ -30,7 +31,7 @@ const Register = () => {
     };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
     
         const newErrors = {};
@@ -57,8 +58,18 @@ const Register = () => {
         setErrors(newErrors);
     
         if (Object.keys(newErrors).length === 0) {
-            // send data to the server
-            console.log('Form submitted with data:', formData);
+            const response = await register(formData);
+            const data = await response.json();
+            
+            if (response.status === 400) {
+
+                if (data.errors.username !== undefined) {
+                    setErrors((oldErrors) => {return {...oldErrors, username: data.errors.username[0]}})
+                } 
+                if (data.errors.email !== undefined) {
+                    setErrors((oldErrors) => {return {...oldErrors, email: data.errors.email[0]}})
+                }
+            }
         }
       };
 
