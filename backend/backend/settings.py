@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'base.apps.BaseConfig',
+    'users.apps.UsersConfig',
 
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
@@ -165,3 +166,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+AUTH_USER_MODEL = "users.CustomUser"
