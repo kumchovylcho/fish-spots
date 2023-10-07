@@ -17,7 +17,7 @@ const Home = () => {
 
                 <Link
                     to="/register"
-                    className="bg-emerald-400 self-center px-10 py-4 text-2xl rounded-full font-medium hover:bg-teal-600">
+                    className="bg-emerald-400 self-center px-10 py-4 text-2xl rounded-full font-medium hover:bg-teal-600 duration-300">
                     Регистрирай се!
                 </Link>
 
