@@ -27,25 +27,20 @@ class RegistrationView(APIView):
         if serializer.is_valid():
             user = serializer.save()
 
-            response = {"message": "Registration successful",
+            response = {"message": "Успешна регистрация!",
                         "username": user.username,
                         }
 
             return Response(response, status=status.HTTP_201_CREATED)
         
-        errors = {"errors": {}}
-        print(serializer.errors)
-        for field, field_errors in serializer.errors.items():
-            for error in field_errors:
-                errors["errors"][field] = error
-        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
 
 
     """
     {
     "username": "pesho",
-    "email": "wrong!mail.bg",
+    "email": "wrong@mail.bg",
     "password": "123456",
     "rePassword": "123456"
     }
