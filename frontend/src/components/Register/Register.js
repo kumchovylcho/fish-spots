@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { validateUsername, validateEmail } from '../../util/registrationValidator';
 import FormError from '../FormError/FormError';
-import { register } from '../../services/users';
+import { register, loginUser } from '../../services/users';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../context/AuthContext';
+
 
 
 const Register = () => {
     const [passwordEye, setPasswordEye] = useState(false);
     const [rePasswordEye, setRePasswordEye] = useState(false);
+    const { setAuthTokens, setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         username: "",
@@ -64,11 +69,13 @@ const Register = () => {
             if (response.status === 400) {
 
                 if (data.errors.username !== undefined) {
-                    setErrors((oldErrors) => {return {...oldErrors, username: data.errors.username[0]}})
+                    setErrors((oldErrors) => {return {...oldErrors, username: data.errors.username[0]}});
                 } 
                 if (data.errors.email !== undefined) {
-                    setErrors((oldErrors) => {return {...oldErrors, email: data.errors.email[0]}})
+                    setErrors((oldErrors) => {return {...oldErrors, email: data.errors.email[0]}});
                 }
+            } else if (response.status === 201) {
+                loginUser(e, setAuthTokens, setUser, navigate, "/");
             }
         }
       };
