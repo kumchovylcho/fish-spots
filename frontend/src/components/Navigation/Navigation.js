@@ -1,9 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
+import { logoutUser } from '../../services/users';
 
 const Navigation = () => {
-    const {user, logoutUser} = useContext(AuthContext)
+    const {user, authTokens, setAuthTokens, setUser} = useContext(AuthContext)
+    const navigate = useNavigate();
 
     return (
         <header className="flex justify-center p-6 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium text-2xl">
@@ -22,7 +24,7 @@ const Navigation = () => {
 
                     {user ? (
                         <li 
-                            onClick={logoutUser}
+                            onClick={() => logoutUser(authTokens, setAuthTokens, setUser, navigate, "/login")}
                             className="hover:text-stone-300 duration-300 hover:cursor-pointer">
                             Излез
                         </li>
