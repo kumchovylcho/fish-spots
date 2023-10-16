@@ -1,13 +1,21 @@
 import { useState, useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../../services/users';
+import FormError from '../FormError/FormError';
 
 const Login = () => {
     const [passwordEye, setPasswordEye] = useState(false);
-    const { loginUser } = useContext(AuthContext);
+    const { setAuthTokens, setUser } = useContext(AuthContext);
+    const [error, setError] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <article className="flex justify-center items-center p-16">
-            <form onSubmit={loginUser} className="flex flex-col basis-1/4 gap-8 p-12 rounded-xl text-xl bg-white">
+            <form 
+                onSubmit={(e) => loginUser(e, setAuthTokens, setUser, navigate, "/", setError)} 
+                className="flex flex-col basis-1/4 gap-8 p-12 rounded-xl text-xl bg-white"
+                >
                 <section className="flex flex-col gap-4">
                     <label className="font-medium" htmlFor="username">Потребителско име</label>
                     <input 
@@ -16,6 +24,7 @@ const Login = () => {
                         id="username" 
                         name="username">
                     </input>
+                    {error ? <FormError msg={"Невалидно потребителско име или парола."}/> : ""}
                 </section>
 
                 <section className="flex flex-col gap-4">
