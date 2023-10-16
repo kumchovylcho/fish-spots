@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import MyTokenObtainPairSerializer, RegistrationSerializer
 
 
@@ -22,6 +23,8 @@ def get_routes(request):
 
 
 class RegistrationView(APIView):
+    http_method_names = ["post"]
+
     def post(self, request):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
@@ -36,12 +39,14 @@ class RegistrationView(APIView):
         return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
 
+class LogoutView(APIView):
+    http_method_names = ["post"]
 
-    """
-    {
-    "username": "pesho",
-    "email": "wrong@mail.bg",
-    "password": "123456",
-    "rePassword": "123456"
-    }
-    """
+    def post(self, request):
+        try:
+            refresh_token = request.data["refreshToken"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"message": "Unable to log out"}, status=status.HTTP_400_BAD_REQUEST)
