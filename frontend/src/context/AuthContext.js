@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import { baseUrl, logoutUser } from '../services/users';
 
 const AuthContext = createContext();
-
 
 export default AuthContext;
 
@@ -15,46 +15,43 @@ export const AuthProvider = ({children}) => {
 
     const navigate = useNavigate();
 
-    const loginUser = async (e) => {
-        e.preventDefault();
-
-        const userCredentials = {
-            "username": e.target.username.value,
-            "password": e.target.password.value
-        }
-
-        const options = {
+    const updateToken = async () => {
+        const response = await fetch(`${baseUrl}refresh/`, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(userCredentials)
-        };
+            body: JSON.stringify({"refresh": authTokens?.refresh}),
+        });
 
-        const response = await fetch("http://127.0.0.1:8000/api/token/", options);
         const data = await response.json();
 
         if (response.status === 200) {
             setAuthTokens(data);
             setUser(jwt_decode(data.access));
-            localStorage.setItem("authTokens", JSON.stringify(data))
-            navigate("/")
-        }else {
-            alert("broken website")
+            localStorage.setItem("authTokens", JSON.stringify(data));
+        } else {
+            logoutUser(authTokens, setAuthTokens, setUser, navigate, "/login");
         }
     }
 
-    const logoutUser = () => {
-        setAuthTokens("");
-        setUser("");
-        localStorage.removeItem("authTokens");
-        navigate("/login");
-    }
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (authTokens) {
+                updateToken();
+            }
+        }, 1000 * 60 * 55);
+
+        return () => clearInterval(interval);
+
+
+    }, [authTokens]);
 
     let contextData = {
         user: user,
-        loginUser: loginUser,
-        logoutUser: logoutUser
+        setUser: setUser,
+        authTokens: authTokens,
+        setAuthTokens: setAuthTokens,
     };
 
     return (
