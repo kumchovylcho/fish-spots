@@ -38,19 +38,19 @@ const Home = () => {
                             <p className="mb-3 inline-flex justify-between w-full">
                                 13 места
                                 <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full"></i>
+                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
                                 </span>
                             </p>
                             <p className="mb-3 inline-flex justify-between w-full">
                                 Автоматизирани подсказки
                                 <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full"></i>
+                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
                                 </span>
                             </p>
                             <p className="mb-3 inline-flex justify-between w-full">
                                 Правилна информация
                                 <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full"></i>
+                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
                                 </span>
                             </p>
                         </section>
@@ -65,19 +65,19 @@ const Home = () => {
                             <p className="mb-3 inline-flex justify-between w-full">
                                 14 места
                                 <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full"></i>
+                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
                                 </span>
                             </p>
                             <p className="mb-3 inline-flex justify-between w-full">
                                 Автоматизирани подсказки
                                 <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full"></i>
+                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
                                 </span>
                             </p>
                             <p className="mb-3 inline-flex justify-between w-full">
                                 Правилна информация
                                 <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full"></i>
+                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
                                 </span>
                             </p>
                         </section>
