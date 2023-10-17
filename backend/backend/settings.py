@@ -22,7 +22,7 @@ INSTALLED_APPS = [
 
     'base.apps.BaseConfig',
     'users.apps.UsersConfig',
-    'fish_regions.apps.FishRegionsConfig',
+    'fish_regions',
 
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
@@ -173,7 +173,7 @@ CORS_ALLOWED_ORIGINS = [
 AUTH_USER_MODEL = "users.CustomUser"
 
 # CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_BROKER_URL = 'redis://default:tamerski_123@redis-16003.c304.europe-west1-2.gce.cloud.redislabs.com:16003'
+CELERY_BROKER_URL = f'redis://default:{CONFIG["REDIS_DB_PASSWORD"]}@redis-14351.c304.europe-west1-2.gce.cloud.redislabs.com:14351'
 # CELERY_ACCEPT_CONTENT = ['application/json']
 # CELERY_RESULT_SERIALIZER = 'json'
 # CELERY_TASK_SERIALIZER = 'json'
@@ -181,15 +181,17 @@ CELERY_BROKER_URL = 'redis://default:tamerski_123@redis-16003.c304.europe-west1-
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CELERY_BEAT_SCHEDULE = {
-    'update_regions': {
+    'my-scheduled-task': {
         'task': 'fish_regions.tasks.update_regions',
-        'schedule': timedelta(seconds=15),
+        'schedule': timedelta(seconds=11000),
     },
 }
 
 
 """
 WORKING REDIS SETTINGS
+
+installed apps must not use 'example.apps.ExampleConfig'
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
