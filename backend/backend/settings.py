@@ -4,7 +4,7 @@ from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-CONFIG = dotenv_values(".env")
+CONFIG = dotenv_values()
 
 SECRET_KEY = CONFIG["API_KEY"]
 
@@ -22,10 +22,13 @@ INSTALLED_APPS = [
 
     'base.apps.BaseConfig',
     'users.apps.UsersConfig',
+    'fish_regions.apps.FishRegionsConfig',
 
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
+    'celery',
+    'django_celery_beat'
 ]
 
 
@@ -168,3 +171,35 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 AUTH_USER_MODEL = "users.CustomUser"
+
+# CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_BROKER_URL = 'redis://default:tamerski_123@redis-16003.c304.europe-west1-2.gce.cloud.redislabs.com:16003'
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'Europe/Sofia'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BEAT_SCHEDULE = {
+    'update_regions': {
+        'task': 'fish_regions.tasks.update_regions',
+        'schedule': timedelta(seconds=15),
+    },
+}
+
+
+"""
+WORKING REDIS SETTINGS
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BEAT_SCHEDULE = {
+    'update_regions': {
+        'task': 'fish_regions.tasks.update_regions',
+        'schedule': timedelta(seconds=15),
+    },
+}
+
+celery -A backend beat --loglevel=info
+celery -A backend worker --loglevel=info --pool=solo
+"""
