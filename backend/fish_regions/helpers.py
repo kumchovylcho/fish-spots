@@ -9,6 +9,9 @@ def english_to_bulgarian_places(place: str) -> str:
         "Shabla": "Шабла",
         "Kranevo": "Кранево",
         "Varna": "Варна",
+        "Burgas": "Бургас",
+        "Chernomorets": "Черноморец",
+        "Primorsko": "Приморско"
     }
 
     return all_places[place]
