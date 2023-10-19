@@ -67,7 +67,7 @@ def update_region_model(model, data: dict) -> None:
     curr_sunset = datetime.datetime.fromtimestamp(
         data["city"]["sunset"]).strftime("%H:%M")
 
-    place_objects = model.objects.filter(city_name=curr_city_name)
+    place_objects = model.objects.filter(city_name=curr_city_name).order_by("date", "time")
     for i in range(len(place_objects)):
         place_obj = place_objects[i]
         weather_data_for_place_obj = data["list"][i]
