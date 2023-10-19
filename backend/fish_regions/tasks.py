@@ -29,16 +29,12 @@ def update_regions() -> None:
         },
     }
 
-    operation_caller = {
-        "update": helpers.update_region_model,
-        "create": helpers.create_region_object,
-    }
 
     for data in regions.values():
         if helpers.place_in_region_exist(data["model"], data["list_place_names"]):
-            data["operation"] = "update"
+            data["operation"] = helpers.update_region_model
         else:
-            data["operation"] = "create"
+            data["operation"] = helpers.create_region_object
 
         for longitude, latitude in data["places"]:
             query = helpers.get_query(longitude, latitude)
@@ -52,7 +48,7 @@ def update_regions() -> None:
 
             weather_data = response.json()
 
-            operation_caller[data["operation"]](data["model"], weather_data)
+            data["operation"](data["model"], weather_data)
 
 
 update_regions.delay()
