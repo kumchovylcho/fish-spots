@@ -29,6 +29,9 @@ class BaseRegion(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return self.city_name
+
 
 class VarnaRegion(BaseRegion):
     pass
