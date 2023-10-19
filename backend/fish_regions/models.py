@@ -30,7 +30,7 @@ class BaseRegion(models.Model):
         abstract = True
 
     def __str__(self):
-        return self.city_name
+        return f"City: {self.city_name} -- Date: {self.date} -- Time: {self.time}"
 
 
 class VarnaRegion(BaseRegion):
