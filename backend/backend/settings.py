@@ -193,6 +193,10 @@ WORKING REDIS SETTINGS
 
 installed apps must not use 'example.apps.ExampleConfig'
 
+`
+use DatabaseScheduler if you want django to create a table to store the tasks,
+otherwise it will keep the tasks in memory
+`
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CELERY_BEAT_SCHEDULE = {
@@ -203,5 +207,7 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 celery -A backend beat --loglevel=info
+
+use `--pool=solo` when on windows
 celery -A backend worker --loglevel=info --pool=solo
 """
