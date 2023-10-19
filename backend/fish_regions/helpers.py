@@ -61,8 +61,32 @@ def place_in_region_exist(model, places: list) -> bool:
 
 
 def update_region_model(model, data: dict) -> None:
-    pass
+    curr_city_name = data["city"]["name"]
+    curr_sunrise = datetime.datetime.fromtimestamp(
+        data["city"]["sunrise"]).strftime("%H:%M")
+    curr_sunset = datetime.datetime.fromtimestamp(
+        data["city"]["sunset"]).strftime("%H:%M")
 
+    place_objects = model.objects.filter(city_name=curr_city_name)
+    for i in range(len(place_objects)):
+        place_obj = place_objects[i]
+        weather_data_for_place_obj = data["list"][i]
+
+        curr_date, curr_time = weather_data_for_place_obj["dt_txt"].split()
+
+        place_obj.sunrise = curr_sunrise
+        place_obj.sunset = curr_sunset
+        place_obj.date = curr_date
+        place_obj.time = curr_time
+        place_obj.feels_like = round(weather_data_for_place_obj["main"]["feels_like"])
+        place_obj.normal_temperature = round(weather_data_for_place_obj["main"]["temp"])
+        place_obj.min_temperature = round(weather_data_for_place_obj["main"]["temp_min"])
+        place_obj.max_temperature = round(weather_data_for_place_obj["main"]["temp_max"])
+        place_obj.weather_icon_url = get_weather_icon(weather_data_for_place_obj["weather"][0]["icon"])
+        place_obj.wind_direction = get_wind_direction(weather_data_for_place_obj["wind"]["deg"])
+        place_obj.wind_speed = round(weather_data_for_place_obj["wind"]["speed"])
+
+        place_obj.save()
 
 def create_region_object(model, data: dict) -> None:
     curr_city_name = data["city"]["name"]
