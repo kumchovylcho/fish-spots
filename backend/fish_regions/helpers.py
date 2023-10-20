@@ -1,5 +1,6 @@
 from django.conf import settings
 import datetime
+import pytz
 
 weather_api_key = settings.CONFIG['WEATHER_API']
 
@@ -14,7 +15,7 @@ def english_to_bulgarian_places(place: str) -> str:
         "Primorsko": "Приморско"
     }
 
-    return all_places[place]
+    return all_places[place.capitalize()]
 
 
 def get_query(longitude: float, latitude: float) -> str:
@@ -114,3 +115,18 @@ def create_region_object(model, data: dict) -> None:
                        )
 
         region.save()
+
+
+def get_today_date() -> str:
+    utc_plus_3 = pytz.timezone('Etc/GMT-3')
+
+    current_time_utc = datetime.datetime.utcnow()
+
+    current_time_utc_plus_3 = current_time_utc.replace(tzinfo=pytz.utc).astimezone(utc_plus_3)
+
+    return str(current_time_utc_plus_3.date())
+
+
+def get_day_of_week(date: str) -> str:
+    date_obj = datetime.datetime.strptime(date, "%Y-%m-%d")
+    return ["Понеделник", "Вторник", "Сряда", "Четвъртък", "Петък", "Събота", "Неделя"][date_obj.weekday()]
