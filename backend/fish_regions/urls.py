@@ -1,6 +1,6 @@
 from django.urls import path, include
-from .views import index
+from .views import (HourlyWeatherDataView, )
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('24h/', HourlyWeatherDataView.as_view(), name='hourly_weather_data'),
 ]
