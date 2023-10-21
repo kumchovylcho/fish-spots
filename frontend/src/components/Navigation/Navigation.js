@@ -14,7 +14,7 @@ const Navigation = () => {
                     <Link to="/">Риболовни места</Link>
                 </h1>
 
-                <ul className="flex gap-12">
+                <ul className="flex gap-12 flex-wrap">
                     <li className="hover:text-stone-300 duration-300">
                         <Link to="/varna">Варна</Link>
                     </li>
