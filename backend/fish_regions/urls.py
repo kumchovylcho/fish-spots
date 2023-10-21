@@ -1,6 +1,6 @@
 from django.urls import path, include
-from .views import (HourlyWeatherDataView, )
+from .views import (WeatherDataView, )
 
 urlpatterns = [
-    path('24h/', HourlyWeatherDataView.as_view(), name='hourly_weather_data'),
+    path('weather/', WeatherDataView.as_view(), name='weather_data'),
 ]
