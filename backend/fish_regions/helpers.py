@@ -68,7 +68,8 @@ def update_region_model(model, data: dict) -> None:
     curr_sunset = datetime.datetime.fromtimestamp(
         data["city"]["sunset"]).strftime("%H:%M")
 
-    place_objects = model.objects.filter(city_name=curr_city_name).order_by("date", "time")
+    place_objects = model.objects.filter(
+        city_name=curr_city_name).order_by("date", "time")
     for i in range(len(place_objects)):
         place_obj = place_objects[i]
         weather_data_for_place_obj = data["list"][i]
@@ -79,15 +80,23 @@ def update_region_model(model, data: dict) -> None:
         place_obj.sunset = curr_sunset
         place_obj.date = curr_date
         place_obj.time = curr_time
-        place_obj.feels_like = round(weather_data_for_place_obj["main"]["feels_like"])
-        place_obj.normal_temperature = round(weather_data_for_place_obj["main"]["temp"])
-        place_obj.min_temperature = round(weather_data_for_place_obj["main"]["temp_min"])
-        place_obj.max_temperature = round(weather_data_for_place_obj["main"]["temp_max"])
-        place_obj.weather_icon_url = get_weather_icon(weather_data_for_place_obj["weather"][0]["icon"])
-        place_obj.wind_direction = get_wind_direction(weather_data_for_place_obj["wind"]["deg"])
-        place_obj.wind_speed = round(weather_data_for_place_obj["wind"]["speed"])
+        place_obj.feels_like = round(
+            weather_data_for_place_obj["main"]["feels_like"])
+        place_obj.normal_temperature = round(
+            weather_data_for_place_obj["main"]["temp"])
+        place_obj.min_temperature = round(
+            weather_data_for_place_obj["main"]["temp_min"])
+        place_obj.max_temperature = round(
+            weather_data_for_place_obj["main"]["temp_max"])
+        place_obj.weather_icon_url = get_weather_icon(
+            weather_data_for_place_obj["weather"][0]["icon"])
+        place_obj.wind_direction = get_wind_direction(
+            weather_data_for_place_obj["wind"]["deg"])
+        place_obj.wind_speed = round(
+            weather_data_for_place_obj["wind"]["speed"])
 
         place_obj.save()
+
 
 def create_region_object(model, data: dict) -> None:
     curr_city_name = data["city"]["name"]
@@ -95,7 +104,6 @@ def create_region_object(model, data: dict) -> None:
         data["city"]["sunrise"]).strftime("%H:%M")
     curr_sunset = datetime.datetime.fromtimestamp(
         data["city"]["sunset"]).strftime("%H:%M")
-
 
     for data in data["list"]:
         curr_date, curr_time = data["dt_txt"].split()
@@ -109,7 +117,8 @@ def create_region_object(model, data: dict) -> None:
                        normal_temperature=round(data["main"]["temp"]),
                        min_temperature=round(data["main"]["temp_min"]),
                        max_temperature=round(data["main"]["temp_max"]),
-                       weather_icon_url=get_weather_icon(data["weather"][0]["icon"]),
+                       weather_icon_url=get_weather_icon(
+                           data["weather"][0]["icon"]),
                        wind_direction=get_wind_direction(data["wind"]["deg"]),
                        wind_speed=round(data["wind"]["speed"])
                        )
@@ -122,7 +131,8 @@ def get_today_date() -> str:
 
     current_time_utc = datetime.datetime.utcnow()
 
-    current_time_utc_plus_3 = current_time_utc.replace(tzinfo=pytz.utc).astimezone(utc_plus_3)
+    current_time_utc_plus_3 = current_time_utc.replace(
+        tzinfo=pytz.utc).astimezone(utc_plus_3)
 
     return str(current_time_utc_plus_3.date())
 
@@ -130,3 +140,40 @@ def get_today_date() -> str:
 def get_day_of_week(date: str) -> str:
     date_obj = datetime.datetime.strptime(date, "%Y-%m-%d")
     return ["Понеделник", "Вторник", "Сряда", "Четвъртък", "Петък", "Събота", "Неделя"][date_obj.weekday()]
+
+
+def get_24h_data(model, place: str) -> dict:
+    data = {}
+
+    today_date = get_today_date()
+    place_objects = model.objects.filter(city_name=place,
+                                         date=today_date
+                                         ) \
+                                        .order_by('time')
+
+    data['24h'] = {}
+    today_data = data['24h']
+
+    today_data["day_of_week"] = get_day_of_week(today_date)
+    today_data["today_date"] = today_date
+    today_data["bg_name_place"] = english_to_bulgarian_places(
+        place)
+    today_data["sunrise"] = place_objects[0].sunrise
+    today_data["sunset"] = place_objects[0].sunset
+    today_data["list_hours"] = []
+
+    for place in place_objects:
+        curr_hour = {
+            "time": place.time,
+            "feels_like": place.feels_like,
+            "normal_temp": place.normal_temperature,
+            "min_temp": place.min_temperature,
+            "max_temp": place.max_temperature,
+            "weather_icon_url": place.weather_icon_url,
+            "wind_direction": place.wind_direction,
+            "wind_speed": place.wind_speed
+        }
+
+        today_data["list_hours"].append(curr_hour)
+
+    return data
