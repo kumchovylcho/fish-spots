@@ -16,7 +16,7 @@ export const AuthProvider = ({children}) => {
     const navigate = useNavigate();
 
     const updateToken = async () => {
-        const response = await fetch(`${baseUrl}refresh/`, {
+        const response = await fetch(`${baseUrl}/api/refresh/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
