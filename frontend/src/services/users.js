@@ -1,7 +1,7 @@
 import jwt_decode from 'jwt-decode';
 
 
-const baseUrl = "http://127.0.0.1:8000/api/"
+const baseUrl = "http://127.0.0.1:8000"
 
 
 const register = async (data) => {
@@ -11,7 +11,7 @@ const register = async (data) => {
         body: JSON.stringify(data)
 }
 
-    return await fetch(`${baseUrl}register/`, options);
+    return await fetch(`${baseUrl}/api/register/`, options);
 }
 
 
@@ -31,7 +31,7 @@ const loginUser = async (e, setAuthTokens, setUser, navigate, navigateTo, setErr
         body: JSON.stringify(userCredentials)
     };
 
-    const response = await fetch(`${baseUrl}token/`, options);
+    const response = await fetch(`${baseUrl}/api/token/`, options);
     const data = await response.json();
 
     if (response.status === 200) {
@@ -48,7 +48,7 @@ const loginUser = async (e, setAuthTokens, setUser, navigate, navigateTo, setErr
 
 
 const logoutUser = async (authTokens, setAuthTokens, setUser, navigate, navigateTo) => {
-    const response = await fetch(`${baseUrl}logout/`, {
+    const response = await fetch(`${baseUrl}/api/logout/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
