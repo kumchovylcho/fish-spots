@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 const Home = () => {
     return (
-    <>
+    <main>
         <div className="flex justify-center items-center h-96 min-h-fit overflow-hidden relative">
             <img 
                 className="w-full h-full object-cover"
@@ -17,14 +17,14 @@ const Home = () => {
 
                 <Link
                     to="/register"
-                    className="bg-emerald-400 self-center px-10 py-4 text-2xl rounded-full font-medium hover:bg-teal-600 duration-300">
+                    className="bg-emerald-400 self-center px-10 py-4 text-2xl rounded-full font-medium hover:bg-teal-600 duration-300 hover:scale-105">
                     Регистрирай се!
                 </Link>
 
             </article>
         </div>
 
-        <article className="bg-zinc-300 py-16">
+        <article className="py-16">
             <h2 className="text-center text-4xl mb-24 relative">
                 Информация за над 25 места!
                 <div className="absolute top-[115%] left-2/4 -translate-x-2/4 -translate-y-1/2 w-60 h-0.5 bg-cyan-600"></div>
@@ -85,7 +85,7 @@ const Home = () => {
                 </section>
             </div>
         </article>
-    </>
+    </main>
     );
 }
 
