@@ -31,58 +31,61 @@ const Home = () => {
             </h2>
 
             <div className="flex justify-center gap-x-12 w-3/5 mr-auto ml-auto">
-                <section className="bg-gray-200 p-8 rounded-3xl">
-                    <h3 className="text-2xl text-center font-bold mb-6">ВАРНА</h3>
-                    <div className="flex justify-center gap-x-12">
-                        <section className="text-2xl">
-                            <p className="mb-3 inline-flex justify-between w-full">
-                                13 места
-                                <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
-                                </span>
-                            </p>
-                            <p className="mb-3 inline-flex justify-between w-full">
-                                Автоматизирани подсказки
-                                <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
-                                </span>
-                            </p>
-                            <p className="mb-3 inline-flex justify-between w-full">
-                                Правилна информация
-                                <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
-                                </span>
-                            </p>
-                        </section>
-                    </div>
-                    
-                </section>
+                <Link to="/varna">
+                    <section className="bg-gray-200 p-8 rounded-3xl hover:scale-105 duration-150 cursor-pointer">
+                        <h3 className="text-2xl text-center font-bold mb-6">ВАРНА</h3>
+                        <div className="flex justify-center gap-x-12">
+                            <section className="text-2xl">
+                                <p className="mb-3 inline-flex justify-between w-full">
+                                    13 места
+                                    <span>
+                                        <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
+                                    </span>
+                                </p>
+                                <p className="mb-3 inline-flex justify-between w-full">
+                                    Автоматизирани подсказки
+                                    <span>
+                                        <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
+                                    </span>
+                                </p>
+                                <p className="mb-3 inline-flex justify-between w-full">
+                                    Правилна информация
+                                    <span>
+                                        <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
+                                    </span>
+                                </p>
+                            </section>
+                        </div>
+                    </section>
+                </Link>
 
-                <section className="bg-gray-200 p-8 rounded-3xl">
-                    <h3 className="text-2xl text-center font-bold mb-6">БУРГАС</h3>
-                    <div className="flex justify-center gap-x-12">
-                    <section className="text-2xl">
-                            <p className="mb-3 inline-flex justify-between w-full">
-                                14 места
-                                <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
-                                </span>
-                            </p>
-                            <p className="mb-3 inline-flex justify-between w-full">
-                                Автоматизирани подсказки
-                                <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
-                                </span>
-                            </p>
-                            <p className="mb-3 inline-flex justify-between w-full">
-                                Правилна информация
-                                <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
-                                </span>
-                            </p>
-                        </section>
-                    </div>
-                </section>
+                <Link to="burgas/">
+                    <section className="bg-gray-200 p-8 rounded-3xl hover:scale-105 duration-150 cursor-pointer">
+                        <h3 className="text-2xl text-center font-bold mb-6">БУРГАС</h3>
+                        <div className="flex justify-center gap-x-12">
+                            <section className="text-2xl">
+                                <p className="mb-3 inline-flex justify-between w-full">
+                                    14 места
+                                    <span>
+                                        <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
+                                    </span>
+                                </p>
+                                <p className="mb-3 inline-flex justify-between w-full">
+                                    Автоматизирани подсказки
+                                    <span>
+                                        <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
+                                    </span>
+                                </p>
+                                <p className="mb-3 inline-flex justify-between w-full">
+                                    Правилна информация
+                                    <span>
+                                        <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
+                                    </span>
+                                </p>
+                            </section>
+                        </div>
+                    </section>
+                </Link>
             </div>
         </article>
     </main>
