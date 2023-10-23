@@ -36,5 +36,11 @@ class WeatherDataView(APIView):
         model = regions[region]["model"]
 
         data_24h = helpers.get_24h_data(model, place)
+        four_days_data = helpers.get_four_days_data(model, place)
 
-        return Response(data_24h, status=status.HTTP_200_OK)
+        wrap_data = {
+            "today": data_24h,
+            "four_days": four_days_data
+        }
+
+        return Response(wrap_data, status=status.HTTP_200_OK)

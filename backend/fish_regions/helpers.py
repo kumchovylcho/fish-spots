@@ -15,7 +15,7 @@ def english_to_bulgarian_places(place: str) -> str:
         "Primorsko": "Приморско"
     }
 
-    return all_places[place.capitalize()]
+    return all_places[place]
 
 
 def get_query(longitude: float, latitude: float) -> str:
@@ -142,28 +142,29 @@ def get_day_of_week(date: str) -> str:
     return ["Понеделник", "Вторник", "Сряда", "Четвъртък", "Петък", "Събота", "Неделя"][date_obj.weekday()]
 
 
-def get_24h_data(model, place: str) -> dict:
+def get_24h_data(model, place: str, use_date="") -> dict:
     data = {}
 
-    today_date = get_today_date()
+    curr_date = get_today_date() if not use_date else use_date
+
     place_objects = model.objects.filter(city_name=place,
-                                         date=today_date
+                                         date=curr_date
                                          ) \
                                         .order_by('time')
 
-    data['24h'] = {}
-    today_data = data['24h']
+    data = {}
 
-    today_data["day_of_week"] = get_day_of_week(today_date)
-    today_data["today_date"] = today_date
-    today_data["bg_name_place"] = english_to_bulgarian_places(
-        place)
-    today_data["sunrise"] = place_objects[0].sunrise
-    today_data["sunset"] = place_objects[0].sunset
-    today_data["list_hours"] = []
+
+    data["day_of_week"] = get_day_of_week(curr_date)
+    data["today_date"] = curr_date
+    data["bg_name_place"] = english_to_bulgarian_places(place)
+    data["sunrise"] = place_objects[0].sunrise
+    data["sunset"] = place_objects[0].sunset
+    data["list_hours"] = []
 
     for place in place_objects:
         curr_hour = {
+            "id": place.pk,
             "time": place.time,
             "feels_like": place.feels_like,
             "normal_temp": place.normal_temperature,
@@ -174,6 +175,40 @@ def get_24h_data(model, place: str) -> dict:
             "wind_speed": place.wind_speed
         }
 
-        today_data["list_hours"].append(curr_hour)
+        data["list_hours"].append(curr_hour)
 
     return data
+
+
+def get_four_days_data(model, place: str) -> dict:
+    today_date = get_today_date()
+    yesterday_date = str(datetime.datetime.strptime(today_date, "%Y-%m-%d") - datetime.timedelta(days=1)).split()[0]
+    
+    place_objects = model.objects.filter(city_name=place) \
+                                        .exclude(date=today_date) \
+                                        .exclude(date=yesterday_date) \
+                                        .order_by('date', 'time')
+    
+    keys_list = ["first_day", "second_day", "third_day", "fourth_day"]
+    counter = 0
+
+    data = {}
+    key = ""
+    curr_date = today_date
+    for place_obj in place_objects:
+        if curr_date == place_obj.date:
+            continue
+
+        curr_date = place_obj.date
+        key = keys_list[counter]
+            
+        data[key] = data.get(key, {})
+        data[key] = get_24h_data(model, place, use_date=curr_date)
+        
+        counter += 1
+
+    return data
+
+        
+        
+        

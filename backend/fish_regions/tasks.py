@@ -2,6 +2,12 @@ from backend.celery import app
 from fish_regions.models import VarnaRegion, BurgasRegion
 from . import helpers
 import requests
+from notification import consumers
+
+from channels.layers import get_channel_layer
+
+from asgiref.sync import async_to_sync
+
 
 
 
@@ -49,6 +55,7 @@ def update_regions() -> None:
             weather_data = response.json()
 
             data["operation"](data["model"], weather_data)
+            
 
 
 update_regions.delay()
