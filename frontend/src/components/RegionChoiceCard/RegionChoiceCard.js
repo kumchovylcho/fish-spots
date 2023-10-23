@@ -9,8 +9,8 @@ export default function RegionChoiceCard({
 
     const isSelectedClasses = () => {
         return showData[dataKey]
-            ? 'scale-110 bg-zinc-300'
-            : 'hover:scale-105 bg-white duration-150';
+            ? 'scale-105 bg-zinc-300'
+            : 'hover:scale-105 hover:bg-zinc-300 bg-white duration-150';
     };
 
     const selectCard = () => {
