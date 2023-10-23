@@ -9,6 +9,7 @@ import Register from './components/Register/Register';
 import PrivateRoute from './util/PrivateRoute';
 import Varna from './components/Varna/Varna';
 import Burgas from './components/Burgas/Burgas';
+import WebSocket from './components/WebSocket';
 
 
 function App() {
@@ -19,9 +20,12 @@ function App() {
         <AuthProvider>
             <Navigation/>
 
+            
+
             <Routes>
             
                 <Route path="/" element={<Home/>}/>
+                <Route path="/test" element={<WebSocket/>}/>
                 <Route path="/varna" element={<Varna/>}/>
                 <Route path="/burgas" element={<Burgas/>}/>
                 <Route path="/login" element={
