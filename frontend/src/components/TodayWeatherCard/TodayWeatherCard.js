@@ -1,12 +1,12 @@
 export default function TodayWeatherCard({ props }) {
 
     return (
-        <section className="bg-cyan-400 rounded-xl p-4 text-center text-xl mb-6 max-w-[170px]">
+        <section className="bg-cyan-400 rounded-xl p-4 text-center text-xl mb-6 w-[170px]">
             <p>
                 {props.time.slice(0, 5)}ч
             </p>
             <div className="w-24 h-24 mx-auto">
-                <img className="w-full h-auto" src={props.weather_icon_url} />
+                <img className="w-full h-auto" src={props.weather_icon_url} alt="времето"/>
             </div>
             <p className="mb-5">
                 {props.normal_temp}
