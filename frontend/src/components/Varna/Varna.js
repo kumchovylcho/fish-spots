@@ -5,7 +5,7 @@ import TodayWeatherCard from '../TodayWeatherCard/TodayWeatherCard';
 
 export default function Varna() {
     const [showData, setShowData] = useState({
-        weather: true,
+        weather: false,
         fishSpots: false,
         suggestedSpots: false,
     });
@@ -19,6 +19,37 @@ export default function Varna() {
             });
         });
     }, []);
+
+    function renderTodayWeatherCard(data, showSunset = false) {
+        return (
+            <>
+                <p className="text-center text-white text-2xl mb-3">
+                    {data.day_of_week}
+                </p>
+                <p className="text-center text-white text-2xl mb-8">
+                    {data.today_date}
+                </p>
+                {showSunset ? (
+                    <section className="flex justify-center gap-10">
+                        <p className="text-white text-2xl">
+                            Изгрев в {data.sunrise}ч
+                        </p>
+                        <p className="text-white text-2xl mb-8">
+                            Залез в {data.sunset}ч
+                        </p>
+                    </section>
+                ) : (
+                    ''
+                )}
+
+                <div className="flex justify-evenly flex-wrap mb-12">
+                    {data.list_hours.map((obj) => (
+                        <TodayWeatherCard key={obj.id} props={obj} />
+                    ))}
+                </div>
+            </>
+        );
+    }
 
     return (
         <main>
@@ -52,23 +83,30 @@ export default function Varna() {
                 />
             </div>
 
-            <h3 className="max-w-7xl mx-auto text-center py-16 text-3xl relative">
-                Прогноза за днес - Варна
-                <div className="absolute top-[65%] left-2/4 -translate-x-2/4 -translate-y-1/2 w-40 h-0.5 bg-cyan-600"></div>
-            </h3>
-
-            {Object.keys(weatherData).length ? (
-                <article className="max-w-screen-2xl mx-auto bg-cyan-700 py-7 rounded-xl">
-                    <p className="text-center text-white text-2xl mb-8">
-                        {weatherData.today.day_of_week}
-                    </p>
-                    <div className="flex justify-evenly flex-wrap">
-                        {weatherData.today.list_hours.map((obj) => (
-                            <TodayWeatherCard key={obj.id} props={obj} />
-                        ))}
-                    </div>
-                    
-                </article>
+            {Object.keys(weatherData).length && showData.weather ? (
+                <>
+                    <h3 className="max-w-7xl mx-auto text-center py-16 text-3xl relative">
+                        Прогноза за днес - Варна
+                        <div className="absolute top-[65%] left-2/4 -translate-x-2/4 -translate-y-1/2 w-40 h-0.5 bg-cyan-600"></div>
+                    </h3>
+                    <article className="max-w-screen-2xl mx-auto bg-cyan-700 py-7 rounded-xl mb-32">
+                        {renderTodayWeatherCard(
+                            weatherData.today, true
+                        )}
+                        {renderTodayWeatherCard(
+                            weatherData.four_days.first_day
+                        )}
+                        {renderTodayWeatherCard(
+                            weatherData.four_days.second_day
+                        )}
+                        {renderTodayWeatherCard(
+                            weatherData.four_days.third_day
+                        )}
+                        {renderTodayWeatherCard(
+                            weatherData.four_days.fourth_day
+                        )}
+                    </article>
+                </>
             ) : (
                 ''
             )}
