@@ -2,13 +2,9 @@ from backend.celery import app
 from fish_regions.models import VarnaRegion, BurgasRegion
 from . import helpers
 import requests
-from notification import consumers
 
 from channels.layers import get_channel_layer
-
 from asgiref.sync import async_to_sync
-
-
 
 
 @app.task()
@@ -46,7 +42,8 @@ def update_regions() -> None:
             query = helpers.get_query(longitude, latitude)
             try:
                 response = requests.get(query)
-            except:
+            except Exception as e:
+                print("request failed ", e)
                 continue
 
             if response.status_code != 200:
@@ -55,6 +52,13 @@ def update_regions() -> None:
             weather_data = response.json()
 
             data["operation"](data["model"], weather_data)
+
+    channel_layer = get_channel_layer()
+
+    async_to_sync(channel_layer.group_send)("my_group", {
+        "type": "send.message",
+        "message": "update"
+    })
             
 
 
