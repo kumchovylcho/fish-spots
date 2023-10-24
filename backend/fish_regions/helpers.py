@@ -134,7 +134,7 @@ def get_today_date() -> str:
     current_time_utc_plus_3 = current_time_utc.replace(
         tzinfo=pytz.utc).astimezone(utc_plus_3)
 
-    return str(current_time_utc_plus_3.date())
+    return current_time_utc_plus_3.date()
 
 
 def get_day_of_week(date: str) -> str:
@@ -143,9 +143,7 @@ def get_day_of_week(date: str) -> str:
 
 
 def get_24h_data(model, place: str, use_date="") -> dict:
-    data = {}
-
-    curr_date = get_today_date() if not use_date else use_date
+    curr_date = str(get_today_date()) if not use_date else use_date
 
     place_objects = model.objects.filter(city_name=place,
                                          date=curr_date
@@ -153,7 +151,6 @@ def get_24h_data(model, place: str, use_date="") -> dict:
                                         .order_by('time')
 
     data = {}
-
 
     data["day_of_week"] = get_day_of_week(curr_date)
     data["today_date"] = curr_date
@@ -182,33 +179,16 @@ def get_24h_data(model, place: str, use_date="") -> dict:
 
 def get_four_days_data(model, place: str) -> dict:
     today_date = get_today_date()
-    yesterday_date = str(datetime.datetime.strptime(today_date, "%Y-%m-%d") - datetime.timedelta(days=1)).split()[0]
     
-    place_objects = model.objects.filter(city_name=place) \
-                                        .exclude(date=today_date) \
-                                        .exclude(date=yesterday_date) \
-                                        .order_by('date', 'time')
-    
-    keys_list = ["first_day", "second_day", "third_day", "fourth_day"]
-    counter = 0
-
     data = {}
-    key = ""
-    curr_date = today_date
-    for place_obj in place_objects:
-        if curr_date == place_obj.date:
-            continue
+    keys_list = ["first_day", "second_day", "third_day", "fourth_day"]
+    for i in range(len(keys_list)):
+        today_date += datetime.timedelta(days=1)
 
-        curr_date = place_obj.date
-        key = keys_list[counter]
-            
+        key = keys_list[i]
+
         data[key] = data.get(key, {})
-        data[key] = get_24h_data(model, place, use_date=curr_date)
-        
-        counter += 1
+        data[key] = get_24h_data(model, place, use_date=str(today_date))
 
     return data
-
-        
-        
         
