@@ -176,14 +176,14 @@ CORS_ALLOWED_ORIGINS = [
 AUTH_USER_MODEL = "users.CustomUser"
 
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [f'redis://default:{CONFIG["REDIS_DB_PASSWORD"]}@redis-14351.c304.europe-west1-2.gce.cloud.redislabs.com:14351'],
-        },
-    },
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [f'redis://default:{CONFIG["REDIS_DB_PASSWORD"]}@redis-14351.c304.europe-west1-2.gce.cloud.redislabs.com:14351'],
+#         },
+#     },
+# }
 
 
 # CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
@@ -199,6 +199,14 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'fish_regions.tasks.update_regions',
         'schedule': timedelta(seconds=11000),
     },
+}
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "weather_cache",
+    }
 }
 
 
@@ -227,4 +235,16 @@ celery -A backend beat --loglevel=info
 
 use `--pool=solo` when on windows
 celery -A backend worker --loglevel=info --pool=solo
+"""
+
+
+
+"""
+how to start the backend
+
+1. activate the venv
+2. python manage.py createcachetable
+3. python manage.py runserver
+4. celery -A backend worker --loglevel=info --pool=solo                  --pool=solo -> for windows
+5. celery -A backend beat --loglevel=info
 """
