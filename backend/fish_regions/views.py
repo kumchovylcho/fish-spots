@@ -3,44 +3,45 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import VarnaRegion, BurgasRegion
 from . import helpers
+from django.core.cache import cache
+
+
+cache_key = "weather_cache"
 
 
 class WeatherDataView(APIView):
     http_method_names = ["get"]
 
     def get(self, request, *args, **kwargs):
-        region = request.GET.get("region", "").lower()
-        place = request.GET.get("place", "").lower().capitalize()
+        cached_weather = cache.get(cache_key)
+
+        if cached_weather:
+            return Response(cached_weather, status=status.HTTP_200_OK)
 
         regions = {
-            "north": {"model": VarnaRegion,
+            "varna": {"model": VarnaRegion,
                       "places": ["Shabla", "Kranevo", "Varna"]
                       },
-            "south": {"model": BurgasRegion,
+            "burgas": {"model": BurgasRegion,
                       "places": ["Burgas", "Chernomorets", "Primorsko"]
                       }
         }
 
-        response = {}
+        regions_data = {}
 
-        if region not in regions:
-            response["region_msg"] = f"{region} region is invalid. Valid regions are 'north' or 'south'"
+        for region, data in regions.items():
+            model = data["model"]
 
-        if region in regions and place not in regions[region]["places"]:
-            response["place_msg"] = f"{place} place is invalid. Valid places for `{region}` are {regions[region]['places']}"
+            regions_data[region] = {}
+            for place in data["places"]:
+                data_24h = helpers.get_24h_data(model, place)
+                four_days_data = helpers.get_four_days_data(model, place)
 
-        if response:
-            response["example_url"] = "Example usage www.example.com/regions/weather/?region=north&place=Varna"
-            return Response(response, status=status.HTTP_404_NOT_FOUND)
+                regions_data[region][place.lower()] = {
+                    "today": data_24h,
+                    "four_days": four_days_data
+                }
 
-        model = regions[region]["model"]
+        cache.set(cache_key, regions_data, timeout=1 * 60 * 60 * 3)  # 3 hours
 
-        data_24h = helpers.get_24h_data(model, place)
-        four_days_data = helpers.get_four_days_data(model, place)
-
-        wrap_data = {
-            "today": data_24h,
-            "four_days": four_days_data
-        }
-
-        return Response(wrap_data, status=status.HTTP_200_OK)
+        return Response(regions_data, status=status.HTTP_200_OK)
