@@ -3,8 +3,8 @@ from fish_regions.models import VarnaRegion, BurgasRegion
 from . import helpers
 import requests
 
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
+from django.core.cache import cache
+from .views import cache_key
 
 
 @app.task()
@@ -53,13 +53,6 @@ def update_regions() -> None:
 
             data["operation"](data["model"], weather_data)
 
-    channel_layer = get_channel_layer()
-
-    async_to_sync(channel_layer.group_send)("my_group", {
-        "type": "send.message",
-        "message": "update"
-    })
-            
-
+    cache.delete(cache_key)
 
 update_regions.delay()
