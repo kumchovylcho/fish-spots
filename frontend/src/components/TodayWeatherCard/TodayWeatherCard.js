@@ -1,5 +1,20 @@
 export default function TodayWeatherCard({ props }) {
 
+    const getWindDirectionArrow = (bulgarianDirection) => {
+        const directions = {
+            "Север": "fa-arrow-down-long",
+            "Североизток": "fa-arrow-down-long rotate-45",
+            "Изток": "fa-arrow-left-long",
+            "Югоизток": "fa-arrow-left-long rotate-45",
+            "Юг": "fa-arrow-up-long",
+            "Югозапад": "fa-arrow-up-long rotate-45",
+            "Запад": "fa-arrow-right-long",
+            "Северозапад": "fa-arrow-right-long rotate-45"
+        };
+
+        return directions[bulgarianDirection]
+    }
+
     return (
         <section className="bg-cyan-400 rounded-xl p-4 text-center text-xl mb-6 w-[170px]">
             <p>
@@ -16,22 +31,20 @@ export default function TodayWeatherCard({ props }) {
             <div className="flex flex-col gap-3">
                 <div className="bg-white rounded-xl p-1">
                     <p>Усеща се</p>
-                    <p>{props.feels_like}</p>
-                </div>
-                
-                <div className="bg-white rounded-xl p-1">
-                    <p>Мин. темп.</p>
-                    <p>{props.min_temp}</p>
-                </div>
-
-                <div className="bg-white rounded-xl p-1">
-                    <p>Макс. темп.</p>
-                    <p>{props.max_temp}</p>
+                    <p className="relative">
+                        {props.feels_like}
+                        <i class="absolute top-[15%] ml-0.5 text-[8px] fa-regular fa-circle"></i>
+                    </p>
                 </div>
 
                 <div className="bg-white rounded-xl p-1">
                     <p>Вятър</p>
                     <p>{props.wind_direction}</p>
+                    <p>
+                        <i className={`fa-solid ${getWindDirectionArrow(props.wind_direction)}`}>
+                            
+                        </i>
+                    </p>
                 </div>
 
                 <div className="bg-white rounded-xl p-1">
