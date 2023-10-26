@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'users.apps.UsersConfig',
     'fish_regions',
+    'fish_places',
     'notification',
 
     'rest_framework',
@@ -244,7 +245,8 @@ how to start the backend
 
 1. activate the venv
 2. python manage.py createcachetable
+3. python manage.py populate_places
 3. python manage.py runserver
-4. celery -A backend worker --loglevel=info --pool=solo                  --pool=solo -> for windows
+4. celery -A backend worker --loglevel=info --pool=solo               --pool=solo -> for windows
 5. celery -A backend beat --loglevel=info
 """
