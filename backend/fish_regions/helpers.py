@@ -182,13 +182,11 @@ def get_four_days_data(model, place: str) -> dict:
     
     data = {}
     keys_list = ["first_day", "second_day", "third_day", "fourth_day"]
-    for i in range(len(keys_list)):
+    for day in keys_list:
         today_date += datetime.timedelta(days=1)
 
-        key = keys_list[i]
-
-        data[key] = data.get(key, {})
-        data[key] = get_24h_data(model, place, use_date=str(today_date))
+        data[day] = data.get(day, {})
+        data[day] = get_24h_data(model, place, use_date=str(today_date))
 
     return data
         
