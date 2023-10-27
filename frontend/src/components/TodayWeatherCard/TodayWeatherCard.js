@@ -33,7 +33,7 @@ export default function TodayWeatherCard({ props }) {
                     <p>Усеща се</p>
                     <p className="relative">
                         {props.feels_like}
-                        <i class="absolute top-[15%] ml-0.5 text-[8px] fa-regular fa-circle"></i>
+                        <i className="absolute top-[15%] ml-0.5 text-[8px] fa-regular fa-circle"></i>
                     </p>
                 </div>
 
