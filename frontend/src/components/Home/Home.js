@@ -37,7 +37,7 @@ const Home = () => {
                         <div className="flex justify-center gap-x-12">
                             <section className="text-2xl">
                                 <p className="mb-3 inline-flex justify-between w-full">
-                                    13 места
+                                    14 места
                                     <span>
                                         <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
                                     </span>
