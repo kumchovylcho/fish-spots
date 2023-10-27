@@ -5,6 +5,8 @@ class Place(models.Model):
 
     place = models.CharField(max_length=50)
 
+    bg_place_name = models.CharField(max_length=50)
+
     description = models.TextField()
 
     image_url = models.TextField()
