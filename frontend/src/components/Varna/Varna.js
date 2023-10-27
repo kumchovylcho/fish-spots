@@ -3,7 +3,9 @@ import RegionChoiceCard from '../RegionChoiceCard/RegionChoiceCard';
 import TodayWeatherCard from '../TodayWeatherCard/TodayWeatherCard';
 import SelectCity from '../SelectCity/SelectCity';
 import { getWeather } from '../../services/weather';
-
+import { getFishPlaces } from '../../services/fish-spots';
+import FishPlacesCard from '../FishPlacesCard/FishPlacesCard';
+import FishPlaceDetails from '../Modals/FishPlaceDetails';
 
 export default function Varna() {
     const [showData, setShowData] = useState({
@@ -12,18 +14,36 @@ export default function Varna() {
         suggestedSpots: false,
     });
 
-    const [cityKey, setCityKey] = useState("");
+    const [cityKey, setCityKey] = useState('');
     const [weatherData, setWeatherData] = useState({});
+    const [fishSpots, setFishSpots] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        getWeather().then((data) => {
-            setWeatherData((prevData) => {
-                return { ...prevData, ...data };
+        if (cityKey) {
+            getWeather().then((data) => {
+                setWeatherData((prevData) => {
+                    return { ...prevData, ...data };
+                });
             });
-        });
+        }
 
+        if (!fishSpots) {
+            getFishPlaces('north').then((data) => {
+                setFishSpots(data);
+            });
+        }
     }, [cityKey]);
 
+    const openModal = () => {
+        setIsModalOpen(true);
+        document.body.classList.add('modal-open');
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        document.body.classList.remove('modal-open');
+    }
 
     function renderTodayWeatherCard(data, showSunset = false) {
         return (
@@ -47,7 +67,7 @@ export default function Varna() {
                     ''
                 )}
 
-                <div className="flex justify-evenly flex-wrap mb-12">
+                <div className="flex justify-center gap-3 flex-wrap mb-12">
                     {data.list_hours.map((obj) => (
                         <TodayWeatherCard key={obj.id} props={obj} />
                     ))}
@@ -88,49 +108,77 @@ export default function Varna() {
                 />
             </div>
 
-            {showData.weather && Object.keys(weatherData).length ? (
+            {showData.weather && (
+                <SelectCity
+                    city1={'Шабла'}
+                    city2={'Кранево'}
+                    city3={'Варна'}
+                    setCityKey={setCityKey}
+                />
+            )}
+
+            {Object.keys(weatherData).length ? (
                 <>
-                    <SelectCity city1={"Шабла"} city2={"Кранево"} city3={"Варна"} setCityKey={setCityKey}/>
-                    
-                    { cityKey ? (
+                    {cityKey ? (
                         <>
                             <article className="max-w-screen-2xl mx-auto bg-cyan-700 rounded-xl mb-32">
                                 <h3 className="max-w-7xl mx-auto text-center py-10 text-3xl relative">
-                                    Прогноза за днес - {weatherData.varna[cityKey].today.bg_name_place}
+                                    Прогноза за днес -{' '}
+                                    {
+                                        weatherData.varna[cityKey].today
+                                            .bg_name_place
+                                    }
                                     <div className="absolute top-[75%] left-2/4 -translate-x-2/4 -translate-y-1/2 w-60 h-0.5 bg-white"></div>
                                 </h3>
                                 {renderTodayWeatherCard(
-                                    weatherData.varna[cityKey].today, true
+                                    weatherData.varna[cityKey].today,
+                                    true
                                 )}
                             </article>
-                            
+
                             <article className="max-w-screen-2xl mx-auto bg-cyan-700 py-7 rounded-xl mb-32">
                                 <h3 className="max-w-7xl mx-auto text-center py-10 text-3xl relative">
                                     4 дневна прогноза
                                     <div className="absolute top-[75%] left-2/4 -translate-x-2/4 -translate-y-1/2 w-40 h-0.5 bg-white"></div>
                                 </h3>
                                 {renderTodayWeatherCard(
-                                    weatherData.varna[cityKey].four_days.first_day
+                                    weatherData.varna[cityKey].four_days
+                                        .first_day
                                 )}
                                 {renderTodayWeatherCard(
-                                    weatherData.varna[cityKey].four_days.second_day
+                                    weatherData.varna[cityKey].four_days
+                                        .second_day
                                 )}
                                 {renderTodayWeatherCard(
-                                    weatherData.varna[cityKey].four_days.third_day
+                                    weatherData.varna[cityKey].four_days
+                                        .third_day
                                 )}
                                 {renderTodayWeatherCard(
-                                    weatherData.varna[cityKey].four_days.fourth_day
+                                    weatherData.varna[cityKey].four_days
+                                        .fourth_day
                                 )}
                             </article>
                         </>
                     ) : (
-                        ""
-                    )
-                    }
+                        ''
+                    )}
                 </>
             ) : (
                 ''
             )}
+
+            {showData.fishSpots && fishSpots ? 
+                (
+                    <div className="max-w-7xl mx-auto flex justify-center flex-wrap gap-20 py-8 bg-slate-400 rounded-xl mb-16">
+                        {fishSpots.map((obj) =>           
+                            <FishPlacesCard key={obj.id} props={obj} modalOpen={openModal}/>                         
+                        )}
+                    </div>
+                )
+                : ''
+            }
+
+            {isModalOpen && <FishPlaceDetails closeModal={closeModal}/>}
         </main>
     );
 }
