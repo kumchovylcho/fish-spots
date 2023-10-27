@@ -8,3 +8,11 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.word-break {
+  overflow-wrap: break-word;
+}
