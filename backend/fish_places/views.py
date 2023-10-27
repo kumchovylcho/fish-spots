@@ -8,7 +8,7 @@ from fish_places.serializers import PlaceSerializer
 class PlacesView(APIView):
 
     def get(self, request, *args, **kwargs):
-        region = request.GET.get("region", "")
+        region = request.GET.get("region", "").lower()
 
         if not region:
             return Response({"message": "Invalid region"}, status=status.HTTP_400_BAD_REQUEST)
