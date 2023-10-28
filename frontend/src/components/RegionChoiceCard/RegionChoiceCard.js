@@ -5,6 +5,7 @@ export default function RegionChoiceCard({
     dataKey,
     showData,
     setShowData,
+    resetCityKey
 }) {
 
     const isSelectedClasses = () => {
@@ -21,6 +22,7 @@ export default function RegionChoiceCard({
 
         resetData[dataKey] = true;
         setShowData(resetData);
+        resetCityKey();
     }
 
 
