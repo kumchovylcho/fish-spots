@@ -18,6 +18,7 @@ export default function Varna() {
     const [weatherData, setWeatherData] = useState({});
     const [fishSpots, setFishSpots] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [placeDetails, setPlaceDetails] = useState({});
 
     useEffect(() => {
         if (cityKey) {
@@ -35,14 +36,22 @@ export default function Varna() {
         }
     }, [cityKey]);
 
-    const openModal = () => {
+    const resetCityKey = () => {
+        setCityKey("");
+    }
+
+    const openModal = (id) => {
         setIsModalOpen(true);
-        document.body.classList.add('modal-open');
+
+        const place = fishSpots.filter((obj) => obj.id === id)[0];
+
+        setPlaceDetails((oldPlace) => {
+            return { ...oldPlace, ...place }
+        })
     }
 
     const closeModal = () => {
         setIsModalOpen(false);
-        document.body.classList.remove('modal-open');
     }
 
     function renderTodayWeatherCard(data, showSunset = false) {
@@ -89,6 +98,7 @@ export default function Varna() {
                     dataKey="weather"
                     showData={showData}
                     setShowData={setShowData}
+                    resetCityKey={resetCityKey}
                 />
                 <RegionChoiceCard
                     imgUrl="https://cdn.discordapp.com/attachments/1156335620919152650/1165310390880714934/fish-rod.png?ex=654662df&is=6533eddf&hm=76ef89e86ef21eedecb16ae7637ae23cd5cddbe93c04eeec45f1dad6ce32ae38&"
@@ -97,6 +107,7 @@ export default function Varna() {
                     dataKey="fishSpots"
                     showData={showData}
                     setShowData={setShowData}
+                    resetCityKey={resetCityKey}
                 />
                 <RegionChoiceCard
                     imgUrl="https://cdn.discordapp.com/attachments/1156335620919152650/1165310579825721456/spoticon.png?ex=6546630c&is=6533ee0c&hm=789298118befac39d5978b6954eab78850977cd54933dbce1cd2d4dcd3c33ec9&"
@@ -105,6 +116,7 @@ export default function Varna() {
                     dataKey="suggestedSpots"
                     showData={showData}
                     setShowData={setShowData}
+                    resetCityKey={resetCityKey}
                 />
             </div>
 
@@ -117,7 +129,7 @@ export default function Varna() {
                 />
             )}
 
-            {Object.keys(weatherData).length ? (
+            {Object.keys(weatherData).length && showData.weather ? (
                 <>
                     {cityKey ? (
                         <>
@@ -169,7 +181,7 @@ export default function Varna() {
 
             {showData.fishSpots && fishSpots ? 
                 (
-                    <div className="max-w-7xl mx-auto flex justify-center flex-wrap gap-20 py-8 bg-slate-400 rounded-xl mb-16">
+                    <div className="max-w-7xl mx-auto flex justify-center flex-wrap gap-12 py-8 bg-slate-400 rounded-xl mb-16">
                         {fishSpots.map((obj) =>           
                             <FishPlacesCard key={obj.id} props={obj} modalOpen={openModal}/>                         
                         )}
@@ -178,7 +190,7 @@ export default function Varna() {
                 : ''
             }
 
-            {isModalOpen && <FishPlaceDetails closeModal={closeModal}/>}
+            {isModalOpen && <FishPlaceDetails data={placeDetails} closeModal={closeModal}/>}
         </main>
     );
 }
