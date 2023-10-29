@@ -6,6 +6,7 @@ import { getWeather } from '../../services/weather';
 import { getFishPlaces } from '../../services/fish-spots';
 import FishPlacesCard from '../FishPlacesCard/FishPlacesCard';
 import FishPlaceDetails from '../Modals/FishPlaceDetails';
+import SuggestedSpots from '../SuggestedSpots/SuggestedSpots';
 
 export default function Varna() {
     const [showData, setShowData] = useState({
@@ -21,13 +22,11 @@ export default function Varna() {
     const [placeDetails, setPlaceDetails] = useState({});
 
     useEffect(() => {
-        if (cityKey) {
-            getWeather().then((data) => {
-                setWeatherData((prevData) => {
-                    return { ...prevData, ...data };
-                });
-            });
-        }
+
+        getWeather().then((data) => {
+            setWeatherData((prevData) => {
+                return { ...prevData, ...data }}
+        )});
 
         if (!fishSpots) {
             getFishPlaces('north').then((data) => {
@@ -183,14 +182,22 @@ export default function Varna() {
                 (
                     <div className="max-w-7xl mx-auto flex justify-center flex-wrap gap-12 py-8 bg-slate-400 rounded-xl mb-16">
                         {fishSpots.map((obj) =>           
-                            <FishPlacesCard key={obj.id} props={obj} modalOpen={openModal}/>                         
+                            <FishPlacesCard key={obj.id} props={obj} modalOpen={openModal} />                         
                         )}
                     </div>
                 )
                 : ''
             }
 
-            {isModalOpen && <FishPlaceDetails data={placeDetails} closeModal={closeModal}/>}
+            {isModalOpen && <FishPlaceDetails data={placeDetails} closeModal={closeModal} />}   
+
+            {Object.keys(weatherData).length && showData.suggestedSpots &&
+                <SuggestedSpots 
+                    weatherData={weatherData.varna}
+                    fishSpots={fishSpots}
+                    modalOpen={openModal}
+                />
+            }     
         </main>
     );
 }
