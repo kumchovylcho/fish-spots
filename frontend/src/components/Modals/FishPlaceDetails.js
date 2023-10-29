@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom';
-import '../../index.css';
-
 
 export default function FishPlaceDetails({ data, closeModal }) {
 
