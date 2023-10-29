@@ -12,7 +12,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166700329262387292/tyulenovo.jpg?ex=654b715a&is=6538fc5a&hm=9c19765acc9ef131014325a654ecfa9e9652f45119899a9f2030f603a90038dc&",
                 "longitude": "43.5159807",
                 "latitude": "28.5986176",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 5,
+                "bad_wind_directions": "Изток, Югоизток, Североизток",
             },
             "kranevo": {
                 "bg_name": "Кранево",
@@ -20,7 +22,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166699440237719602/kranevo.jpg?ex=654b7086&is=6538fb86&hm=9695cebe2cb945da9733bb804dcf35cb0e12c318d897a8fb3de8fe4d4499291b&",
                 "longitude": "43.3230436",
                 "latitude": "28.0664616",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 5,
+                "bad_wind_directions": "Изток, Югоизток, Североизток",
             },
             "panorama": {
                 "bg_name": "Панорама",
@@ -28,7 +32,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166699883177193472/panorama.jpg?ex=654b70f0&is=6538fbf0&hm=be2d482daec300ffe7664623a776c4237481a355af2eff8069c774f89ed2a2b7&",
                 "longitude": "43.3017312",
                 "latitude": "28.0535553",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 5,
+                "bad_wind_directions": "Юг, Северозапад",
             },
             "noi": {
                 "bg_name": "Ной",
@@ -36,7 +42,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166699685667426344/noi.jpg?ex=654b70c1&is=6538fbc1&hm=78347db8f729c29d4626ebef70a0037e39d684451cf018f5ea534211b7ad717e&",
                 "longitude": "43.2485368",
                 "latitude": "28.0304259",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 5,
+                "bad_wind_directions": "Североизток, Изток, Юг, Югоизток",
             },
             "slanchev-den": {
                 "bg_name": "Слънчев ден",
@@ -44,7 +52,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166700153181323335/slanchev-den.jpg?ex=654b7130&is=6538fc30&hm=0a8eeb094fea87f008b1644ed49939bfd24c561d030d59bde1c39ad988e7e499&",
                 "longitude": "43.2446327",
                 "latitude": "28.0251074",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 5,
+                "bad_wind_directions": "Североизток, Изток, Юг, Югоизток",
             },
             "panelite": {
                 "bg_name": "Панелите",
@@ -52,7 +62,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166699785345048626/panelite.jpg?ex=654b70d9&is=6538fbd9&hm=a7f5d624569648e5875e33035e4c333fab16f5d846b1effbe2f1e2dd32f3727c&",
                 "longitude": "43.2254081",
                 "latitude": "28.0145879",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Североизток, Изток, Юг, Югоизток",
             },
             "trakata": {
                 "bg_name": "Траката",
@@ -60,7 +72,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166700245598601296/trakata.jpg?ex=654b7146&is=6538fc46&hm=dd27aa1b439eb96001acdc893a671174b52f1855ccbc17badce357a966a3a9a9&",
                 "longitude": "43.2175716",
                 "latitude": "27.9804242",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 5,
+                "bad_wind_directions": "Юг, Югоизток, Югозапад, Запад",
             },
             "buna-1": {
                 "bg_name": "Първа буна",
@@ -68,7 +82,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166699116278059079/buna-1.jpg?ex=654b7039&is=6538fb39&hm=9b56a3e2246494cffb3706ad18bb39f7dafae253045fbf44428a19b90b041619&",
                 "longitude": "43.204669",
                 "latitude": "27.9335551",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Изток, Юг, Югоизток, Югозапад, Запад"
             },
             "buna-4": {
                 "bg_name": "Четвърта буна",
@@ -76,7 +92,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166699243080253460/buna-4.jpg?ex=654b7057&is=6538fb57&hm=7d0b3a6768d7a565c2e99d94aedd1ca11be80b0fdedee8f869dc4f58a6d82e93&",
                 "longitude": "43.211459",
                 "latitude": "27.9572982",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Юг, Югоизток, Запад, Югозапад",
             },
             "valnolom": {
                 "bg_name": "Вълнолома",
@@ -84,7 +102,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166700447554351125/valnolom.jpg?ex=654b7176&is=6538fc76&hm=64660c2a38a3462f4dbf19fb5fd620bda2db542c264b3b611db2060c2a6c313e&",
                 "longitude": "43.1884918",
                 "latitude": "27.921919",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Североизток, Изток, Юг, Югоизток",
             },
             "morska-gara-varna": {
                 "bg_name": "Морска гара",
@@ -92,7 +112,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166699541815365782/morska-gara-varna.jpg?ex=654b709e&is=6538fb9e&hm=4efcf558f1e595c5cfe000f394423c0929d1117ba671299504760f555f675e42&",
                 "longitude": "43.1937287",
                 "latitude": "27.9203311",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 5,
+                "bad_wind_directions": "Запад, Юг, Югозапад, Северозапад",
             },
             "pod-mosta": {
                 "bg_name": "Под моста",
@@ -100,7 +122,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166700045479977011/pod-mosta.jpg?ex=654b7117&is=6538fc17&hm=14abded681a238e1dceee78190aae5b94bb9e52445df45b1360f43b4edfe2676&",
                 "longitude": "43.1901971",
                 "latitude": "27.8851298",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 7,
+                "bad_wind_directions": "Северозапад, Югоизток",
             },
             "jelezniq-most": {
                 "bg_name": "Железният мост",
@@ -108,7 +132,9 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167020817771667496/jelezniq-most.webp?ex=654c9bd5&is=653a26d5&hm=90b23d666891dcca9c53ef0dbe4e34ab934c8bf51361bc2b2ce34e46e48c35a3&",
                 "longitude": "43.195383",
                 "latitude": "27.8953597",
-                "region": "north"
+                "region": "north",
+                "max_wind_speed": 9,
+                "bad_wind_directions": "Северозапад, Югоизток",
             },
             "asparuhovo-buna": {
                 "bg_name": "Аспарухово-буната",
@@ -116,13 +142,157 @@ class Command(BaseCommand):
                 "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1166698842058653746/asparuhovo-bunata.jpg?ex=654b6ff8&is=6538faf8&hm=c4dbed9fa2eaaa3950c97eea7b138968b1c2630b182cc0333b248287bbb05268&",
                 "longitude": "43.1816372",
                 "latitude": "27.9130221",
-                "region": "north"
-            }
+                "region": "north",
+                "max_wind_speed": 5,
+                "bad_wind_directions": "Север, Запад, Изток, Североизток, Северозапад",
+            },
+            "morska-gara-burgas": {
+                "bg_name": "Морска гара",
+                "description": "На морска гара можете да хванете сафрид, хамсия и карагьоз.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167783794653274213/morska-gara-burgas.jpg?ex=654f6269&is=653ced69&hm=5e0ce154b8a9fd5d950bb6dcc655abf83196b76d48ca32afe332f8246c70d731&",
+                "longitude": "42.4854055",
+                "latitude": "27.482281",
+                "region": "south",
+                "max_wind_speed": 5,
+                "bad_wind_directions": "Запад, Северозапад, Югозапад, Север, Юг",
+            },
+            "nos-akra": {
+                "bg_name": "Нос Акра",
+                "description": "На нос Акра можете да хванете зарган. Оставяте си колата назад на паркинга и се върви пеша до мястото.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167789844110512138/nos-akra.jpg?ex=654f680b&is=653cf30b&hm=9ed22ba5b455c9879bb07b9a5a0a068eed767f09a51e0ac7ed6ea1d83ec19aee&",
+                "longitude": "42.459038",
+                "latitude": "27.6289487",
+                "region": "south",
+                "max_wind_speed": 3,
+                "bad_wind_directions": "Север, Североизток, Изток",
+            },
+            "vilata-na-plevneliev": {
+                "bg_name": "Черноморец-Вилата",
+                "description": "Мястото е до вилата на Плевнелиев. Можете да стигнете с кола и да си изберете място по скалите. Най-често там се търси зарган.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167792122674565210/chernomorets-vilata.jpg?ex=654f6a2a&is=653cf52a&hm=e26b8f7e3524cbfc4cce215b4ff3b4ac2eee9ec93f2eba56c734d3f319ba4401&",
+                "longitude": "42.4459614",
+                "latitude": "27.6499072",
+                "region": "south",
+                "max_wind_speed": 3,
+                "bad_wind_directions": "Изток, Североизток, Югоизток",
+            },
+            "nos-chervenka": {
+                "bg_name": "Нос Червенка",
+                "description": "На този нос най-вече можете да срещнете риболовци които търсят зарган. Няма пряк достъп с кола.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167793587937869834/nos-chervenka.jpg?ex=654f6b87&is=653cf687&hm=02513388d35b4530458b4031cf4cdc4125a7c487f9dffc054fedff0c6038d5a2&",
+                "longitude": "42.4303029",
+                "latitude": "27.652832",
+                "region": "south",
+                "max_wind_speed": 3,
+                "bad_wind_directions": "Изток, Юг, Югоизток",
+            },
+            "germankata": {
+                "bg_name": "Германката",
+                "description": "На местност Германката можете да практикувате риболов на сафрид и зарган. Скалите са опасни и трябва да внимавате. Върви се малко докато стигнете до риболовното място.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167795944767627335/germankata.jpg?ex=654f6db9&is=653cf8b9&hm=21c44d838958d13932492c1d192a9e6cd44694f1e8b13e275bdd41a9e167694b&",
+                "longitude": "42.40488",
+                "latitude": "27.729592",
+                "region": "south",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Изток, Североизток, Югоизток",
+            },
+            "nos-agalina": {
+                "bg_name": "Нос Агалина",
+                "description": "На този красив нос можете да ловите сафрид, зарган и чернокоп на нощен риболов. Можете да пробвате за чернокоп в активен за него сезон. Внимавайте за хлъзгави скали.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167798132554350733/nos-agalina.jpg?ex=654f6fc3&is=653cfac3&hm=49c70d561d3741abe05a37d0473d4e44fa3ec7bbdb42694b5d557971ce8fbc79&",
+                "longitude": "42.3787155",
+                "latitude": "27.7243115",
+                "region": "south",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Изток, Североизток, Югоизток, Юг",
+            },
+            "maslen-nos": {
+                "bg_name": "Маслен нос",
+                "description": "На този дащен нос можете да ловувате заргани и сафриди.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167800100773437460/maslen-nos.jpg?ex=654f7198&is=653cfc98&hm=6ba771381203ce7a32f4239d9f726dd7b45e9072a13af25bce0132d9c0bace91&",
+                "longitude": "42.3071087",
+                "latitude": "27.7932382",
+                "region": "south",
+                "max_wind_speed": 5,
+                "bad_wind_directions": "Изток, Североизток, Югоизток, Юг",
+            },
+             "mirius": {
+                "bg_name": "Мириус",
+                "description": "По тази ивица можете да търсите заргани и чернокопи. Разбира се, сезона трябва да бъде правилния за да има успехи.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167831835984810055/mirius.jpg?ex=654f8f26&is=653d1a26&hm=2a5e3ef5b6977d86a02d474b96f4bfb1c1fa7bcf8729ba6a56248ae055aec0a3&",
+                "longitude": "42.3036143",
+                "latitude": "27.7800759",
+                "region": "south",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Изток, Североизток, Югоизток, Юг, Югозапад",
+            },
+            "plaj-perla": {
+                "bg_name": "Перла",
+                "description": "На тези две буни можете да практикувате риболов на зарган и чернокоп ако рибата е в сезон.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167834589784445029/plaj-perla.jpeg?ex=654f91b7&is=653d1cb7&hm=1355d2a46cbd469b5eb9e2b853448a7bc105872c3bb03df956d20b3958b87daf&",
+                "longitude": "42.2881532",
+                "latitude": "27.7573407",
+                "region": "south",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Изток, Юг, Югоизток",
+            },
+            "primorsko-kraibrejna": {
+                "bg_name": "Приморско-алея",
+                "description": "На крайбрежната алея в Приморско можете да ловите лефер в активния сезон. Възможно е и улов на зарган.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167836170445668512/primorsko-kraibrejna.jpg?ex=654f9330&is=653d1e30&hm=6cd441df1cdda9493ec2518949def7f959b976c121cc219dbdf0d8221cb203cc&",
+                "longitude": "42.2659478",
+                "latitude": "27.7666443",
+                "region": "south",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Изток, Югоизток",
+            },
+            "primorsko-pristanishte": {
+                "bg_name": "Приморско-пристанище",
+                "description": "На пристанището в Приморско можете да имате успех с улов на морски врани, скорпиди и сафриди на силикон.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167837389817913424/primorsko-pristanishte.jpg?ex=654f9453&is=653d1f53&hm=b6471c7066a084be3011f50e8864ee356b1c5706bf832ec742ff4dd629d1b43e&",
+                "longitude": "42.2640384",
+                "latitude": "27.7582115",
+                "region": "south",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Юг, Югозапад, Запад, Северозапад, Североизток",
+            },
+            "kiten-zangador": {
+                "bg_name": "Китен-зангадор",
+                "description": "В Китен до дискотека Зангадор можете да пробвате в активен сезон улов на лефер.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167839287019061298/kiten-zangador.jpg?ex=654f9617&is=653d2117&hm=0bc62c2198b81136982e3eb57e8cc1999bad7d4882e95fd83fee1848ff5f333d&",
+                "longitude": "42.2433569",
+                "latitude": "27.7713793",
+                "region": "south",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Север, Северозапад, Запад, Югозапад, Юг",
+            },
+            "kiten-parzalkata": {
+                "bg_name": "Китен-пързалката",
+                "description": "В Китен до пързалката можете да ловите зарган през деня и лефер през нощта. А ако не хванете риба, можете да се пуснете по пързалката.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167840158402490509/kiten-parzalkata.jpg?ex=654f96e7&is=653d21e7&hm=c3eb52315b7de4b5d6971d7532787fc1f78ca2786b40db64e79d6f921d46dd94&",
+                "longitude": "42.2447634",
+                "latitude": "27.7737746",
+                "region": "south",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Изток, Североизток, Север, Югоизток",
+            },
+            "kiten-golqmata-buna": {
+                "bg_name": "Китен-голямата буна",
+                "description": "На тази буна можете да ловите зарган. А вечерта можете да останете и да пробвате за чернокоп/лефер.",
+                "image_url": "https://cdn.discordapp.com/attachments/1156335620919152650/1167841041613852682/kiten-golqmata-buna.jpg?ex=654f97b9&is=653d22b9&hm=979ef73f398c94fb3031d6b06cc68dc8d01bb8f90857b7037feed78dde690d8e&",
+                "longitude": "42.2430546",
+                "latitude": "27.7770163",
+                "region": "south",
+                "max_wind_speed": 4,
+                "bad_wind_directions": "Изток, Север, Североизток, Югоизток",
+            },
         }
 
+        skipped, created = 0, 0
         for fish_place, data in places_info.items():
             if Place.objects.filter(place=fish_place).exists():
                 self.stdout.write(self.style.WARNING(f'{fish_place} place already exists. Skipping...'))
+                skipped += 1
                 continue
 
             Place.objects.create(
@@ -132,12 +302,15 @@ class Command(BaseCommand):
                 image_url=data['image_url'],
                 longitude=data['longitude'],
                 latitude=data['latitude'],
-                region=data['region']
+                region=data['region'],
+                max_wind_speed=data['max_wind_speed'],
+                bad_wind_directions=data['bad_wind_directions']
             )
 
+            created += 1
             self.stdout.write(self.style.SUCCESS(f'Successfully added {fish_place} place to the table'))
 
-
+        self.stdout.write(f"Created {created}, Skipped {skipped}")
 
 
 
