@@ -6,6 +6,7 @@ import { getWeather } from '../../services/weather';
 import { getFishPlaces } from '../../services/fish-spots';
 import FishPlacesCard from '../FishPlacesCard/FishPlacesCard';
 import FishPlaceDetails from '../Modals/FishPlaceDetails';
+import SuggestedSpots from '../SuggestedSpots/SuggestedSpots';
 
 export default function Burgas() {
     const [showData, setShowData] = useState({
@@ -20,15 +21,13 @@ export default function Burgas() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [placeDetails, setPlaceDetails] = useState({});
 
-    useEffect(() => {
-        if (cityKey) {
-            getWeather().then((data) => {
-                setWeatherData((prevData) => {
-                    return { ...prevData, ...data };
-                });
+    useEffect(() => {     
+        getWeather().then((data) => {
+            setWeatherData((prevData) => {
+                return { ...prevData, ...data };
             });
-        }
-
+        });
+        
         if (!fishSpots) {
             getFishPlaces('south').then((data) => {
                 setFishSpots(data);
@@ -191,6 +190,14 @@ export default function Burgas() {
             }
 
             {isModalOpen && <FishPlaceDetails data={placeDetails} closeModal={closeModal}/>}
+
+            {Object.keys(weatherData).length && showData.suggestedSpots &&
+                <SuggestedSpots 
+                    weatherData={weatherData.burgas}
+                    fishSpots={fishSpots}
+                    modalOpen={openModal}
+                />
+            }  
         </main>
     );
 }
