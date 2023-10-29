@@ -1,4 +1,5 @@
 from django.db import models
+import json
 
 
 class Place(models.Model):
@@ -16,3 +17,10 @@ class Place(models.Model):
     latitude = models.CharField(max_length=30)
 
     region = models.CharField(max_length=30)
+
+    max_wind_speed = models.IntegerField()
+
+    bad_wind_directions = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.bg_place_name
