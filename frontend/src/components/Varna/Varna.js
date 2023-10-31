@@ -7,6 +7,8 @@ import { getFishPlaces } from '../../services/fish-spots';
 import FishPlacesCard from '../FishPlacesCard/FishPlacesCard';
 import FishPlaceDetails from '../Modals/FishPlaceDetails';
 import SuggestedSpots from '../SuggestedSpots/SuggestedSpots';
+import FilterFishSpots from '../FilterFishSpots/FilterFishSpots';
+import setDocTitle from '../../util/setDocTitle';
 
 export default function Varna() {
     const [showData, setShowData] = useState({
@@ -20,6 +22,9 @@ export default function Varna() {
     const [fishSpots, setFishSpots] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [placeDetails, setPlaceDetails] = useState({});
+    const [filteredSpots, setFilteredSpots] = useState([]);
+
+    setDocTitle("Varna");
 
     useEffect(() => {
 
@@ -51,6 +56,23 @@ export default function Varna() {
 
     const closeModal = () => {
         setIsModalOpen(false);
+    }
+
+    const filterFishSpots = (searchSpot) => {
+        searchSpot = searchSpot.toLowerCase();
+        const userFilterSpots = [];
+
+        for (const data of fishSpots) {
+            if (!searchSpot) {
+                break;
+            }
+
+            if (data.place.includes(searchSpot) || data.bg_place_name.includes(searchSpot)) {
+                userFilterSpots.push(data);
+            }
+        }
+
+        setFilteredSpots(userFilterSpots);
     }
 
     function renderTodayWeatherCard(data, showSunset = false) {
@@ -180,11 +202,19 @@ export default function Varna() {
 
             {showData.fishSpots && fishSpots ? 
                 (
-                    <div className="max-w-7xl mx-auto flex justify-center flex-wrap gap-12 py-8 bg-slate-400 rounded-xl mb-16">
-                        {fishSpots.map((obj) =>           
-                            <FishPlacesCard key={obj.id} props={obj} modalOpen={openModal} />                         
-                        )}
-                    </div>
+                    <>
+                        <FilterFishSpots filterFishSpots={filterFishSpots} />
+                        
+                        <div className="max-w-7xl mx-auto flex justify-center flex-wrap gap-12 py-8 bg-slate-400 rounded-xl mb-16">
+                            {(filteredSpots.length 
+                                ? filteredSpots 
+                                : fishSpots
+                                )
+                                .map((obj) =>           
+                                    <FishPlacesCard key={obj.id} props={obj} modalOpen={openModal} />                         
+                            )}
+                        </div>
+                    </>
                 )
                 : ''
             }
