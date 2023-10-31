@@ -30,7 +30,7 @@ export default function FishPlaceDetails({ data, closeModal }) {
                         to={`https://www.google.com/maps/@${data.longitude},${data.latitude},18z?entry=ttu`}
                         target="_blank"
                         >
-                        Линк към гугъл мапс
+                        Покажи в Google Maps
                     </Link>
                     <button
                         className="bg-red-600 py-2 px-4 rounded-xl hover:bg-red-800"
