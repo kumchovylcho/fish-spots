@@ -3,12 +3,15 @@ import AuthContext from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/users';
 import FormError from '../FormError/FormError';
+import setDocTitle from '../../util/setDocTitle';
 
 const Login = () => {
     const [passwordEye, setPasswordEye] = useState(false);
     const { setAuthTokens, setUser } = useContext(AuthContext);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
+
+    setDocTitle("Login");
 
     return (
         <article className="flex justify-center items-center p-16">
