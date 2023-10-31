@@ -28,7 +28,7 @@ const calculateWind = (cityWeatherArr, fishSpot) => {
         counter = 0;
     }
 
-    return counter !== maxInARowBadWind;
+    return counter < maxInARowBadWind;
 }
 
 const decideToShowSpot = (fishSpot, weatherData, cityKey) => {
