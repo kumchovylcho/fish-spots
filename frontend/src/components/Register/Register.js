@@ -4,6 +4,7 @@ import FormError from '../FormError/FormError';
 import { register, loginUser } from '../../services/users';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
+import setDocTitle from '../../util/setDocTitle';
 
 
 
@@ -12,6 +13,8 @@ const Register = () => {
     const [rePasswordEye, setRePasswordEye] = useState(false);
     const { setAuthTokens, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    setDocTitle("Register");
 
     const [formData, setFormData] = useState({
         username: "",
