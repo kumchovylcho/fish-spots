@@ -3,8 +3,14 @@ import { Link } from 'react-router-dom';
 export default function FishPlaceDetails({ data, closeModal }) {
 
     return (
-        <article className="fixed top-0 left-0 bottom-0 right-0 bg-black/[.50]">
-            <div className="absolute left-2/4 top-2/4 bg-white -translate-x-2/4 -translate-y-2/4 max-w-2xl break-words p-4 rounded">
+        <article 
+            className="fixed top-0 left-0 bottom-0 right-0 bg-black/[.50]"
+            onClick={closeModal}
+            >
+            <div 
+                className="absolute left-2/4 top-2/4 bg-white -translate-x-2/4 -translate-y-2/4 max-w-2xl break-words p-4 rounded"
+                onClick={(e) => e.stopPropagation()}
+                >
                 <div className="flex justify-center items-center gap-8">
                     <div className="max-w-[40%]">
                         <img 
