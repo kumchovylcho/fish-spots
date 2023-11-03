@@ -38,7 +38,7 @@ const Home = () => {
             </h2>
 
             <div className="w-full flex flex-wrap justify-center gap-12 w-3/5">
-                <Link to="/varna">
+                <Link to="/city">
                     <section className="max-w-lg bg-gray-200 p-8 rounded-3xl hover:scale-105 duration-150 cursor-pointer">
                         <h3 className="text-2xl text-center font-bold mb-6">ВАРНА</h3>
                         <div className="flex justify-center gap-x-12">
@@ -66,7 +66,7 @@ const Home = () => {
                     </section>
                 </Link>
 
-                <Link to="burgas/">
+                <Link to="/city">
                     <section className="max-w-lg bg-gray-200 p-8 rounded-3xl hover:scale-105 duration-150 cursor-pointer">
                         <h3 className="text-2xl text-center font-bold mb-6">БУРГАС</h3>
                         <div className="flex justify-center gap-x-12">
