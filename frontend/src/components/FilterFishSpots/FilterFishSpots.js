@@ -7,7 +7,7 @@ export default function FilterFishSpots ({ filterFishSpots }) {
                 type="text"
                 placeholder="Потърси място..."
                 onChange={(e) => {filterFishSpots(e.target.value)}}
-            />
+            />         
         </section>
     );
 }
