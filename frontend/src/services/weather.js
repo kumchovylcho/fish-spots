@@ -1,8 +1,14 @@
 import { baseUrl } from './users';
 
 
-export const getWeather = async () => {
-    const response = await fetch(`${baseUrl}/regions/weather/`);
-    return await response.json();
+export const getWeather = async (region="") => {
+    const query = region ? `${baseUrl}/regions/weather/?region=${region}` : `${baseUrl}/regions/weather/`;
 
+    const response = await fetch(query);
+    return await response.json();
+}
+
+export const getWeatherForPlace = async (region, place) => {
+    const response = await fetch(`${baseUrl}/regions/weather/${place}/?region=${region}`);
+    return await response.json();
 }
