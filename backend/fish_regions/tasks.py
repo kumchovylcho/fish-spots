@@ -53,6 +53,7 @@ def update_regions() -> None:
 
             data["operation"](data["model"], weather_data)
 
-    cache.delete(cache_key)
+    cache.delete("varna")
+    cache.delete("burgas")
 
 update_regions.delay()
