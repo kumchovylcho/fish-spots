@@ -16,10 +16,7 @@ const Navigation = () => {
 
                 <ul className="flex gap-12 flex-wrap">
                     <li className="hover:text-stone-300 duration-300">
-                        <Link to="/varna">Варна</Link>
-                    </li>
-                    <li className="hover:text-stone-300 duration-300">
-                        <Link to="/burgas">Бургас</Link>
+                        <Link to="/city">Градове</Link>
                     </li>
 
                     {user ? (
