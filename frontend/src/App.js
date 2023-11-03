@@ -6,8 +6,10 @@ import Footer from './components/Footer/Footer';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import PrivateRoute from './util/PrivateRoute';
-import Varna from './components/Varna/Varna';
-import Burgas from './components/Burgas/Burgas';
+import City from './components/City/City';
+import Weather from './components/Weather/Weather';
+import FishSpots from './components/FishSpots/FishSpots';
+import SuggestedSpots from './components/SuggestedSpots/SuggestedSpots';
 
 function App() {
     return (
@@ -18,8 +20,10 @@ function App() {
 
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/varna" element={<Varna />} />
-                        <Route path="/burgas" element={<Burgas />} />
+                        <Route path="/city" element={<City />} />
+                            <Route path="/city/weather" element={<Weather />} />
+                            <Route path="/city/fish-spots" element={<FishSpots />} />
+                            <Route path="/city/suggested-spots" element={<SuggestedSpots />} />
                         <Route
                             path="/login"
                             element={
