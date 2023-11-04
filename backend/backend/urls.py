@@ -6,4 +6,5 @@ urlpatterns = [
     path('api/', include('base.api.urls')),
     path('regions/', include('fish_regions.urls')),
     path('places/', include('fish_places.urls')),
+    path('landscapes/', include('landscapes.urls')),
 ]
