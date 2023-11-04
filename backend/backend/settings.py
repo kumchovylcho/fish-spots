@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'fish_regions',
     'fish_places',
+    'landscapes',
     'notification',
 
     'rest_framework',
