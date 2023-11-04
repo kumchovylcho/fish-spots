@@ -4,7 +4,6 @@ from . import helpers
 import requests
 
 from django.core.cache import cache
-from .views import cache_key
 
 
 @app.task()
