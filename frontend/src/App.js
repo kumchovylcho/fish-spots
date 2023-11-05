@@ -10,6 +10,7 @@ import City from './components/City/City';
 import Weather from './components/Weather/Weather';
 import FishSpots from './components/FishSpots/FishSpots';
 import SuggestedSpots from './components/SuggestedSpots/SuggestedSpots';
+import Landscapes from './components/Landscapes/Landscapes';
 
 function App() {
     return (
@@ -39,6 +40,10 @@ function App() {
                                     <Register />
                                 </PrivateRoute>
                             }
+                        />
+                        <Route
+                            path="/landscapes"
+                            element={<Landscapes />}
                         />
                     </Routes>
                 </AuthProvider>
