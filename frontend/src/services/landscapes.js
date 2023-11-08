@@ -7,8 +7,7 @@ export const createLandscape = async (form) => {
             method: 'POST',
             body: form
         })
-        const data = await response.json();
-        return data
+        return response
     } catch (error) {
         
     }
