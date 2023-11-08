@@ -18,6 +18,9 @@ const Navigation = () => {
                     <li className="hover:text-stone-300 duration-300">
                         <Link to="/city">Градове</Link>
                     </li>
+                    <li className="hover:text-stone-300 duration-300">
+                        <Link to="/landscapes">Пейзажи</Link>
+                    </li>
 
                     {user ? (
                         <li 
