@@ -4,19 +4,27 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/users';
 import FormError from '../FormError/FormError';
 import setDocTitle from '../../util/setDocTitle';
+import Spinner from '../Spinner/Spinner';
 
 const Login = () => {
     const [passwordEye, setPasswordEye] = useState(false);
     const { setAuthTokens, setUser } = useContext(AuthContext);
     const [error, setError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     setDocTitle("Login");
 
+    const handleLoginClick = async (e) => {
+        setIsLoading(true);
+        await loginUser(e, setAuthTokens, setUser, navigate, "/", setError);
+        setIsLoading(false);
+    }
+
     return (
         <article className="flex justify-center items-center p-16">
             <form 
-                onSubmit={(e) => loginUser(e, setAuthTokens, setUser, navigate, "/", setError)} 
+                onSubmit={handleLoginClick} 
                 className="flex flex-col basis-1/4 gap-8 p-12 rounded-xl text-xl bg-white"
                 >
                 <section className="flex flex-col gap-4">
@@ -51,6 +59,8 @@ const Login = () => {
                     className="bg-[#10ACDB] text-white rounded-xl p-4 hover:bg-cyan-800">
                     Влез
                 </button>
+
+                {isLoading && <Spinner />}
             </form>
         </article>
     );
