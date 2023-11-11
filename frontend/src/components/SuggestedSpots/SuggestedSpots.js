@@ -109,7 +109,7 @@ export default function SuggestedSpots() {
 
             {isLoading && <Spinner />}
 
-            {!isLoading ? (
+            {!isLoading && suggestedSpots.length ? (
                 <>
                     {suggestedSpots.length && <FilterFishSpots filterFishSpots={filterFishSpots} />}
                     
@@ -125,7 +125,7 @@ export default function SuggestedSpots() {
                 </>
             ) : (
                 <h3 className="text-2xl py-12 text-center">
-                    Няма предложени места. Времето е бурно, стойте си вкъщи.
+                    Няма предложени места или информацията е недостатъчна за да се изчисли.
                 </h3>
             )}
 
