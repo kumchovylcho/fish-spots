@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { createLandscape } from '../../services/landscapes';
 import AuthContext from '../../context/AuthContext';
 import Spinner from '../Spinner/Spinner';
@@ -20,6 +20,20 @@ export default function LandscapeForm() {
     const [titleError, setTitleError] = useState('');
     const [imageError, setImageError] = useState('');
     const [formError, setFormError] = useState('');
+    
+    const [successMsg, setSuccessMsg] = useState(false);
+
+    useEffect(() => {
+        let intervalId;
+        if (successMsg) {
+            intervalId = setInterval(() => {
+                setSuccessMsg(false);
+            }, 5000);
+        }
+
+        return () => clearInterval(intervalId);
+
+    }, [successMsg])
 
     const resetFields = () => {
         setDescription('');
@@ -28,6 +42,8 @@ export default function LandscapeForm() {
         setTitleError('');
         setImageError('');
         setFormError('');
+        setDescCharCounter(0);
+        setTitleCharCounter(0);
     };
 
     const оnChangeTextHandler = (
@@ -109,6 +125,8 @@ export default function LandscapeForm() {
 
         if (response.status === 201) {
             resetFields();
+            setSuccessMsg(true);
+            
         } else if (response.status === 400) {
             setFormError(data.message);
         }
@@ -192,6 +210,12 @@ export default function LandscapeForm() {
                             {formError}
                         </p>
                     )}
+
+                    {successMsg && 
+                        <p className="font-medium py-1 bg-green-600 text-white text-center rounded mt-2">
+                            Успешно качване!
+                        </p>
+                    }
 
                     {isLoading && <Spinner />}
                 </section>
