@@ -5,6 +5,7 @@ import { register, loginUser } from '../../services/users';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import setDocTitle from '../../util/setDocTitle';
+import Spinner from '../Spinner/Spinner';
 
 
 
@@ -12,6 +13,7 @@ const Register = () => {
     const [passwordEye, setPasswordEye] = useState(false);
     const [rePasswordEye, setRePasswordEye] = useState(false);
     const { setAuthTokens, setUser } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     setDocTitle("Register");
@@ -66,6 +68,7 @@ const Register = () => {
         setErrors(newErrors);
     
         if (Object.keys(newErrors).length === 0) {
+            setIsLoading(true);
             const response = await register(formData);
             const data = await response.json();
             
@@ -80,6 +83,8 @@ const Register = () => {
             } else if (response.status === 201) {
                 loginUser(e, setAuthTokens, setUser, navigate, "/");
             }
+
+            setIsLoading(false);
         }
       };
 
@@ -156,6 +161,8 @@ const Register = () => {
                     type="submit">
                     Регистрирай се
                 </button>
+
+                {isLoading && <Spinner />}
             </form>
         </article>
     );
