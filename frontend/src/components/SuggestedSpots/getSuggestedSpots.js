@@ -16,19 +16,21 @@ const getFishSpotCity = (fishSpot) => {
 }
 
 const calculateWind = (cityWeatherArr, fishSpot) => {
-    let maxInARowBadWind = 3;
+    let maxInARowBadWind = 2;
     let counter = 0;
 
     for (const data of cityWeatherArr) {
-        if (fishSpot.bad_wind_directions.includes(data.wind_direction) && data.wind_speed >= fishSpot.max_wind_speed) {
+        if ((fishSpot.bad_wind_directions.includes(data.wind_direction) && data.wind_speed >= fishSpot.max_wind_speed)
+            || (data.wind_speed > fishSpot.max_wind_speed && data.wind_speed - fishSpot.max_wind_speed >= 2)) {
             counter += 1;
-            continue
         }
 
-        counter = 0;
+        if (counter >= maxInARowBadWind) {
+            return false;
+        }
     }
 
-    return counter < maxInARowBadWind;
+    return true;
 }
 
 const decideToShowSpot = (fishSpot, weatherData, cityKey) => {
@@ -45,10 +47,18 @@ const decideToShowSpot = (fishSpot, weatherData, cityKey) => {
         afterNoon.push(data);
     }
 
-    const canFishMorning = calculateWind(morning, fishSpot);
-    const canFishAfterNoon = calculateWind(afterNoon, fishSpot);
+    let isMorningFine = false;
+    let isAfterNoonFine = false;
 
-    return canFishMorning || canFishAfterNoon;
+    if (morning.length >= 2) {
+        isMorningFine = calculateWind(morning, fishSpot);
+    }
+    
+    if (afterNoon.length >= 2) {
+        isAfterNoonFine = calculateWind(afterNoon, fishSpot);
+    }
+
+    return isMorningFine || isAfterNoonFine;
 }
 
 export const getSuggestedSpots = (weatherData, fishSpots) => {
