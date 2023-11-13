@@ -88,3 +88,15 @@ class ListLandscapes(ListAPIView):
     queryset = Landscape.objects.all()
     serializer_class = LandscapeListSerializer
     pagination_class = PageNumberPagination
+
+
+class DeleteLandscape(APIView):
+    
+    def delete(self, request, pk):
+        try:
+            landscape = Landscape.objects.get(pk=pk)
+        except Landscape.DoesNotExist:
+            return Response({"message": "Грешка при изтриване."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        landscape.delete()
+        return Response({"message": "Успешно изтриване."}, status=status.HTTP_204_NO_CONTENT)
