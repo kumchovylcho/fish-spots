@@ -5,6 +5,8 @@ import { getLandscapePage } from '../../services/landscapes';
 import Spinner from '../Spinner/Spinner';
 import setDocumentTitle from '../../util/setDocTitle';
 import AuthContext from '../../context/AuthContext';
+import LandscapeDetails from '../Modals/LandscapeDetails';
+import DeleteAsker from '../Modals/DeleteAsker';
 
 
 export default function Landscapes() {
@@ -17,6 +19,12 @@ export default function Landscapes() {
     const [pageResults, setPageResults] = useState([]);
     const [nextPage, setNextPage] = useState("");
     const [previousPage, setPreviousPage] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [landscapeShowItem, setLandscapeShowItem] = useState({});
+    const [deleteModal, setDeleteModal] = useState({
+        isOpened: false,
+        deleteId: null,
+    });
 
     const location = useLocation();
     const params = new URLSearchParams(location.search);
@@ -42,6 +50,30 @@ export default function Landscapes() {
         const pagePattern = /page=\d+/;
         const getPage = pageUrl.match(pagePattern) || "page=1";
         return `${location.pathname}?${getPage}`;
+    }
+
+    const openModal = (landscapeId) => {
+        setIsModalOpen(true);
+
+        const landscapeItem = pageResults.filter(item => item.id === landscapeId)[0];
+        setLandscapeShowItem(landscapeItem);
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setLandscapeShowItem({});
+    }
+
+    const openDeleteModal = (id) => {
+        setDeleteModal(old => {return {...old, isOpened: true, deleteId: id}})
+    }
+
+    const closeDeleteModal = (deletedItem=false) => {
+        if (deletedItem) {
+            setPageResults(old => old.filter(item => item.id !== deleteModal.deleteId));
+        }
+
+        setDeleteModal(old => {return {...old, isOpened: false, deleteId: null}});
     }
 
     return (
@@ -79,11 +111,29 @@ export default function Landscapes() {
                                     <p className="mb-3 px-1 break-words">
                                         {card.description.slice(0, 50)}...
                                     </p>
-                                    <button 
-                                        className="text-center bg-cyan-600 py-2 px-4 rounded-xl font-medium hover:bg-cyan-800"
-                                        >
-                                        Виж повече
-                                    </button>
+                                    <section className="flex justify-center gap-2 text-xl">
+                                        <button 
+                                            className="basis-[28%] text-center bg-cyan-600 py-2 px-4 rounded-xl font-medium hover:bg-cyan-800"
+                                            onClick={() => openModal(card.id)}
+                                            >
+                                            <i className="fa-solid fa-info"></i>
+                                        </button>
+                                        {user.username === card.author.username && 
+                                            <button 
+                                                className="basis-[28%] text-center bg-cyan-600 py-2 px-4 rounded-xl font-medium hover:bg-cyan-800"
+                                                >
+                                                <i className="fa-regular fa-pen-to-square"></i>
+                                            </button>
+                                        }
+                                        {user.username === card.author.username && 
+                                            <button 
+                                                className="basis-[28%] text-center bg-cyan-600 py-2 px-4 rounded-xl font-medium hover:bg-cyan-800"
+                                                onClick={() => openDeleteModal(card.id)}
+                                                >
+                                                <i className="fa-solid fa-trash"></i>
+                                            </button>
+                                        }
+                                    </section>
                                 </section>
                             </section>
                     ))}
@@ -113,6 +163,20 @@ export default function Landscapes() {
                     </div>
                 </section>
                 </>
+            }
+
+            {isModalOpen && 
+                <LandscapeDetails 
+                    data={landscapeShowItem} 
+                    closeModal={closeModal} 
+                />
+            }
+
+            {deleteModal.isOpened &&
+                <DeleteAsker
+                    deleteId={deleteModal.deleteId}
+                    closeModal={closeDeleteModal}
+                />
             }
 
         </main>
