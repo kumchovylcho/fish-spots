@@ -6,8 +6,8 @@ export const createLandscape = async (form) => {
         const response = await fetch(`${baseUrl}/landscapes/create`, {
             method: 'POST',
             body: form
-        })
-        return response
+        });
+        return response;
     } catch (error) {
         
     }
@@ -15,9 +15,18 @@ export const createLandscape = async (form) => {
 
 export const getLandscapePage = async (page) => {
     try {
-        const response = await fetch(`${baseUrl}/landscapes/list?page=${page}`)
-        return response
+        const response = await fetch(`${baseUrl}/landscapes/list?page=${page}`);
+        return response;
     } catch (error) {
         
+    }
+}
+
+export const deleteLandscape = async (id) => {
+    try {
+        const response = await fetch(`${baseUrl}/landscapes/delete/${id}`, {method: 'DELETE'});
+        return response;
+    } catch (error) {
+
     }
 }
