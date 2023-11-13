@@ -18,7 +18,7 @@ const Home = () => {
                 ></img>
                 <div className="absolute bg-zinc-900 opacity-60 w-full h-full"></div>
                 <article className="flex flex-col justify-center gap-8 absolute text-white">
-                    <h2 className="text-4xl font-medium tracking-widest">
+                    <h2 className="text-4xl text-center font-medium tracking-widest">
                         Тук ще откриете вашите места за{' '}
                         <span className="text-sky-400">риболов!</span>
                     </h2>
