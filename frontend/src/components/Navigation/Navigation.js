@@ -9,12 +9,12 @@ const Navigation = () => {
 
     return (
         <header className="flex justify-center p-6 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium text-2xl">
-            <nav className="flex justify-between w-5/6 max-w-screen-2xl">
-                <h1 className="hover:text-stone-300 duration-300">
+            <nav className="flex justify-between w-5/6 max-w-screen-2xl max-md:flex-col max-md:items-center">
+                <h1 className="hover:text-stone-300 duration-300 max-md:mb-10">
                     <Link to="/">Риболовни места</Link>
                 </h1>
 
-                <ul className="flex gap-12 flex-wrap">
+                <ul className="flex gap-12 flex-wrap max-md:flex-col max-md:items-center">
                     <li className="hover:text-stone-300 duration-300">
                         <Link to="/city">Градове</Link>
                     </li>
