@@ -1,12 +1,12 @@
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from rest_framework.response import Response
 from django.conf import settings
 from .helpers import get_user_by_id, format_datetime
 from .models import Landscape
-from .serializers import LandscapeListSerializer
+from .serializers import LandscapeListSerializer, EditLandscapeSerializer
 import requests
 import base64
 
@@ -100,3 +100,8 @@ class DeleteLandscape(APIView):
         
         landscape.delete()
         return Response({"message": "Успешно изтриване."}, status=status.HTTP_204_NO_CONTENT)
+
+
+class EditLandscape(RetrieveUpdateAPIView):
+    queryset = Landscape.objects.all()
+    serializer_class = EditLandscapeSerializer
