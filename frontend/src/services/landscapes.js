@@ -30,3 +30,23 @@ export const deleteLandscape = async (id) => {
 
     }
 }
+
+export const editLandscape = async (title, description, id) => {
+    const updateData = {
+        title: title,
+        description: description
+    };
+
+    try {
+        const response = await fetch(`${baseUrl}/landscapes/edit/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updateData),
+        })
+        return response;
+    } catch (error) {
+
+    }
+}
