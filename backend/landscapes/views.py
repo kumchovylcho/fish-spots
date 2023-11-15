@@ -45,7 +45,6 @@ class CreateLandscape(APIView):
 
             response = requests.post(IMGBB_API_URL, payload)
             data = response.json()
-            print(data)
         except Exception as e:
             print(e)
             return Response({"message": "Грешка при качване."}, status=status.HTTP_400_BAD_REQUEST)
@@ -85,9 +84,17 @@ class CreateLandscape(APIView):
 
 
 class ListLandscapes(ListAPIView):
-    queryset = Landscape.objects.all()
     serializer_class = LandscapeListSerializer
     pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user', 0)
+        query = Landscape.objects.all()
+
+        if user_id:
+            query = Landscape.objects.filter(author__id=user_id)
+
+        return query
 
 
 class DeleteLandscape(APIView):
