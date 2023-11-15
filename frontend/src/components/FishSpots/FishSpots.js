@@ -41,8 +41,8 @@ export default function FishSpots() {
             }
 
             if (
-                data.place.includes(searchSpot) ||
-                data.bg_place_name.includes(searchSpot)
+                data.place.toLowerCase().includes(searchSpot) ||
+                data.bg_place_name.toLowerCase().includes(searchSpot)
             ) {
                 userFilterSpots.push(data);
             }
