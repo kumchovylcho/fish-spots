@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 export default function NotFound() {
     return (
         <div className="flex items-center max-w-4xl mx-auto mt-20 p-4 bg-cyan-800 text-white text-2xl rounded-lg">
-            <section className="max-md:hidden">
+            <section>
                 <img
-                    src="assets/cockroach.png"
+                    className="max-md:hidden"
+                    src="/assets/cockroach.png"
                     alt="error-image"
                     loading="lazy"
                 />
