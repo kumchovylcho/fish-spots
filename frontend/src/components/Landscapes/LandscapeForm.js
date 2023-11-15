@@ -3,7 +3,7 @@ import { createLandscape } from '../../services/landscapes';
 import AuthContext from '../../context/AuthContext';
 import Spinner from '../Spinner/Spinner';
 
-const allowedCharactersPattern = /[^\w\s@А-я,.!?;:'"]/gm;
+const allowedCharactersPattern = /[^\w\s@А-я,.!?;:\-'"]/gm;
 
 export default function LandscapeForm() {
     const { user } = useContext(AuthContext);
