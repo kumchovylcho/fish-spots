@@ -3,7 +3,7 @@ export default function LandscapeDetails({ data, closeModal }) {
     return (
         <article
             className="fixed top-0 left-0 bottom-0 right-0 bg-black/[.50]"
-            onClick={closeModal}
+            onClick={() => closeModal()}
         >
             <div
                 className="absolute left-2/4 top-2/4 bg-cyan-800 -translate-x-2/4 -translate-y-2/4 max-w-xs break-words p-4 rounded text-white"
@@ -17,7 +17,7 @@ export default function LandscapeDetails({ data, closeModal }) {
                 </section>
                 <div className="flex justify-center mb-3">
                     <img
-                        className="rounded-lg"
+                        className="rounded-lg h-[200px]"
                         src={data.image_url}
                         alt={data.title}
                         loading="lazy"
