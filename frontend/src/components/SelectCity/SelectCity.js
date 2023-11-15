@@ -32,7 +32,7 @@ export default function SelectCity({
             <p className="text-center mb-10 font-medium">
                 Избери град
             </p>
-            <section className="flex justify-around gap-10 text-white">
+            <section className="max-md:flex-col max-md:text-center flex justify-around gap-10 text-white">
                 <p 
                     onClick={() => {weatherCityHandler(city1)}}
                     className="bg-cyan-700 hover:bg-cyan-800 py-2 px-6 rounded cursor-pointer">                 
