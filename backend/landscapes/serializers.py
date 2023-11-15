@@ -21,3 +21,10 @@ class LandscapeListSerializer(serializers.ModelSerializer):
     def get_created_at(self, instance):
         # Format the created_at datetime as dd/mm/yyyy
         return instance.created_at.strftime('%d/%m/%Y')
+    
+
+class EditLandscapeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Landscape
+        fields = '__all__'
