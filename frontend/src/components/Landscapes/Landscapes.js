@@ -7,6 +7,7 @@ import setDocumentTitle from '../../util/setDocTitle';
 import AuthContext from '../../context/AuthContext';
 import LandscapeDetails from '../Modals/LandscapeDetails';
 import DeleteAsker from '../Modals/DeleteAsker';
+import EditLandscape from '../Modals/EditLandscape';
 
 
 export default function Landscapes() {
@@ -24,6 +25,10 @@ export default function Landscapes() {
     const [deleteModal, setDeleteModal] = useState({
         isOpened: false,
         deleteId: null,
+    });
+    const [editModal, setEditModal] = useState({
+        isOpened: false,
+        editData: null,
     });
 
     const location = useLocation();
@@ -76,6 +81,19 @@ export default function Landscapes() {
         setDeleteModal(old => {return {...old, isOpened: false, deleteId: null}});
     }
 
+    const closeEditModal = () => {
+        setEditModal(old => ({...old, isOpened: false, editData: null}))
+    }
+
+    const updateItemOnSuccessfulEdit = (newTitle, newDescription, itemId) => {
+        setPageResults(old => old.map(item => {
+            if (item.id === itemId) {
+                return {...item, title: newTitle, description: newDescription}
+            }
+            return item;
+        }));
+    }
+
     return (
         <main>
             {user && 
@@ -121,6 +139,7 @@ export default function Landscapes() {
                                         {user.username === card.author.username && 
                                             <button 
                                                 className="basis-[28%] text-center bg-cyan-600 py-2 px-4 rounded-xl font-medium hover:bg-cyan-800"
+                                                onClick={() => setEditModal(old => ({...old, isOpened: true,  editData: card}))}
                                                 >
                                                 <i className="fa-regular fa-pen-to-square"></i>
                                             </button>
@@ -176,6 +195,14 @@ export default function Landscapes() {
                 <DeleteAsker
                     deleteId={deleteModal.deleteId}
                     closeModal={closeDeleteModal}
+                />
+            }
+
+            {editModal.isOpened &&
+                <EditLandscape 
+                    data={editModal.editData}
+                    closeModal={closeEditModal}
+                    updateItemOnSuccessfulEdit={updateItemOnSuccessfulEdit}
                 />
             }
 
