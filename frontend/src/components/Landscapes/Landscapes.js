@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import LandscapeForm from "./LandscapeForm";
 import { getLandscapePage } from '../../services/landscapes';
 import Spinner from '../Spinner/Spinner';
@@ -13,7 +13,11 @@ import EditLandscape from '../Modals/EditLandscape';
 export default function Landscapes() {
     setDocumentTitle("Landscapes");
 
+    const navigate = useNavigate();
+
     const { user } = useContext(AuthContext);
+
+    const [userCheckBox, setUserCheckBox] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
     const [toggleForm, setToggleForm] = useState(false);
@@ -38,23 +42,29 @@ export default function Landscapes() {
     useEffect(() => {
         const fetchPage = async (page) => {
             setIsLoading(true);
-            const response = await getLandscapePage(page);
+            const userId = userCheckBox ? user.user_id : "";
+            const response = await getLandscapePage(page, userId);
             if (response.ok) {
                 const data = await response.json();
                 setPageResults(data.results);
                 setNextPage(data.next ? setUpPages(data.next) : "");
-                setPreviousPage(data.previous ? setUpPages(data.previous) : "");
+                setPreviousPage(data.previous ? setUpPages(data.previous) : "");          
             }
             setIsLoading(false);
         }
 
         fetchPage(currentPage);
-    }, [currentPage])
+    }, [currentPage, userCheckBox])
 
     const setUpPages = (pageUrl) => {
         const pagePattern = /page=\d+/;
         const getPage = pageUrl.match(pagePattern) || "page=1";
         return `${location.pathname}?${getPage}`;
+    }
+
+    const loadUserContent = () => {
+        setUserCheckBox(!userCheckBox);
+        navigate("/landscapes/?page=1");
     }
 
     const openModal = (landscapeId) => {
@@ -108,6 +118,20 @@ export default function Landscapes() {
             }
 
             {toggleForm && <LandscapeForm />}
+
+            {user && 
+                <section className="flex justify-center items-center gap-x-2">
+                    <p className="text-xl">Покажи моите пейзажи: </p>
+                    <input 
+                        className="w-6 h-6" 
+                        type="checkbox"
+                        onClick={loadUserContent}
+                        />
+                </section>
+            }
+
+            {userCheckBox && isLoading && <Spinner />}
+
 
             {pageResults.length && 
                 <>
