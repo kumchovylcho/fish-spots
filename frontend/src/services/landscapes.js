@@ -13,9 +13,12 @@ export const createLandscape = async (form) => {
     }
 }
 
-export const getLandscapePage = async (page) => {
+export const getLandscapePage = async (page, userId="") => {
+    const url = `${baseUrl}/landscapes/list?page=${page}`;
+    const userIdInfo = userId ? `user=${userId}` : "";
+
     try {
-        const response = await fetch(`${baseUrl}/landscapes/list?page=${page}`);
+        const response = await fetch(`${url}&${userIdInfo}`);
         return response;
     } catch (error) {
         
