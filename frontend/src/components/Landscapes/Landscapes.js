@@ -92,7 +92,7 @@ export default function Landscapes() {
     }
 
     const closeEditModal = () => {
-        setEditModal(old => ({...old, isOpened: false, editData: null}))
+        setEditModal(old => ({...old, isOpened: false, editData: null}));  
     }
 
     const updateItemOnSuccessfulEdit = (newTitle, newDescription, itemId) => {
@@ -208,27 +208,26 @@ export default function Landscapes() {
                 </>
             }
 
-            {isModalOpen && 
-                <LandscapeDetails 
-                    data={landscapeShowItem} 
-                    closeModal={closeModal} 
-                />
-            }
+            
+            <LandscapeDetails 
+                data={landscapeShowItem}
+                isOpen={isModalOpen}
+                closeModal={closeModal} 
+            />
 
-            {deleteModal.isOpened &&
-                <DeleteAsker
-                    deleteId={deleteModal.deleteId}
-                    closeModal={closeDeleteModal}
-                />
-            }
+            <DeleteAsker
+                deleteId={deleteModal.deleteId}
+                isOpen={deleteModal.isOpened}
+                closeModal={closeDeleteModal}
+            />
 
-            {editModal.isOpened &&
-                <EditLandscape 
-                    data={editModal.editData}
-                    closeModal={closeEditModal}
-                    updateItemOnSuccessfulEdit={updateItemOnSuccessfulEdit}
-                />
-            }
+            <EditLandscape 
+                data={editModal.editData}
+                isOpen={editModal.isOpened}
+                closeModal={closeEditModal}
+                updateItemOnSuccessfulEdit={updateItemOnSuccessfulEdit}
+            />
+            
 
         </main>
     );
