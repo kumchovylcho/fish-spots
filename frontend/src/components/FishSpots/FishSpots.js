@@ -97,9 +97,13 @@ export default function FishSpots() {
                 </>
             )}
 
-            {isModalOpen && (
-                <FishPlaceDetails data={placeDetails} closeModal={closeModal} />
-            )}
+            
+            <FishPlaceDetails 
+                data={placeDetails} 
+                isOpen={isModalOpen} 
+                closeModal={closeModal} 
+            />
+            
         </main>
     );
 }
