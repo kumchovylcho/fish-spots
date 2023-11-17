@@ -4,10 +4,10 @@ import { editLandscape } from '../../services/landscapes';
 
 const allowedCharactersPattern = /[^\w\s@А-я,.!?;:\-'"]/gm;
 
-export default function EditLandscape({ data, closeModal, updateItemOnSuccessfulEdit }) {
+export default function EditLandscape({ data, isOpen, closeModal, updateItemOnSuccessfulEdit }) {
     const [isLoading, setIsLoading] = useState(false);
-    const [editTitle, setEditTitle] = useState(data.title);
-    const [editDescription, setEditDescription] = useState(data.description);
+    const [editTitle, setEditTitle] = useState("");
+    const [editDescription, setEditDescription] = useState("");
     const [titleError, setTitleError] = useState("");
     const [descriptionError, setDescriptionError] = useState("");
     const [responseMsg, setResponseMsg] = useState({
@@ -16,8 +16,15 @@ export default function EditLandscape({ data, closeModal, updateItemOnSuccessful
     });
 
     useEffect(() => {
+        if (isOpen) {
+            setEditTitle(data.title);
+            setEditDescription(data.description);
+        }
+    }, [isOpen])
+
+    useEffect(() => {
         let intervalId;
-        if (responseMsg) {
+        if (responseMsg.msg) {
             intervalId = setInterval(() => {
                 setResponseMsg(old => ({...old, msg: "", textColor: ""}));
             }, 5000);
@@ -42,6 +49,8 @@ export default function EditLandscape({ data, closeModal, updateItemOnSuccessful
 
     const handleSaveSubmission = async () => {
         const [trimmedTitle, trimmedDescription] = [editTitle.trim(), editDescription.trim()];
+
+        console.log("saving");
 
         const errors = [];
         if (!trimmedTitle.length) {
@@ -75,11 +84,13 @@ export default function EditLandscape({ data, closeModal, updateItemOnSuccessful
 
     return (
         <article
-            className="fixed top-0 left-0 bottom-0 right-0 bg-black/[.50]"
+            className={`fixed inset-0 flex justify-center items-center transition-colors
+                ${isOpen ? "visible bg-black/[.50]" : "invisible"}
+            `}
             onClick={() => closeModal()}
-        >
+            >
             <div
-                className="absolute left-2/4 top-2/4 bg-cyan-800 -translate-x-2/4 -translate-y-2/4 max-w-xs break-words p-4 rounded text-white"
+                className={`bg-cyan-800 max-w-xs break-words p-4 rounded text-white transition-all ease-linear duration-300 ${isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"}`}
                 onClick={(e) => e.stopPropagation()}
                 >
                 
@@ -105,8 +116,8 @@ export default function EditLandscape({ data, closeModal, updateItemOnSuccessful
                 <div className="flex justify-center mb-3">
                     <img
                         className="rounded-lg h-[200px]"
-                        src={data.image_url}
-                        alt={data.title}
+                        src={data?.image_url}
+                        alt={data?.title}
                         loading="lazy"
                     />
                 </div>
@@ -131,7 +142,7 @@ export default function EditLandscape({ data, closeModal, updateItemOnSuccessful
                     {editDescription.length}/300
                 </p>
                 <p className="text-lg">
-                    Създадено на: {data.created_at}
+                    Създадено на: {data?.created_at}
                 </p>
                 <section className="flex justify-center flex-wrap items-center gap-20 py-6 font-medium text-3xl">
                     <button

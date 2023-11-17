@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom';
 
-export default function FishPlaceDetails({ data, closeModal }) {
+export default function FishPlaceDetails({ data, isOpen, closeModal }) {
 
     return (
         <article 
-            className="fixed top-0 left-0 bottom-0 right-0 bg-black/[.50]"
+            className={`fixed inset-0 flex justify-center items-center transition-colors
+                ${isOpen ? "visible bg-black/[.50]" : "invisible"}
+            `}
             onClick={closeModal}
             >
             <div 
-                className="absolute left-2/4 top-2/4 bg-white -translate-x-2/4 -translate-y-2/4 max-w-2xl break-words p-4 rounded"
+                className={`max-md:overflow-auto bg-white max-w-2xl break-words p-4 rounded transition-all ease-linear duration-300 ${isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"}`}
                 onClick={(e) => e.stopPropagation()}
                 >
-                <div className="flex justify-center items-center gap-8">
-                    <div className="max-w-[40%]">
+                <div className="max-md:flex-col flex justify-center items-center gap-8">
+                    <div className="max-md:max-w-full max-w-[40%]">
                         <img 
                             className="rounded-lg"
                             src={data.image_url}
@@ -20,7 +22,7 @@ export default function FishPlaceDetails({ data, closeModal }) {
                             loading="lazy"
                         />
                     </div>
-                    <section className="max-w-[60%] text-2xl">
+                    <section className="max-md:max-w-full max-md:text-center max-w-[60%] text-2xl">
                         <h3 className="text-center mb-4 font-bold text-2xl uppercase">
                             {data.bg_place_name}
                         </h3>
@@ -30,7 +32,7 @@ export default function FishPlaceDetails({ data, closeModal }) {
                     </section>
                 </div>
                
-               <section className="flex justify-center flex-wrap items-center gap-20 py-6 text-white font-medium text-3xl">
+               <section className="max-md:gap-5 max-md:text-center flex justify-center flex-wrap items-center gap-20 py-6 text-white font-medium text-3xl">
                     <Link
                         className="bg-green-600 hover:bg-green-800 py-2 px-4 rounded-xl"
                         to={`https://www.google.com/maps/@${data.longitude},${data.latitude},18z?entry=ttu`}

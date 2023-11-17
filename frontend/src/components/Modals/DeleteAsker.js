@@ -3,7 +3,7 @@ import { deleteLandscape } from "../../services/landscapes";
 import Spinner from "../Spinner/Spinner";
 
 
-export default function DeleteAsker({ deleteId, closeModal }) {
+export default function DeleteAsker({ deleteId, isOpen, closeModal }) {
     const [isLoading, setIsLoading] = useState(false);
 
     const deleteHandler = async () => {
@@ -17,11 +17,13 @@ export default function DeleteAsker({ deleteId, closeModal }) {
 
     return (
         <article
-            className="fixed top-0 left-0 bottom-0 right-0 bg-black/[.50]"
+            className={`fixed inset-0 flex justify-center items-center transition-colors
+                ${isOpen ? "visible bg-black/[.50]" : "invisible"}
+            `}
             onClick={() => closeModal()}
         >
             <div
-                className="absolute left-2/4 top-2/4 bg-cyan-800 -translate-x-2/4 -translate-y-2/4 max-w-xs break-words p-4 rounded text-white"
+                className={`bg-cyan-800 max-w-xs break-words p-4 rounded text-white transition-all ease-linear duration-300 ${isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"}`}
                 onClick={(e) => e.stopPropagation()}
                 >
                 
