@@ -129,9 +129,13 @@ export default function SuggestedSpots() {
                 </h3>
             )}
 
-            {isModalOpen && (
-                <FishPlaceDetails data={placeDetails} closeModal={closeModal} />
-            )}
+
+            <FishPlaceDetails
+                data={placeDetails} 
+                isOpen={isModalOpen}
+                closeModal={closeModal} 
+            />
+
         </main>
     );
 }
