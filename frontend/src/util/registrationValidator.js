@@ -1,5 +1,5 @@
 export function validateUsername(value) {
-    return /^[A-Za-z0-9]+_*([A-Za-z0-9]+)?$/.test(value);
+    return /^[A-Za-zА-я0-9]+_*([A-Za-zА-я0-9]+)?$/.test(value);
 }
 
 
