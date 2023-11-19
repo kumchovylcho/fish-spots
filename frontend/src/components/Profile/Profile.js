@@ -5,6 +5,8 @@ import Spinner from '../Spinner/Spinner';
 import AuthContext from '../../context/AuthContext';
 import GeneralProfileInfo from './GeneralProfileInfo';
 import ChangeName from './ChangeName';
+import ChangePassword from './ChangePassword';
+import setDocumentTitle from '../../util/setDocTitle';
 
 
 export default function Profile() {
@@ -39,6 +41,7 @@ export default function Profile() {
         }
 
         getUserData();
+        setDocumentTitle("Profile");
     }, [username])
 
     const markActiveButton = (obj) => {
@@ -99,7 +102,12 @@ export default function Profile() {
                         setAuthTokens={setAuthTokens}
                         setUser={setUser}
                         />
+                }
 
+                {activeBtn.changePass &&
+                    <ChangePassword
+                        username={user.username}
+                    />
                 }
             </div>
         </main>
