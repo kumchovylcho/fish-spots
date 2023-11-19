@@ -133,7 +133,7 @@ export default function Landscapes() {
             {userCheckBox && isLoading && <Spinner />}
 
 
-            {pageResults.length && 
+            {pageResults.length > 0 && 
                 <>
                 <div className="max-w-5xl mx-auto flex justify-center flex-wrap gap-12 py-8 bg-slate-400 rounded-xl my-8">
                     {pageResults.map(card => (
