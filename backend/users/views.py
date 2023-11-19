@@ -41,3 +41,28 @@ class EditUserView(RetrieveUpdateAPIView):
     queryset = UserModel.objects.all()
     serializer_class = EditUserSerializer
     lookup_field = "username"
+
+
+class EditUserPasswordView(RetrieveUpdateAPIView):
+    queryset = UserModel.objects.all()
+    lookup_field = "username"
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        old_password = request.data.get('old_password', '')
+        new_password = request.data.get('new_password', '')
+        confirm_password = request.data.get('confirm_password', '')
+
+        if old_password and new_password and confirm_password:
+            if not instance.check_password(old_password):
+                return Response({'error': 'Грешна стара парола.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            if new_password != confirm_password:
+                return Response({'error': 'Новите пароли не съвпадат.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            instance.set_password(new_password)
+            instance.save()
+            return Response({'message': 'Успешно сменихте паролата!'}, status=status.HTTP_200_OK)
+        
+        return Response({'error': 'Моля попълнете всички полета.'}, status=status.HTTP_400_BAD_REQUEST)
