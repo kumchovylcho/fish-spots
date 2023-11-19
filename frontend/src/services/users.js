@@ -120,5 +120,29 @@ const changeUserData = async (username, updateObjData) => {
     }
 }
 
+const changeUserPassword = async (username, updateObjData) => {
+    try {
+        const response = await fetch(`${baseUrl}/profile/edit-password/${username}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updateObjData),
+        });
+        return response;
+    } catch (error) {
 
-export {register, loginUser, logoutUser, userExistsData, changeUserData, createNewToken, baseUrl};
+    }
+}
+
+
+export {
+    register, 
+    loginUser, 
+    logoutUser, 
+    userExistsData, 
+    changeUserData, 
+    createNewToken, 
+    changeUserPassword, 
+    baseUrl
+};
