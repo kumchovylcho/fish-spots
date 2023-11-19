@@ -23,11 +23,18 @@ const Navigation = () => {
                     </li>
 
                     {user ? (
-                        <li 
-                            onClick={() => logoutUser(authTokens, setAuthTokens, setUser, navigate, "/login")}
-                            className="hover:text-stone-300 duration-300 hover:cursor-pointer">
-                            Излез
-                        </li>
+                        <div className="max-md:flex-col max-md:items-center flex gap-7">
+                            <p className="hover:text-stone-300 duration-300">
+                                <Link to={`/profile/${user.username}`}>
+                                    <i className="fa-solid fa-user"></i>
+                                </Link>
+                            </p>
+                            <p 
+                                onClick={() => logoutUser(authTokens, setAuthTokens, setUser, navigate, "/login")}
+                                className="text-red-500 hover:text-red-600 duration-300 hover:cursor-pointer">
+                                <i className="fa-solid fa-right-from-bracket"></i>
+                            </p>
+                        </div>
                     ) : (
                         <>
                             <li className="hover:text-stone-300 duration-300">
