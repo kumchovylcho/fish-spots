@@ -6,12 +6,14 @@ import Footer from './components/Footer/Footer';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import PrivateRoute from './util/PrivateRoute';
+import AuthorizedRoute from './util/AuthorizedRoute';
 import City from './components/City/City';
 import Weather from './components/Weather/Weather';
 import FishSpots from './components/FishSpots/FishSpots';
 import SuggestedSpots from './components/SuggestedSpots/SuggestedSpots';
 import Landscapes from './components/Landscapes/Landscapes';
 import NotFound from './components/NotFound/NotFound';
+import Profile from './components/Profile/Profile';
 
 function App() {
     return (
@@ -40,6 +42,14 @@ function App() {
                                 <PrivateRoute navigateTo="/">
                                     <Register />
                                 </PrivateRoute>
+                            }
+                        />
+                        <Route 
+                            path="/profile/:username"
+                            element={
+                                <AuthorizedRoute navigateTo="/login">
+                                    <Profile />
+                                </AuthorizedRoute>
                             }
                         />
                         <Route
