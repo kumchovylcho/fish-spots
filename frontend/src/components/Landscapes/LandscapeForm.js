@@ -5,7 +5,7 @@ import Spinner from '../Spinner/Spinner';
 
 const allowedCharactersPattern = /[^\w\s@А-я,.!?;:\-'"]/gm;
 
-export default function LandscapeForm() {
+export default function LandscapeForm({ setUpdateLandscapes }) {
     const { user } = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -126,6 +126,7 @@ export default function LandscapeForm() {
         if (response.status === 201) {
             resetFields();
             setSuccessMsg(true);
+            setUpdateLandscapes(old => !old);
             
         } else if (response.status === 400) {
             setFormError(data.message);

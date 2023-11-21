@@ -18,6 +18,7 @@ export default function Landscapes() {
     const { user } = useContext(AuthContext);
 
     const [userCheckBox, setUserCheckBox] = useState(false);
+    const [updateLandscapes, setUpdateLandscapes] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
     const [toggleForm, setToggleForm] = useState(false);
@@ -54,7 +55,7 @@ export default function Landscapes() {
         }
 
         fetchPage(currentPage);
-    }, [currentPage, userCheckBox])
+    }, [currentPage, userCheckBox, updateLandscapes])
 
     const setUpPages = (pageUrl) => {
         const pagePattern = /page=\d+/;
@@ -86,6 +87,7 @@ export default function Landscapes() {
     const closeDeleteModal = (deletedItem=false) => {
         if (deletedItem) {
             setPageResults(old => old.filter(item => item.id !== deleteModal.deleteId));
+            setUpdateLandscapes(old => !old);
         }
 
         setDeleteModal(old => {return {...old, isOpened: false, deleteId: null}});
@@ -117,7 +119,7 @@ export default function Landscapes() {
                 </div>
             }
 
-            {toggleForm && <LandscapeForm />}
+            {toggleForm && <LandscapeForm setUpdateLandscapes={setUpdateLandscapes} />}
 
             {user && 
                 <section className="flex justify-center items-center gap-x-2">
