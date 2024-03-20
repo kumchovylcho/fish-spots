@@ -102,41 +102,6 @@ const Home = () => {
                     </Link>
                 </div>
             </article>
-
-            <article className="mb-10">
-                <h3 className="text-center text-4xl mb-8">
-                    Защо ви е да се регистрирате?
-                </h3>
-                <section className="max-w-lg mx-auto bg-gray-200 p-8 rounded-3xl">
-                    <h3 className="text-2xl text-center font-bold mb-6">
-                        Ще получите:
-                    </h3>
-                    <div className="flex justify-center gap-x-12">
-                        <section className="text-2xl">
-                            <p className="mb-3 inline-flex justify-between w-full">
-                                Право да създавате пейзажи
-                                <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
-                                </span>
-                            </p>
-                            <p className="mb-10 inline-flex justify-between w-full">
-                                Достъп до личните ви пейзажи
-                                <span>
-                                    <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
-                                </span>
-                            </p>
-                            <section className="text-center">
-                                <Link 
-                                    className="bg-emerald-400 px-10 py-4 text-2xl rounded-full font-medium hover:bg-teal-600 duration-300 hover:scale-105"
-                                    to={user ? "/landscapes" : "/register"}
-                                    >
-                                    {user ? "Създавай!" : "Регистрирай се!"}
-                                </Link>
-                            </section>
-                        </section>
-                    </div>
-                </section>
-            </article>
         </main>
     );
 };
