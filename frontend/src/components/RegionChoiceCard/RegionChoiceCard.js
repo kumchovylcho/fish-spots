@@ -12,13 +12,13 @@ export default function RegionChoiceCard({
     return (
         <Link 
             to={linkTo}
-            className={`max-md:w-[250px] basis-[26%] p-2 rounded-xl cursor-pointer hover:scale-105 hover:bg-zinc-300 bg-white duration-150 ${shouldScale && "scale-105 bg-zinc-300"}`}
-        >
+            className={`p-2 rounded-xl cursor-pointer hover:scale-105 hover:bg-zinc-300 bg-white duration-150 ${shouldScale && "scale-105 bg-zinc-300"}`}
+            >
             <section>
                 <div className="mb-3">
                     <img
                         src={imgUrl}
-                        className="max-md:w-auto w-9/12 h-auto mx-auto"
+                        className="mx-auto"
                         alt={imgAlt}
                     />
                 </div>
