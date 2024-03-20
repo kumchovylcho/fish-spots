@@ -11,7 +11,7 @@ export default function ChoiceContainer({
     const pathName = useLocation().pathname;
 
     return (
-        <div className="max-md:flex-col max-md:items-center max-md:gap-5 flex flex-wrap justify-around max-w-7xl mx-auto text-2xl text-center bg-slate-500 text-black p-10 mb-20 rounded-xl font-medium">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-5 max-w-7xl mx-auto text-2xl text-center bg-slate-500 text-black p-10 mb-20 rounded-xl font-medium">
             <RegionChoiceCard
                 imgUrl="https://i.ibb.co/bK3jFs1/weather-icon.png"
                 imgAlt="прогноза"
