@@ -1,6 +1,6 @@
 from django.conf import settings
-import datetime
-import pytz
+from django.utils import timezone
+from datetime import timedelta, datetime
 
 weather_api_key = settings.CONFIG['WEATHER_API']
 
@@ -15,7 +15,40 @@ def english_to_bulgarian_places(place: str) -> str:
         "Primorsko": "Приморско"
     }
 
-    return all_places[place]
+    return all_places.get(place, "")
+
+
+def english_to_bulgarian_months(month: str) -> str:
+    months = {
+        "January": "Януари",
+        "February": "Февруари",
+        "March": "Март",
+        "April": "Април",
+        "May": "Май",
+        "June": "Юни",
+        "July": "Юли",
+        "August": "Август",
+        "September": "Септември",
+        "October": "Октомври",
+        "November": "Ноември",
+        "December": "Декември"
+    }
+
+    return months.get(month, "")
+
+
+def english_to_bulgarian_days(day: str) -> str:
+    days = {
+        "Monday": "Понеделник",
+        "Tuesday": "Вторник",
+        "Wednesday": "Сряда",
+        "Thursday": "Четвъртък",
+        "Friday": "Петък",
+        "Saturday": "Събота",
+        "Sunday": "Неделя"
+    }
+
+    return days.get(day, "")
 
 
 def get_query(longitude: float, latitude: float) -> str:
@@ -63,13 +96,15 @@ def place_in_region_exist(model, places: list) -> bool:
 
 def update_region_model(model, data: dict) -> None:
     curr_city_name = data["city"]["name"]
-    curr_sunrise = datetime.datetime.fromtimestamp(
+    curr_sunrise = datetime.fromtimestamp(
         data["city"]["sunrise"]).strftime("%H:%M")
-    curr_sunset = datetime.datetime.fromtimestamp(
+    curr_sunset = datetime.fromtimestamp(
         data["city"]["sunset"]).strftime("%H:%M")
 
-    place_objects = model.objects.filter(
-        city_name=curr_city_name).order_by("date", "time")
+    place_objects = model.objects \
+                        .filter(city_name=curr_city_name) \
+                        .order_by("date", "time")
+    
     for i in range(len(place_objects)):
         place_obj = place_objects[i]
         weather_data_for_place_obj = data["list"][i]
@@ -126,34 +161,24 @@ def create_region_object(model, data: dict) -> None:
         region.save()
 
 
-def get_today_date() -> str:
-    utc_plus_3 = pytz.timezone('Etc/GMT-3')
-
-    current_time_utc = datetime.datetime.utcnow()
-
-    current_time_utc_plus_3 = current_time_utc.replace(
-        tzinfo=pytz.utc).astimezone(utc_plus_3)
-
-    return current_time_utc_plus_3.date()
-
-
-def get_day_of_week(date: str) -> str:
-    date_obj = datetime.datetime.strptime(date, "%Y-%m-%d")
-    return ["Понеделник", "Вторник", "Сряда", "Четвъртък", "Петък", "Събота", "Неделя"][date_obj.weekday()]
-
-
 def get_24h_data(model, place: str, use_date="") -> dict:
-    curr_date = str(get_today_date()) if not use_date else use_date
+    curr_date = timezone.now() if not use_date else use_date
+
+    formatted_date = curr_date.strftime("%d/%B/%Y")
+    day, month, year = formatted_date.split("/")
+    formatted_date = f"{day}/{english_to_bulgarian_months(month)}/{year}"
+
+    search_db_date_format = curr_date.strftime("%Y-%m-%d")
 
     place_objects = model.objects.filter(city_name=place,
-                                         date=curr_date
+                                         date=search_db_date_format
                                          ) \
                                         .order_by('time')
 
     data = {}
 
-    data["day_of_week"] = get_day_of_week(curr_date)
-    data["today_date"] = curr_date
+    data["day_of_week"] = english_to_bulgarian_days(curr_date.strftime("%A"))
+    data["today_date"] = formatted_date
     data["bg_name_place"] = english_to_bulgarian_places(place)
     data["sunrise"] = place_objects[0].sunrise
     data["sunset"] = place_objects[0].sunset
@@ -178,15 +203,15 @@ def get_24h_data(model, place: str, use_date="") -> dict:
 
 
 def get_four_days_data(model, place: str) -> dict:
-    today_date = get_today_date()
+    today_date = timezone.now()
     
     data = {}
     keys_list = ["first_day", "second_day", "third_day", "fourth_day"]
     for day in keys_list:
-        today_date += datetime.timedelta(days=1)
+        today_date += timedelta(days=1)
 
         data[day] = data.get(day, {})
-        data[day] = get_24h_data(model, place, use_date=str(today_date))
+        data[day] = get_24h_data(model, place, use_date=today_date)
 
     return data
         
