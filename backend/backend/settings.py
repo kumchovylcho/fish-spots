@@ -20,19 +20,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'base.apps.BaseConfig',
-    'users.apps.UsersConfig',
+    'base',
+    'users',
     'fish_regions',
     'fish_places',
     'landscapes',
-    'notification',
 
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'celery',
     'django_celery_beat',
-    'channels',
 ]
 
 
@@ -118,7 +116,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-ASGI_APPLICATION = 'notification.routing.application'
 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DATABASES = {
@@ -157,7 +154,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Sofia'
 
 USE_I18N = True
 
@@ -180,23 +177,14 @@ CORS_ALLOWED_ORIGINS = [
 
 AUTH_USER_MODEL = "users.CustomUser"
 
-
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#             "hosts": [f'redis://default:{CONFIG["REDIS_DB_PASSWORD"]}@redis-14351.c304.europe-west1-2.gce.cloud.redislabs.com:14351'],
-#         },
-#     },
-# }
-
-
-# CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_BROKER_URL = f'redis://default:{CONFIG["REDIS_DB_PASSWORD"]}@redis-14351.c304.europe-west1-2.gce.cloud.redislabs.com:14351'
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_TIMEZONE = 'Europe/Sofia'
+CELERY_BROKER_URL = CONFIG["CELERY_BROKER_REDIS_URL"]
+CELERY_RESULT_BACKEND = CONFIG["CELERY_BROKER_REDIS_URL"]
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_DISABLE_RATE_LIMITS = True
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_RESULT_EXPIRES = 3600
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CELERY_BEAT_SCHEDULE = {
