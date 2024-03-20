@@ -43,7 +43,7 @@ export default function Weather() {
                     {data.today_date}
                 </p>
                 {showSunset ? (
-                    <section className="flex justify-center gap-10">
+                    <section className="flex justify-center gap-10 text-center">
                         <p className="text-white text-2xl">
                             Изгрев в {data.sunrise}ч
                         </p>
@@ -55,7 +55,7 @@ export default function Weather() {
                     ''
                 )}
 
-                <div className="flex justify-center gap-3 flex-wrap mb-12">
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] px-5 gap-3 mb-12">
                     {data.list_hours.map((obj) => (
                         <TodayWeatherCard key={obj.id} props={obj} />
                     ))}
