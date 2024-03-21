@@ -1,13 +1,13 @@
 export default function FishPlacesCard({ props, modalOpen }) {
 
     return (
-        <section className="max-w-[224px] text-center rounded p-3 bg-cyan-950 shadow-2xl shadow-black">
+        <section className="text-center rounded p-3 bg-cyan-950 shadow-2xl shadow-black">
             <h3 className="font-medium mb-2 text-white">
                 {props.bg_place_name}
             </h3>
             <div>
                 <img 
-                    className="rounded-t"
+                    className="w-full aspect-[4/3] rounded-t"
                     src={props.image_url}
                     alt={props.bg_place_name}
                     loading="lazy"
