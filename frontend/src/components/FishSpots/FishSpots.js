@@ -17,6 +17,7 @@ export default function FishSpots() {
     const region = wantedRegion === 'varna' ? 'north' : 'south';
 
     const [filteredSpots, setFilteredSpots] = useState([]);
+    const [emptyFilter, setEmptyFilter] = useState(false);
     const [fishSpots, setFishSpots] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,10 +37,6 @@ export default function FishSpots() {
         const userFilterSpots = [];
 
         for (const data of fishSpots) {
-            if (!searchSpot) {
-                break;
-            }
-
             if (
                 data.place.toLowerCase().includes(searchSpot) ||
                 data.bg_place_name.toLowerCase().includes(searchSpot)
@@ -48,7 +45,12 @@ export default function FishSpots() {
             }
         }
 
-        setFilteredSpots(userFilterSpots);
+        if (!userFilterSpots.length) {
+            setEmptyFilter(true);
+        } else if (userFilterSpots.length) {
+            setFilteredSpots(userFilterSpots);
+            setEmptyFilter(false);
+        }
     };
 
     const openModal = (id) => {
@@ -83,17 +85,23 @@ export default function FishSpots() {
                 <>
                     <FilterFishSpots filterFishSpots={filterFishSpots} />
 
-                    <div className="max-w-7xl mx-auto flex justify-center flex-wrap gap-12 py-8 bg-slate-400 rounded-xl mb-16">
-                        {(filteredSpots.length ? filteredSpots : fishSpots).map(
-                            (obj) => (
-                                <FishPlacesCard
-                                    key={obj.id}
-                                    props={obj}
-                                    modalOpen={openModal}
-                                />
-                            )
-                        )}
-                    </div>
+                    {emptyFilter && <p class="text-2xl font-medium text-center mb-4">Няма намерени резултати.</p>}
+
+                    {!emptyFilter && 
+                        <div 
+                            className="max-w-7xl mx-auto grid grid-cols-4 max-[1000px]:grid-cols-3 max-md:grid-cols-2 max-[460px]:grid-cols-1 gap-12 py-8 px-4 bg-slate-400 rounded-xl mb-16"
+                            >
+                            {(filteredSpots.length ? filteredSpots : fishSpots).map(
+                                (obj) => (
+                                    <FishPlacesCard
+                                        key={obj.id}
+                                        props={obj}
+                                        modalOpen={openModal}
+                                    />
+                                )
+                            )}
+                        </div>
+                    }
                 </>
             )}
 
