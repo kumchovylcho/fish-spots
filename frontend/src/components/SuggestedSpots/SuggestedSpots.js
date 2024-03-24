@@ -88,13 +88,7 @@ export default function SuggestedSpots() {
         <main>
             <RegionChoice />
 
-            {wantedRegion && (
-                <ChoiceContainer
-                    linkWeather={`/city/weather?search=${wantedRegion}`}
-                    linkFishSpots={`/city/fish-spots?search=${wantedRegion}`}
-                    linkSuggestedSpots={`/city/suggested-spots?search=${wantedRegion}`}
-                />
-            )}
+            {wantedRegion && <ChoiceContainer wantedCity={wantedRegion} />}
 
             <h3 className="pb-4 text-2xl text-center">
                 Предложените места са за{' '}
