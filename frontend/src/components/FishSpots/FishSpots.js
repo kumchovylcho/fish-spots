@@ -71,13 +71,7 @@ export default function FishSpots() {
         <main>
             <RegionChoice />
 
-            {wantedRegion && (
-                <ChoiceContainer
-                    linkWeather={`/city/weather?search=${wantedRegion}`}
-                    linkFishSpots={`/city/fish-spots?search=${wantedRegion}`}
-                    linkSuggestedSpots={`/city/suggested-spots?search=${wantedRegion}`}
-                />
-            )}
+            {wantedRegion && <ChoiceContainer wantedCity={wantedRegion} />}
 
             {isLoading && <Spinner />}
 
