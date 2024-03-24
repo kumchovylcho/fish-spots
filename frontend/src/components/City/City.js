@@ -14,14 +14,7 @@ export default function City() {
         <main>
             <RegionChoice />
 
-            {wantedCity && 
-                <ChoiceContainer
-                    linkWeather={`/city/weather?search=${wantedCity}`}
-                    linkFishSpots={`/city/fish-spots?search=${wantedCity}`}
-                    linkSuggestedSpots={`/city/suggested-spots?search=${wantedCity}`}
-                />
-            }
-
+            {wantedCity && <ChoiceContainer wantedCity={wantedCity} />}
         </main>
     );
 }
