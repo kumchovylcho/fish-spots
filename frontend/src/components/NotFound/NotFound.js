@@ -6,7 +6,7 @@ export default function NotFound() {
             <section>
                 <img
                     className="max-md:hidden"
-                    src="/assets/cockroach.png"
+                    src={process.env.PUBLIC_URL + '/assets/cockroach.png'}
                     alt="error-image"
                     loading="lazy"
                 />
@@ -18,7 +18,7 @@ export default function NotFound() {
                 <Link
                     className="bg-emerald-400 px-10 py-4 rounded-full font-medium hover:bg-teal-600 duration-300 hover:scale-105"
                     to="/"
-                >
+                    >
                     Към началната страница
                 </Link>
             </div>
