@@ -15,7 +15,7 @@ const Home = () => {
             <div className="flex justify-center items-center h-96 min-h-fit overflow-hidden relative">
                 <img
                     className="w-full h-full object-cover"
-                    src="https://i.ibb.co/KFtrCdW/banner.jpg"
+                    src={process.env.PUBLIC_URL + '/assets/banner.jpg'}
                     alt="banner"
                 ></img>
                 <div className="absolute bg-zinc-900 opacity-60 w-full h-full"></div>
