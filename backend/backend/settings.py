@@ -1,12 +1,12 @@
 from pathlib import Path
 from dotenv import dotenv_values
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 CONFIG = dotenv_values()
 
-SECRET_KEY = CONFIG["API_KEY"]
+SECRET_KEY = CONFIG["SECRET_API_KEY"]
 
 DEBUG = True
 
@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'users',
     'fish_regions',
     'fish_places',
-    'landscapes',
 
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
@@ -34,18 +33,17 @@ INSTALLED_APPS = [
 ]
 
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'users.backends.CustomAuthentication',
     ),
-    
+
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 9
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -171,8 +169,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:8000",
 ]
 
 AUTH_USER_MODEL = "users.CustomUser"
@@ -229,7 +229,6 @@ celery -A backend beat --loglevel=info
 use `--pool=solo` when on windows
 celery -A backend worker --loglevel=info --pool=solo
 """
-
 
 
 """
