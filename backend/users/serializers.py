@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from landscapes.models import Landscape
 
 
 UserModel = get_user_model()
@@ -21,8 +20,7 @@ class UserExistsData(BaseUserSerializer):
         fields = ("username", "email", "number_of_created_landscapes")
 
     def get_number_of_created_landscapes(self, user):
-        return Landscape.objects.filter(author__username=user.username) \
-                                .count()
+        return 0
 
 
 class EditUserSerializer(serializers.ModelSerializer):
