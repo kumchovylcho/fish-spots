@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
 from fish_places.models import Place
 from fish_places.serializers import PlaceSerializer
 

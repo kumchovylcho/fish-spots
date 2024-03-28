@@ -1,8 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
 from .models import VarnaRegion, BurgasRegion
 from . import helpers
+
 from django.core.cache import cache
 
 
@@ -17,13 +19,13 @@ class WeatherDataView(APIView):
                       "places": ["Shabla", "Kranevo", "Varna"]
                       },
             "burgas": {"model": BurgasRegion,
-                      "places": ["Burgas", "Chernomorets", "Primorsko"]
-                      }
+                       "places": ["Burgas", "Chernomorets", "Primorsko"]
+                       }
         }
 
         if not regions.get(region):
             return Response({"message": "Valid regions are varna/burgas."}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         cached_weather = cache.get(region)
         if cached_weather:
             return Response(cached_weather, status=status.HTTP_200_OK)
@@ -31,7 +33,8 @@ class WeatherDataView(APIView):
         regions_data = {}
         for place in regions[region]["places"]:
             data_24h = helpers.get_24h_data(regions[region]["model"], place)
-            four_days_data = helpers.get_four_days_data(regions[region]["model"], place)
+            four_days_data = helpers.get_four_days_data(
+                regions[region]["model"], place)
 
             regions_data[place.lower()] = {
                 "today": data_24h,
@@ -52,8 +55,9 @@ class WeatherPlaceView(APIView):
 
         if not region or region not in ["varna", "burgas"]:
             return Response({"message": "You must pass a valid region. Example -> varna/burgas"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        valid_places = ("shabla", "kranevo", "varna", "burgas", "chernomorets", "primorsko")
+
+        valid_places = ("shabla", "kranevo", "varna",
+                        "burgas", "chernomorets", "primorsko")
         if place not in valid_places:
             return Response({"message": f"You must pass a valid place. Example -> {valid_places}"}, status=status.HTTP_400_BAD_REQUEST)
 
