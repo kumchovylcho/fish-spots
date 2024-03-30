@@ -1,57 +1,60 @@
-import { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
-import { baseUrl, logoutUser } from '../services/users';
+import { useState, createContext, useEffect } from 'react';
+import { baseUrl } from '../util/constats';
 
 const AuthContext = createContext();
 
 export default AuthContext;
 
-
-export const AuthProvider = ({children}) => {
-
-    const [user, setUser] = useState(() => localStorage.getItem("authTokens") ? jwt_decode(localStorage.getItem("authTokens")) : "");
-    const [authTokens, setAuthTokens] = useState(() => localStorage.getItem("authTokens") ? JSON.parse(localStorage.getItem("authTokens")) : "");
-
-    const navigate = useNavigate();
-
-    const updateToken = async () => {
-        const response = await fetch(`${baseUrl}/api/token/refresh/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({"refresh": authTokens?.refresh}),
-        });
-
-        const data = await response.json();
-
-        if (response.status === 200) {
-            setAuthTokens(data);
-            setUser(jwt_decode(data.access));
-            localStorage.setItem("authTokens", JSON.stringify(data));
-        } else {
-            logoutUser(authTokens, setAuthTokens, setUser, navigate, "/login");
-        }
-    }
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState('');
+    const [isLogged, setIsLogged] = useState(false);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (authTokens) {
-                updateToken();
+        const authorize = async () => {
+            try {
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                };
+                const response = await fetch(
+                    `${baseUrl}/api/authorize/`,
+                    options
+                );
+                const data = await response.json();
+                console.log(response);
+                console.log(data);
+
+                if (response.status === 200) {
+                    handleSetUser(data.user);
+                } else if (response.status === 401) {
+                    resetUser();
+                }
+            } catch (error) {
+                console.error('authentication error');
             }
-        }, 1000 * 60 * 55);
+        };
 
-        return () => clearInterval(interval);
+        authorize();
+    }, []);
 
+    const handleSetUser = (username) => {
+        setUser(username);
+        setIsLogged(true);
+    };
 
-    }, [authTokens]);
+    const resetUser = () => {
+        setUser('');
+        setIsLogged(false);
+    };
 
     let contextData = {
-        user: user,
-        setUser: setUser,
-        authTokens: authTokens,
-        setAuthTokens: setAuthTokens,
+        user,
+        isLogged,
+        handleSetUser,
+        resetUser,
     };
 
     return (
@@ -59,4 +62,4 @@ export const AuthProvider = ({children}) => {
             {children}
         </AuthContext.Provider>
     );
-}
+};
