@@ -8,7 +8,34 @@ class PlaceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Place
-        fields = "__all__"
+        fields = (
+            "place",
+            "bg_place_name",
+            "description",
+            "image",
+            "longitude",
+            "latitude",
+            "region",
+            "max_wind_speed",
+            "bad_wind_directions",
+            "created_at",
+            "last_modified",
+        )
 
     def get_bad_wind_directions(self, obj):
         return obj.bad_wind_directions.split(", ")
+
+
+class CreatePlaceSerializer(PlaceSerializer):
+    class Meta(PlaceSerializer.Meta):
+        fields = (
+            "place",
+            "bg_place_name",
+            "description",
+            "image",
+            "longitude",
+            "latitude",
+            "region",
+            "max_wind_speed",
+            "bad_wind_directions",
+        )
