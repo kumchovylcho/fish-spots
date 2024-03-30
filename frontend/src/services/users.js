@@ -1,148 +1,99 @@
 import jwt_decode from 'jwt-decode';
+import { baseUrl } from '../util/constats';
 
-
-const baseUrl = "http://127.0.0.1:8000"
-
-
-const register = async (data) => {
+const loginUser = async (username, password) => {
     const options = {
-        method: "POST",
-        headers: {'content-type': 'application/json'},
-        body: JSON.stringify(data)
-}
-
-    return await fetch(`${baseUrl}/api/register/`, options);
-}
-
-
-const loginUser = async (e, setAuthTokens, setUser, navigate, navigateTo, setError="") => {
-    e.preventDefault();
-
-    const userCredentials = {
-        "username": e.target.username.value,
-        "password": e.target.password.value
-    }
-
-    const options = {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userCredentials)
+        body: JSON.stringify({ username, password }),
+        credentials: 'include',
     };
 
-    const response = await fetch(`${baseUrl}/api/token/`, options);
-    const data = await response.json();
-
-    if (response.status === 200) {
-        setAuthTokens(data);
-        setUser(jwt_decode(data.access));
-        localStorage.setItem("authTokens", JSON.stringify(data));
-        navigate(navigateTo);
-    }else {
-        if (setError) {
-            setError(true);
-        } 
-    }
-}
-
+    return await fetch(`${baseUrl}/api/token/`, options);
+};
 
 const createNewToken = async (dataOfUser, setAuthTokens, setUser) => {
     const options = {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataOfUser)
+        body: JSON.stringify(dataOfUser),
     };
 
     try {
         const response = await fetch(`${baseUrl}/api/token/`, options);
         const data = await response.json();
- 
+
         setAuthTokens(data);
         setUser(jwt_decode(data.access));
-        localStorage.setItem("authTokens", JSON.stringify(data));
+        localStorage.setItem('authTokens', JSON.stringify(data));
+    } catch (error) {}
+};
 
-    } catch (error) {
-
-    }
-}
-
-
-const logoutUser = async (authTokens, setAuthTokens, setUser, navigate, navigateTo) => {
-    const response = await fetch(`${baseUrl}/api/logout/`, {
-        method: "POST",
+const logoutUser = async () => {
+    return await fetch(`${baseUrl}/api/logout/`, {
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({refreshToken: authTokens?.refresh}),
+        credentials: 'include',
     });
-
-    if (response.status === 200) {
-        setAuthTokens("");
-        setUser("");
-        localStorage.removeItem("authTokens");
-        navigate(navigateTo);
-    }
-}
-
+};
 
 const userExistsData = async (userDataObj) => {
     const options = {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userDataObj)
-    }
+        body: JSON.stringify(userDataObj),
+    };
     try {
-        const response = await fetch(`${baseUrl}/profile/user-exists/`, options);
+        const response = await fetch(
+            `${baseUrl}/profile/user-exists/`,
+            options
+        );
         return response;
-    } catch (error) {
-        
-    }
-}
-
+    } catch (error) {}
+};
 
 const changeUserData = async (username, updateObjData) => {
     try {
         const response = await fetch(`${baseUrl}/profile/edit/${username}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(updateObjData),
         });
         return response;
-    } catch (error) {
-
-    }
-}
+    } catch (error) {}
+};
 
 const changeUserPassword = async (username, updateObjData) => {
     try {
-        const response = await fetch(`${baseUrl}/profile/edit-password/${username}`, {
-            method: "PATCH",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updateObjData),
-        });
+        const response = await fetch(
+            `${baseUrl}/profile/edit-password/${username}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updateObjData),
+            }
+        );
         return response;
-    } catch (error) {
-
-    }
-}
-
+    } catch (error) {}
+};
 
 export {
-    register, 
-    loginUser, 
-    logoutUser, 
-    userExistsData, 
-    changeUserData, 
-    createNewToken, 
-    changeUserPassword, 
-    baseUrl
+    loginUser,
+    logoutUser,
+    userExistsData,
+    changeUserData,
+    createNewToken,
+    changeUserPassword,
 };
