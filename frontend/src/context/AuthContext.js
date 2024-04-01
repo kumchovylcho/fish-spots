@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
+    const [Id, setId] = useState('');
     const [user, setUser] = useState('');
     const [isLogged, setIsLogged] = useState(false);
 
@@ -24,11 +25,9 @@ export const AuthProvider = ({ children }) => {
                     options
                 );
                 const data = await response.json();
-                console.log(response);
-                console.log(data);
 
                 if (response.status === 200) {
-                    handleSetUser(data.user);
+                    handleSetUser(data.user, data.id);
                 } else if (response.status === 401) {
                     resetUser();
                 }
@@ -40,17 +39,20 @@ export const AuthProvider = ({ children }) => {
         authorize();
     }, []);
 
-    const handleSetUser = (username) => {
+    const handleSetUser = (username, id) => {
         setUser(username);
+        setId(id);
         setIsLogged(true);
     };
 
     const resetUser = () => {
         setUser('');
+        setId('');
         setIsLogged(false);
     };
 
     let contextData = {
+        Id,
         user,
         isLogged,
         handleSetUser,
