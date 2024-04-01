@@ -3,6 +3,7 @@ import ChoiceContainer from '../ChoiceContainer/ChoiceContainer';
 import FilterFishSpots from '../FilterFishSpots/FilterFishSpots';
 import FishPlacesCard from '../FishPlacesCard/FishPlacesCard';
 import FishPlaceDetails from '../Modals/FishPlaceDetails';
+import FishSpotForm from './FishSpotForm';
 import Spinner from '../Spinner/Spinner';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -23,7 +24,7 @@ export default function FishSpots() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [placeDetails, setPlaceDetails] = useState({});
 
-    setDocTitle("Fish Spots");
+    setDocTitle('Fish Spots');
 
     useEffect(() => {
         getFishPlaces(region)
@@ -73,39 +74,42 @@ export default function FishSpots() {
 
             {wantedRegion && <ChoiceContainer wantedCity={wantedRegion} />}
 
+            <FishSpotForm />
+
             {isLoading && <Spinner />}
 
             {!isLoading && (
                 <>
                     <FilterFishSpots filterFishSpots={filterFishSpots} />
 
-                    {emptyFilter && <p class="text-2xl font-medium text-center mb-4">Няма намерени резултати.</p>}
+                    {emptyFilter && (
+                        <p className="text-2xl font-medium text-center mb-4">
+                            Няма намерени резултати.
+                        </p>
+                    )}
 
-                    {!emptyFilter && 
-                        <div 
-                            className="max-w-7xl mx-auto grid grid-cols-4 max-[1000px]:grid-cols-3 max-md:grid-cols-2 max-[460px]:grid-cols-1 gap-12 py-8 px-4 bg-slate-400 rounded-xl mb-16"
-                            >
-                            {(filteredSpots.length ? filteredSpots : fishSpots).map(
-                                (obj) => (
-                                    <FishPlacesCard
-                                        key={obj.id}
-                                        props={obj}
-                                        modalOpen={openModal}
-                                    />
-                                )
-                            )}
+                    {!emptyFilter && (
+                        <div className="max-w-7xl mx-auto grid grid-cols-4 max-[1000px]:grid-cols-3 max-md:grid-cols-2 max-[460px]:grid-cols-1 gap-12 py-8 px-4 bg-slate-400 rounded-xl mb-16">
+                            {(filteredSpots.length
+                                ? filteredSpots
+                                : fishSpots
+                            ).map((obj) => (
+                                <FishPlacesCard
+                                    key={obj.id}
+                                    props={obj}
+                                    modalOpen={openModal}
+                                />
+                            ))}
                         </div>
-                    }
+                    )}
                 </>
             )}
 
-            
-            <FishPlaceDetails 
-                data={placeDetails} 
-                isOpen={isModalOpen} 
-                closeModal={closeModal} 
+            <FishPlaceDetails
+                data={placeDetails}
+                isOpen={isModalOpen}
+                closeModal={closeModal}
             />
-            
         </main>
     );
 }
