@@ -42,7 +42,7 @@ const Login = () => {
             const data = await response.json();
 
             if (response.status === 200) {
-                handleSetUser(data.username);
+                handleSetUser(data.user, data.id);
                 navigate('/');
             } else if (response.status === 400) {
                 setFormError('Fields must not be empty.');
