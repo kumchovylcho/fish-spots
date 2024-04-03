@@ -1,20 +1,26 @@
 import { useState, useContext } from 'react';
 import { createFishPlace } from '../../services/fish-spots';
 import AuthContext from '../../context/AuthContext';
+import Spinner from '../Spinner/Spinner.js';
+import FormError from '../FormError/FormError.js';
 
-export default function FishSpotForm() {
+const initialFormData = {
+    place: '',
+    bg_place_name: '',
+    description: '',
+    longitude: '',
+    latitude: '',
+    region: '',
+    max_wind_speed: '',
+    bad_wind_directions: '',
+    image: null,
+};
+
+export default function FishSpotForm({ showForm, addNewPlaceHandler }) {
     const { Id } = useContext(AuthContext);
-    const [formData, setFormData] = useState({
-        place: '',
-        bg_place_name: '',
-        description: '',
-        longitude: '',
-        latitude: '',
-        region: '',
-        max_wind_speed: '',
-        bad_wind_directions: '',
-        image: null,
-    });
+    const [isLoading, setIsLoading] = useState(false);
+    const [formData, setFormData] = useState(initialFormData);
+    const [formErrors, setFormErrors] = useState([]);
 
     const handleFieldChange = (e) => {
         const { name, value, type } = e.target;
@@ -22,7 +28,11 @@ export default function FishSpotForm() {
         setFormData({ ...formData, [name]: newValue });
     };
 
-    const handleFormSubmit = async (e) => {
+    const resetForm = () => {
+        setFormData(initialFormData);
+    };
+
+    const handleFormSubmit = (e) => {
         e.preventDefault();
 
         const buildFormData = new FormData();
@@ -31,17 +41,37 @@ export default function FishSpotForm() {
         }
         buildFormData.append('creator', Id);
 
-        try {
-            const response = await createFishPlace(buildFormData);
-            const data = await response.json();
-            console.log(data);
-        } catch (error) {}
+        setIsLoading(true);
+        createFishPlace(buildFormData)
+            .then((response) => {
+                const jsonPromise = response.json();
+                if (response.status === 400) {
+                    return jsonPromise.then((data) => {
+                        throw data;
+                    });
+                }
+                return jsonPromise;
+            })
+            .then((data) => {
+                setFormErrors([]);
+                addNewPlaceHandler(data);
+                resetForm();
+            })
+
+            .catch((error) => {
+                setFormErrors(Object.values(error).flatMap((error) => error));
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     return (
         <form
             onSubmit={handleFormSubmit}
-            className="max-w-lg mx-auto mb-10 p-4 rounded-xl flex flex-col items-center gap-4 bg-gradient-to-b from-slate-700 to-gray-900"
+            className={`max-w-lg mx-auto mb-10 p-4 rounded-xl flex-col items-center gap-4 bg-gradient-to-b from-slate-700 to-gray-900 ${
+                showForm ? 'flex' : 'hidden'
+            }`}
             encType="multipart/form-data"
         >
             <section className="w-10/12">
@@ -177,16 +207,26 @@ export default function FishSpotForm() {
                     className="block p-1 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                     type="file"
                     name="image"
-                    accept=".jpg, .jpeg, .png"
+                    accept=".jpg, .jpeg, .png, .webp"
                     onChange={handleFieldChange}
                 />
             </section>
+
+            {isLoading && <Spinner />}
 
             <div className="text-center mt-4">
                 <button className="px-4 py-2 text-black font-medium rounded-lg bg-gradient-to-r from-green-200 via-green-400 to-green-500 hover:from-green-300 hover:via-green-500 hover:to-green-600">
                     Create!
                 </button>
             </div>
+
+            {formErrors.length > 0 && (
+                <div className="flex flex-col gap-2 text-lg">
+                    {formErrors.map((error, i) => (
+                        <FormError key={`${error}${i}`} msg={error} />
+                    ))}
+                </div>
+            )}
         </form>
     );
 }
