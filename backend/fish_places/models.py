@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+import os
+
 
 UserModel = get_user_model()
 
@@ -27,5 +29,14 @@ class Place(models.Model):
         UserModel, on_delete=models.CASCADE, null=False, blank=False
     )
 
+    def delete(self, *args, **kwargs):
+        if self.image and os.path.exists(self.image.path):
+            os.remove(self.image.path)
+
+        super().delete(*args, **kwargs)
+
     def __str__(self):
         return self.bg_place_name
+
+    class Meta:
+        ordering = ("-created_at",)
