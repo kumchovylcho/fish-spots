@@ -6,11 +6,14 @@ import FishPlaceDetails from '../Modals/FishPlaceDetails';
 import FishSpotForm from './FishSpotForm';
 import Spinner from '../Spinner/Spinner';
 import { useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { getFishPlaces } from '../../services/fish-spots';
+import { useState, useEffect, useContext } from 'react';
+import { getFishPlaces, deleteFishPlace } from '../../services/fish-spots';
 import setDocTitle from '../../util/setDocTitle';
+import AuthContext from '../../context/AuthContext';
+import DeleteAsker from '../Modals/DeleteAsker.js';
 
 export default function FishSpots() {
+    const { isLogged } = useContext(AuthContext);
     const city = useLocation();
     const searchParams = new URLSearchParams(city.search);
     const wantedRegion = searchParams.get('search');
@@ -24,6 +27,13 @@ export default function FishSpots() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [placeDetails, setPlaceDetails] = useState({});
 
+    const [formOpen, setFormOpen] = useState(false);
+    const [deleteModal, setDeleteModal] = useState({
+        isOpened: false,
+        deleteId: null,
+        isLoading: false,
+    });
+
     setDocTitle('Fish Spots');
 
     useEffect(() => {
@@ -32,6 +42,46 @@ export default function FishSpots() {
             .catch((err) => {})
             .finally(() => setIsLoading(false));
     }, []);
+
+    const addNewPlace = (placeObj) => {
+        setFishSpots((currentSpots) => [placeObj, ...currentSpots]);
+    };
+
+    // TODO: make abstraction for open/close of deletion modal props
+    const openDeleteModal = (id) => {
+        setDeleteModal((old) => {
+            return { ...old, isOpened: true, deleteId: id };
+        });
+    };
+
+    const closeDeleteModal = () => {
+        setDeleteModal((old) => {
+            return { ...old, isOpened: false, deleteId: null };
+        });
+    };
+
+    const deleteOnAgree = () => {
+        setDeleteModal((props) => {
+            return { ...props, isLoading: true };
+        });
+        deleteFishPlace(deleteModal.deleteId)
+            .then((response) => {
+                if (response.status === 204) {
+                    removeFishPlaceAfterDeletion(deleteModal.deleteId);
+                    closeDeleteModal();
+                }
+            })
+            .catch((error) => {})
+            .finally(() => {
+                setDeleteModal((props) => {
+                    return { ...props, isLoading: false };
+                });
+            });
+    };
+
+    const removeFishPlaceAfterDeletion = (placeId) => {
+        setFishSpots((spots) => spots.filter((spot) => spot.id !== placeId));
+    };
 
     const filterFishSpots = (searchSpot) => {
         searchSpot = searchSpot.toLowerCase();
@@ -74,7 +124,27 @@ export default function FishSpots() {
 
             {wantedRegion && <ChoiceContainer wantedCity={wantedRegion} />}
 
-            <FishSpotForm />
+            {isLogged && (
+                <>
+                    <section
+                        className={`flex justify-center ${
+                            formOpen ? '' : 'mb-10'
+                        }`}
+                    >
+                        <button
+                            type="button"
+                            className="px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            onClick={() => setFormOpen((isOpen) => !isOpen)}
+                        >
+                            {formOpen ? 'Скрий формата' : 'Създай място'}
+                        </button>
+                    </section>
+                    <FishSpotForm
+                        showForm={formOpen}
+                        addNewPlaceHandler={addNewPlace}
+                    />
+                </>
+            )}
 
             {isLoading && <Spinner />}
 
@@ -97,12 +167,25 @@ export default function FishSpots() {
                                 <FishPlacesCard
                                     key={obj.id}
                                     props={obj}
+                                    isLogged={isLogged}
+                                    openDeleteModal={() =>
+                                        openDeleteModal(obj.id)
+                                    }
                                     modalOpen={openModal}
                                 />
                             ))}
                         </div>
                     )}
                 </>
+            )}
+
+            {isLogged && (
+                <DeleteAsker
+                    isOpen={deleteModal.isOpened}
+                    deleteOnAgree={deleteOnAgree}
+                    closeModal={closeDeleteModal}
+                    isLoading={deleteModal.isLoading}
+                />
             )}
 
             <FishPlaceDetails
