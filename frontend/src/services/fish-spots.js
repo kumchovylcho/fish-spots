@@ -13,3 +13,11 @@ export const createFishPlace = async (formData) => {
     };
     return await fetch(`${baseUrl}/places/create/`, options);
 };
+
+export const deleteFishPlace = async (placeId) => {
+    const options = {
+        method: 'DELETE',
+        credentials: 'include',
+    };
+    return await fetch(`${baseUrl}/places/delete/${placeId}/`, options);
+};
