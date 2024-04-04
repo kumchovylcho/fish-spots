@@ -47,35 +47,24 @@ export default function FishSpots() {
         setFishSpots((currentSpots) => [placeObj, ...currentSpots]);
     };
 
-    // TODO: make abstraction for open/close of deletion modal props
-    const openDeleteModal = (id) => {
-        setDeleteModal((old) => {
-            return { ...old, isOpened: true, deleteId: id };
-        });
-    };
-
-    const closeDeleteModal = () => {
-        setDeleteModal((old) => {
-            return { ...old, isOpened: false, deleteId: null };
+    const handleDeleteModal = (newProps) => {
+        setDeleteModal((oldProps) => {
+            return { ...oldProps, ...newProps };
         });
     };
 
     const deleteOnAgree = () => {
-        setDeleteModal((props) => {
-            return { ...props, isLoading: true };
-        });
+        handleDeleteModal({ isLoading: true });
         deleteFishPlace(deleteModal.deleteId)
             .then((response) => {
                 if (response.status === 204) {
                     removeFishPlaceAfterDeletion(deleteModal.deleteId);
-                    closeDeleteModal();
+                    handleDeleteModal({ isOpened: false, deleteId: null });
                 }
             })
             .catch((error) => {})
             .finally(() => {
-                setDeleteModal((props) => {
-                    return { ...props, isLoading: false };
-                });
+                handleDeleteModal({ isLoading: false });
             });
     };
 
@@ -169,7 +158,10 @@ export default function FishSpots() {
                                     props={obj}
                                     isLogged={isLogged}
                                     openDeleteModal={() =>
-                                        openDeleteModal(obj.id)
+                                        handleDeleteModal({
+                                            isOpened: true,
+                                            deleteId: obj.id,
+                                        })
                                     }
                                     modalOpen={openModal}
                                 />
@@ -183,7 +175,9 @@ export default function FishSpots() {
                 <DeleteAsker
                     isOpen={deleteModal.isOpened}
                     deleteOnAgree={deleteOnAgree}
-                    closeModal={closeDeleteModal}
+                    closeModal={() =>
+                        handleDeleteModal({ isOpened: false, deleteId: null })
+                    }
                     isLoading={deleteModal.isLoading}
                 />
             )}
