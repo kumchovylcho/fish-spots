@@ -165,8 +165,8 @@ export default function FishSpotForm({ showForm, addNewPlaceHandler }) {
                     onChange={handleFieldChange}
                 >
                     <option value="">--Избери--</option>
-                    <option value="north">Север</option>
-                    <option value="south">Юг</option>
+                    <option value="varna">Варна</option>
+                    <option value="burgas">Бургас</option>
                 </select>
             </section>
 
