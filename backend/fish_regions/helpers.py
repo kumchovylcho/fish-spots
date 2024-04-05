@@ -1,54 +1,11 @@
 from django.conf import settings
 from django.utils import timezone
+
 from datetime import timedelta, datetime
 
-weather_api_key = settings.CONFIG['WEATHER_API']
+from . import settings as region_settings
 
-
-def english_to_bulgarian_places(place: str) -> str:
-    all_places = {
-        "Shabla": "Шабла",
-        "Kranevo": "Кранево",
-        "Varna": "Варна",
-        "Burgas": "Бургас",
-        "Chernomorets": "Черноморец",
-        "Primorsko": "Приморско"
-    }
-
-    return all_places.get(place, "")
-
-
-def english_to_bulgarian_months(month: str) -> str:
-    months = {
-        "January": "Януари",
-        "February": "Февруари",
-        "March": "Март",
-        "April": "Април",
-        "May": "Май",
-        "June": "Юни",
-        "July": "Юли",
-        "August": "Август",
-        "September": "Септември",
-        "October": "Октомври",
-        "November": "Ноември",
-        "December": "Декември"
-    }
-
-    return months.get(month, "")
-
-
-def english_to_bulgarian_days(day: str) -> str:
-    days = {
-        "Monday": "Понеделник",
-        "Tuesday": "Вторник",
-        "Wednesday": "Сряда",
-        "Thursday": "Четвъртък",
-        "Friday": "Петък",
-        "Saturday": "Събота",
-        "Sunday": "Неделя"
-    }
-
-    return days.get(day, "")
+weather_api_key = settings.CONFIG["WEATHER_API"]
 
 
 def get_query(longitude: float, latitude: float) -> str:
@@ -96,15 +53,13 @@ def place_in_region_exist(model, places: list) -> bool:
 
 def update_region_model(model, data: dict) -> None:
     curr_city_name = data["city"]["name"]
-    curr_sunrise = datetime.fromtimestamp(
-        data["city"]["sunrise"]).strftime("%H:%M")
-    curr_sunset = datetime.fromtimestamp(
-        data["city"]["sunset"]).strftime("%H:%M")
+    curr_sunrise = datetime.fromtimestamp(data["city"]["sunrise"]).strftime("%H:%M")
+    curr_sunset = datetime.fromtimestamp(data["city"]["sunset"]).strftime("%H:%M")
 
-    place_objects = model.objects \
-                        .filter(city_name=curr_city_name) \
-                        .order_by("date", "time")
-    
+    place_objects = model.objects.filter(city_name=curr_city_name).order_by(
+        "date", "time"
+    )
+
     for i in range(len(place_objects)):
         place_obj = place_objects[i]
         weather_data_for_place_obj = data["list"][i]
@@ -115,48 +70,51 @@ def update_region_model(model, data: dict) -> None:
         place_obj.sunset = curr_sunset
         place_obj.date = curr_date
         place_obj.time = curr_time
-        place_obj.feels_like = round(
-            weather_data_for_place_obj["main"]["feels_like"])
-        place_obj.normal_temperature = round(
-            weather_data_for_place_obj["main"]["temp"])
+        place_obj.feels_like = round(weather_data_for_place_obj["main"]["feels_like"])
+        place_obj.normal_temperature = round(weather_data_for_place_obj["main"]["temp"])
         place_obj.min_temperature = round(
-            weather_data_for_place_obj["main"]["temp_min"])
+            weather_data_for_place_obj["main"]["temp_min"]
+        )
         place_obj.max_temperature = round(
-            weather_data_for_place_obj["main"]["temp_max"])
+            weather_data_for_place_obj["main"]["temp_max"]
+        )
         place_obj.weather_icon_url = get_weather_icon(
-            weather_data_for_place_obj["weather"][0]["icon"])
+            weather_data_for_place_obj["weather"][0]["icon"]
+        )
         place_obj.wind_direction = get_wind_direction(
-            weather_data_for_place_obj["wind"]["deg"])
-        place_obj.wind_speed = round(
-            weather_data_for_place_obj["wind"]["speed"])
+            weather_data_for_place_obj["wind"]["deg"]
+        )
+        place_obj.wind_speed = round(weather_data_for_place_obj["wind"]["speed"])
 
         place_obj.save()
 
 
 def create_region_object(model, data: dict) -> None:
     curr_city_name = data["city"]["name"]
-    curr_sunrise = datetime.datetime.fromtimestamp(
-        data["city"]["sunrise"]).strftime("%H:%M")
-    curr_sunset = datetime.datetime.fromtimestamp(
-        data["city"]["sunset"]).strftime("%H:%M")
+    curr_sunrise = datetime.datetime.fromtimestamp(data["city"]["sunrise"]).strftime(
+        "%H:%M"
+    )
+    curr_sunset = datetime.datetime.fromtimestamp(data["city"]["sunset"]).strftime(
+        "%H:%M"
+    )
 
     for data in data["list"]:
         curr_date, curr_time = data["dt_txt"].split()
 
-        region = model(city_name=curr_city_name,
-                       sunrise=curr_sunrise,
-                       sunset=curr_sunset,
-                       date=curr_date,
-                       time=curr_time,
-                       feels_like=round(data["main"]["feels_like"]),
-                       normal_temperature=round(data["main"]["temp"]),
-                       min_temperature=round(data["main"]["temp_min"]),
-                       max_temperature=round(data["main"]["temp_max"]),
-                       weather_icon_url=get_weather_icon(
-                           data["weather"][0]["icon"]),
-                       wind_direction=get_wind_direction(data["wind"]["deg"]),
-                       wind_speed=round(data["wind"]["speed"])
-                       )
+        region = model(
+            city_name=curr_city_name,
+            sunrise=curr_sunrise,
+            sunset=curr_sunset,
+            date=curr_date,
+            time=curr_time,
+            feels_like=round(data["main"]["feels_like"]),
+            normal_temperature=round(data["main"]["temp"]),
+            min_temperature=round(data["main"]["temp_min"]),
+            max_temperature=round(data["main"]["temp_max"]),
+            weather_icon_url=get_weather_icon(data["weather"][0]["icon"]),
+            wind_direction=get_wind_direction(data["wind"]["deg"]),
+            wind_speed=round(data["wind"]["speed"]),
+        )
 
         region.save()
 
@@ -166,20 +124,23 @@ def get_24h_data(model, place: str, use_date="") -> dict:
 
     formatted_date = curr_date.strftime("%d/%B/%Y")
     day, month, year = formatted_date.split("/")
-    formatted_date = f"{day}/{english_to_bulgarian_months(month)}/{year}"
+    formatted_date = (
+        f"{day}/{region_settings.english_to_bulgarian_months.get(month, '')}/{year}"
+    )
 
     search_db_date_format = curr_date.strftime("%Y-%m-%d")
 
-    place_objects = model.objects.filter(city_name=place,
-                                         date=search_db_date_format
-                                         ) \
-                                        .order_by('time')
+    place_objects = model.objects.filter(
+        city_name=place, date=search_db_date_format
+    ).order_by("time")
 
     data = {}
 
-    data["day_of_week"] = english_to_bulgarian_days(curr_date.strftime("%A"))
+    data["day_of_week"] = region_settings.english_to_bulgarian_days.get(
+        curr_date.strftime("%A"), ""
+    )
     data["today_date"] = formatted_date
-    data["bg_name_place"] = english_to_bulgarian_places(place)
+    data["bg_name_place"] = region_settings.english_to_bulgarian_places.get(place, "")
     data["sunrise"] = place_objects[0].sunrise
     data["sunset"] = place_objects[0].sunset
     data["list_hours"] = []
@@ -194,7 +155,7 @@ def get_24h_data(model, place: str, use_date="") -> dict:
             "max_temp": place.max_temperature,
             "weather_icon_url": place.weather_icon_url,
             "wind_direction": place.wind_direction,
-            "wind_speed": place.wind_speed
+            "wind_speed": place.wind_speed,
         }
 
         data["list_hours"].append(curr_hour)
@@ -204,7 +165,7 @@ def get_24h_data(model, place: str, use_date="") -> dict:
 
 def get_four_days_data(model, place: str) -> dict:
     today_date = timezone.now()
-    
+
     data = {}
     keys_list = ["first_day", "second_day", "third_day", "fourth_day"]
     for day in keys_list:
@@ -214,4 +175,3 @@ def get_four_days_data(model, place: str) -> dict:
         data[day] = get_24h_data(model, place, use_date=today_date)
 
     return data
-        
