@@ -1,5 +1,9 @@
 import { useState, useContext } from 'react';
 import { createFishPlace } from '../../services/fish-spots';
+import {
+    fishSpotAreasInRegion,
+    latinToBulgarianCities,
+} from '../../util/constants';
 import AuthContext from '../../context/AuthContext';
 import Spinner from '../Spinner/Spinner.js';
 import FormError from '../FormError/FormError.js';
@@ -11,6 +15,7 @@ const initialFormData = {
     longitude: '',
     latitude: '',
     region: '',
+    fish_area_in_region: '',
     max_wind_speed: '',
     bad_wind_directions: '',
     image: null,
@@ -25,7 +30,19 @@ export default function FishSpotForm({ showForm, addNewPlaceHandler }) {
     const handleFieldChange = (e) => {
         const { name, value, type } = e.target;
         const newValue = type === 'file' ? e.target.files[0] : value;
-        setFormData({ ...formData, [name]: newValue });
+        if (name === 'region') {
+            setFormData((oldFormData) => {
+                return {
+                    ...oldFormData,
+                    [name]: newValue,
+                    fish_area_in_region: '',
+                };
+            });
+        }
+
+        setFormData((oldFormData) => {
+            return { ...oldFormData, [name]: newValue };
+        });
     };
 
     const resetForm = () => {
@@ -167,6 +184,25 @@ export default function FishSpotForm({ showForm, addNewPlaceHandler }) {
                     <option value="">--Избери--</option>
                     <option value="varna">Варна</option>
                     <option value="burgas">Бургас</option>
+                </select>
+            </section>
+
+            <section className="w-10/12">
+                <span className="dark:text-white dark:font-medium">
+                    Риболовно място в региона:
+                </span>
+                <select
+                    className="block w-full rounded p-1.5 text-stone-950 outline-none"
+                    name="fish_area_in_region"
+                    value={formData.fish_area_in_region}
+                    onChange={handleFieldChange}
+                >
+                    <option value="">--Избери--</option>
+                    {fishSpotAreasInRegion[formData.region]?.map((area) => (
+                        <option key={area} value={area}>
+                            {latinToBulgarianCities[area]}
+                        </option>
+                    ))}
                 </select>
             </section>
 
