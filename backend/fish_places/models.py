@@ -21,6 +21,7 @@ class Place(models.Model):
     longitude = models.CharField(max_length=30)
     latitude = models.CharField(max_length=30)
     region = models.CharField(max_length=30)
+    fish_area_in_region = models.CharField(max_length=50)
     max_wind_speed = models.IntegerField()
     bad_wind_directions = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
