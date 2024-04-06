@@ -1,8 +1,12 @@
-import { baseUrl } from '../util/constats';
+import { baseUrl } from '../util/constants';
 
 export const getFishPlaces = async (region) => {
     const response = await fetch(`${baseUrl}/places/?region=${region}`);
     return await response.json();
+};
+
+export const getSuggestedSpots = async (region) => {
+    return await fetch(`${baseUrl}/places/suggested-spots?region=${region}`);
 };
 
 export const createFishPlace = async (formData) => {
