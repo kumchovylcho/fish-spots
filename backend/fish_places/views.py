@@ -5,7 +5,10 @@ from rest_framework.generics import DestroyAPIView
 
 from .models import Place
 from .serializers import PlaceSerializer, CreatePlaceSerializer
+from .utils import decide_to_show_spot
 from base.mixins import AuthorizedMixin
+from fish_regions.views import WeatherDataView
+from fish_places.models import Place
 
 
 class PlacesView(APIView):
@@ -41,3 +44,26 @@ class CreatePlaceView(AuthorizedMixin, APIView):
 
 class DeletePlaceView(AuthorizedMixin, DestroyAPIView):
     queryset = Place.objects.all()
+
+
+class SuggestedSpots(APIView):
+
+    def get(self, request, *args, **kwargs):
+        weather_response = WeatherDataView().get(request)
+
+        if weather_response.status_code == 400:
+            return Response(weather_response.data, status=status.HTTP_400_BAD_REQUEST)
+
+        good_for_fish_spots = []
+        for region, data in weather_response.data.items():
+            today_weather = data.get("today", {}).get("list_hours", [])
+            fish_areas_in_region = Place.objects.filter(fish_area_in_region=region)
+
+            for fish_spot in fish_areas_in_region:
+                if decide_to_show_spot(today_weather, fish_spot):
+                    good_for_fish_spots.append(fish_spot)
+
+        serializer = PlaceSerializer(
+            good_for_fish_spots, context={"request": request}, many=True
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
