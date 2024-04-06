@@ -18,8 +18,6 @@ export default function FishSpots() {
     const searchParams = new URLSearchParams(city.search);
     const wantedRegion = searchParams.get('search');
 
-    const region = wantedRegion === 'varna' ? 'north' : 'south';
-
     const [filteredSpots, setFilteredSpots] = useState([]);
     const [emptyFilter, setEmptyFilter] = useState(false);
     const [fishSpots, setFishSpots] = useState([]);
@@ -37,7 +35,7 @@ export default function FishSpots() {
     setDocTitle('Fish Spots');
 
     useEffect(() => {
-        getFishPlaces(region)
+        getFishPlaces(wantedRegion)
             .then((data) => setFishSpots(data))
             .catch((err) => {})
             .finally(() => setIsLoading(false));
