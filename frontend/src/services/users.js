@@ -1,5 +1,5 @@
 import jwt_decode from 'jwt-decode';
-import { baseUrl } from '../util/constats';
+import { baseUrl } from '../util/constants';
 
 const loginUser = async (username, password) => {
     const options = {

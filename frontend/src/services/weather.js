@@ -1,4 +1,4 @@
-import { baseUrl } from '../util/constats';
+import { baseUrl } from '../util/constants';
 
 export const getWeather = async (region = '') => {
     const query = region
