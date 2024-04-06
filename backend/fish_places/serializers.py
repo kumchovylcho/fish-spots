@@ -17,6 +17,7 @@ class PlaceSerializer(serializers.ModelSerializer):
             "longitude",
             "latitude",
             "region",
+            "fish_area_in_region",
             "max_wind_speed",
             "bad_wind_directions",
             "created_at",
@@ -39,6 +40,7 @@ class CreatePlaceSerializer(serializers.ModelSerializer):
             "longitude",
             "latitude",
             "region",
+            "fish_area_in_region",
             "max_wind_speed",
             "bad_wind_directions",
             "creator",
@@ -61,6 +63,9 @@ class CreatePlaceSerializer(serializers.ModelSerializer):
             ),
             "latitude": generate_errors_messages("Latitude", required=True, blank=True),
             "region": generate_errors_messages("Region", required=True, blank=True),
+            "fish_area_in_region": generate_errors_messages(
+                "Fish Area In Region", required=True, blank=True
+            ),
             "bad_wind_directions": generate_errors_messages(
                 "Bad Wind Directions", required=True, blank=True
             ),
