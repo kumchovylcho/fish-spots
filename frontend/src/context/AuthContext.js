@@ -1,5 +1,5 @@
 import { useState, createContext, useEffect } from 'react';
-import { baseUrl } from '../util/constats';
+import { baseUrl } from '../util/constants';
 
 const AuthContext = createContext();
 
