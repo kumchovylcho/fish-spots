@@ -8,6 +8,7 @@ from .serializers import PlaceSerializer, CreatePlaceSerializer
 from .utils import decide_to_show_spot
 from base.mixins import AuthorizedMixin
 from fish_regions.views import WeatherDataView
+from fish_regions import settings as region_settings
 from fish_places.models import Place
 
 
@@ -66,4 +67,28 @@ class SuggestedSpots(APIView):
         serializer = PlaceSerializer(
             good_for_fish_spots, context={"request": request}, many=True
         )
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class PlaceDetailsView(APIView):
+
+    def get(self, request, region, place_name, *args, **kwargs):
+        if region not in region_settings.regions:
+            return Response(
+                {
+                    "message": f"Valid regions are {list(region_settings.regions.keys())}."
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        place = Place.objects.filter(
+            region__iexact=region, place__iexact=place_name
+        ).first()
+        if not place:
+            return Response(
+                {"message": f"{place_name} does not exist."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        serializer = PlaceSerializer(instance=place, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
