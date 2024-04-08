@@ -2,7 +2,6 @@ import RegionChoice from '../RegionChoice/RegionChoice';
 import ChoiceContainer from '../ChoiceContainer/ChoiceContainer';
 import FilterFishSpots from '../FilterFishSpots/FilterFishSpots';
 import FishPlacesCard from '../FishPlacesCard/FishPlacesCard';
-import FishPlaceDetails from '../Modals/FishPlaceDetails';
 import FishSpotForm from './FishSpotForm';
 import Spinner from '../Spinner/Spinner';
 import { useLocation } from 'react-router-dom';
@@ -22,8 +21,6 @@ export default function FishSpots() {
     const [emptyFilter, setEmptyFilter] = useState(false);
     const [fishSpots, setFishSpots] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [placeDetails, setPlaceDetails] = useState({});
 
     const [formOpen, setFormOpen] = useState(false);
     const [deleteModal, setDeleteModal] = useState({
@@ -91,20 +88,6 @@ export default function FishSpots() {
         }
     };
 
-    const openModal = (id) => {
-        setIsModalOpen(true);
-
-        const place = fishSpots.filter((obj) => obj.id === id)[0];
-
-        setPlaceDetails((oldPlace) => {
-            return { ...oldPlace, ...place };
-        });
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
     return (
         <main>
             <RegionChoice />
@@ -161,7 +144,6 @@ export default function FishSpots() {
                                             deleteId: obj.id,
                                         })
                                     }
-                                    modalOpen={openModal}
                                 />
                             ))}
                         </div>
@@ -179,12 +161,6 @@ export default function FishSpots() {
                     isLoading={deleteModal.isLoading}
                 />
             )}
-
-            <FishPlaceDetails
-                data={placeDetails}
-                isOpen={isModalOpen}
-                closeModal={closeModal}
-            />
         </main>
     );
 }
