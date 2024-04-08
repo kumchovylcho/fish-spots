@@ -1,5 +1,4 @@
 import FishPlacesCard from '../FishPlacesCard/FishPlacesCard';
-import FishPlaceDetails from '../Modals/FishPlaceDetails';
 import RegionChoice from '../RegionChoice/RegionChoice';
 import ChoiceContainer from '../ChoiceContainer/ChoiceContainer';
 import FilterFishSpots from '../FilterFishSpots/FilterFishSpots';
@@ -17,8 +16,6 @@ export default function SuggestedSpots() {
     const [filteredSpots, setFilteredSpots] = useState([]);
     const [emptyFilter, setEmptyFilter] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [placeDetails, setPlaceDetails] = useState({});
     const [suggestedSpots, setSuggestedSpots] = useState([]);
 
     setDocTitle('Suggested Spots');
@@ -61,20 +58,6 @@ export default function SuggestedSpots() {
         }
     };
 
-    const openModal = (id) => {
-        setIsModalOpen(true);
-
-        const place = suggestedSpots.filter((obj) => obj.id === id)[0];
-
-        setPlaceDetails((oldPlace) => {
-            return { ...oldPlace, ...place };
-        });
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
     return (
         <main>
             <RegionChoice />
@@ -114,11 +97,7 @@ export default function SuggestedSpots() {
                                 ? filteredSpots
                                 : suggestedSpots
                             ).map((obj) => (
-                                <FishPlacesCard
-                                    key={obj.id}
-                                    props={obj}
-                                    modalOpen={openModal}
-                                />
+                                <FishPlacesCard key={obj.id} props={obj} />
                             ))}
                         </div>
                     )}
@@ -129,12 +108,6 @@ export default function SuggestedSpots() {
                     се изчисли.
                 </h3>
             )}
-
-            <FishPlaceDetails
-                data={placeDetails}
-                isOpen={isModalOpen}
-                closeModal={closeModal}
-            />
         </main>
     );
 }
