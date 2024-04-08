@@ -1,9 +1,6 @@
-export default function FishPlacesCard({
-    props,
-    modalOpen,
-    openDeleteModal,
-    isLogged,
-}) {
+import { Link } from 'react-router-dom';
+
+export default function FishPlacesCard({ props, openDeleteModal, isLogged }) {
     return (
         <section className="text-center rounded p-3 bg-cyan-950 shadow-2xl shadow-black">
             <h3 className="font-medium mb-2 text-white">
@@ -23,12 +20,16 @@ export default function FishPlacesCard({
                 }`}
             >
                 <p className="mb-3">{props.description.slice(0, 50)}...</p>
-                <button
-                    className="text-center bg-cyan-600 py-2 px-4 rounded-xl font-medium hover:bg-cyan-800"
-                    onClick={() => modalOpen(props.id)}
-                >
-                    Виж повече
-                </button>
+                <section className="flex justify-center">
+                    <Link
+                        className="bg-cyan-600 py-2 px-4 rounded-xl font-medium hover:bg-cyan-800"
+                        to={`/place/${
+                            props.region
+                        }/${props.place.toLowerCase()}`}
+                    >
+                        Детайли
+                    </Link>
+                </section>
             </section>
             {isLogged && (
                 <section className="bg-slate-400 py-2 rounded-b">
