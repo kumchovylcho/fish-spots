@@ -4,14 +4,12 @@ import Home from './components/Home/Home';
 import Footer from './components/Footer/Footer';
 import Login from './components/Login/Login';
 import PrivateRoute from './util/PrivateRoute';
-import AuthorizedRoute from './util/AuthorizedRoute';
 import City from './components/City/City';
 import Weather from './components/Weather/Weather';
 import FishSpots from './components/FishSpots/FishSpots';
 import SuggestedSpots from './components/SuggestedSpots/SuggestedSpots';
-import Landscapes from './components/Landscapes/Landscapes';
 import NotFound from './components/NotFound/NotFound';
-import Profile from './components/Profile/Profile';
+import FishSpotDetails from './components/FishSpotDetails/FishSpotDetails';
 import { cityRoutes } from './util/routes';
 
 function App() {
@@ -40,15 +38,11 @@ function App() {
                             </PrivateRoute>
                         }
                     />
+
                     <Route
-                        path="/profile/:username"
-                        element={
-                            <AuthorizedRoute navigateTo="/login">
-                                <Profile />
-                            </AuthorizedRoute>
-                        }
+                        path="/place/:region/:spotName"
+                        element={<FishSpotDetails />}
                     />
-                    <Route path="/landscapes" element={<Landscapes />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
 
