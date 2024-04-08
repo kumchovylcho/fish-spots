@@ -5,6 +5,10 @@ export const getFishPlaces = async (region) => {
     return await response.json();
 };
 
+export const getPlaceDetails = async (region, placeName) => {
+    return await fetch(`${baseUrl}/places/${region}/${placeName}/`);
+};
+
 export const getSuggestedSpots = async (region) => {
     return await fetch(`${baseUrl}/places/suggested-spots?region=${region}`);
 };
