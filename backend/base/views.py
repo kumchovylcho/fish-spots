@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.views import APIView
 
 from django.conf import settings
-from django.middleware.csrf import get_token
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -36,9 +35,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
                 str(response.data.get("refresh", "")),
                 one_month,
             )
-
-            csrf_token = get_token(request)
-            response = set_token_in_cookie(response, "csrftoken", csrf_token, one_month)
 
             payload = decode(
                 str(response.data.get("access")),
@@ -78,7 +74,7 @@ class LogoutView(APIView):
             )
             response = set_token_in_cookie(response, "access_token", "", 0)
             response = set_token_in_cookie(response, "refresh_token", "", 0)
-            response = set_token_in_cookie(response, "csrftoken", "", 0)
+
             return response
         except Exception as e:
             return Response(
