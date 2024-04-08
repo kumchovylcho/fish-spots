@@ -167,7 +167,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
 ]
 
-CSRF_COOKIE_SAMESITE = "None"
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://localhost:8000"]
 
 AUTH_USER_MODEL = "users.CustomUser"
