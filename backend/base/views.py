@@ -10,7 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import MyTokenObtainPairSerializer
 from .utils import set_token_in_cookie
-from users.backends import CustomAuthentication
+from .mixins import AuthorizedMixin
 
 from jwt import decode
 
@@ -82,8 +82,7 @@ class LogoutView(APIView):
             )
 
 
-class CheckAuthenticationView(APIView):
-    authentication_classes = [CustomAuthentication]
+class CheckAuthenticationView(AuthorizedMixin, APIView):
 
     def get(self, request):
         return Response(
