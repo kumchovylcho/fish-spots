@@ -1,4 +1,5 @@
 const baseUrl = 'http://127.0.0.1:8000';
+const websiteName = 'Fish Spots';
 
 const fishSpotAreasInRegion = {
     varna: ['shabla', 'kranevo', 'varna'],
@@ -25,6 +26,7 @@ const latinToBulgarianCities = {
 
 export {
     baseUrl,
+    websiteName,
     fishSpotAreasInRegion,
     bulgarianToLatinCities,
     latinToBulgarianCities,
