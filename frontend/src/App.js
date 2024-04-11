@@ -11,6 +11,8 @@ import SuggestedSpots from './components/SuggestedSpots/SuggestedSpots';
 import NotFound from './components/NotFound/NotFound';
 import FishSpotDetails from './components/FishSpotDetails/FishSpotDetails';
 import { cityRoutes } from './util/routes';
+import CookieConsent from './components/CookieConsent/CookieConsent';
+import PrivacyPolicy from './components/PrivacyPolicy/PrivacyPolicy';
 
 function App() {
     return (
@@ -38,15 +40,17 @@ function App() {
                             </PrivateRoute>
                         }
                     />
-
                     <Route
                         path="/place/:region/:spotName"
                         element={<FishSpotDetails />}
                     />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+
                     <Route path="*" element={<NotFound />} />
                 </Routes>
 
                 <Footer />
+                <CookieConsent />
             </div>
         </>
     );
