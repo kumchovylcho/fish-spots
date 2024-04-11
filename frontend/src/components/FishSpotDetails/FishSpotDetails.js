@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getPlaceDetails } from '../../services/fish-spots';
 import Spinner from '../Spinner/Spinner';
 import CookieConsentContext from '../../context/CookieConsentContext';
+import setDocTitle from '../../util/setDocTitle';
 
 export default function FishSpotDetails() {
     const { hasAgreed } = useContext(CookieConsentContext);
@@ -22,6 +23,7 @@ export default function FishSpotDetails() {
                 return response.json();
             })
             .then((data) => {
+                setDocTitle(`${data.bg_place_name} Details`);
                 setPlaceData(data);
             })
             .catch((error) => console.error(error.message))
