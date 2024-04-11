@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPlaceDetails } from '../../services/fish-spots';
 import Spinner from '../Spinner/Spinner';
+import CookieConsentContext from '../../context/CookieConsentContext';
 
 export default function FishSpotDetails() {
+    const { hasAgreed } = useContext(CookieConsentContext);
     const { region, spotName } = useParams();
     const navigate = useNavigate();
     const [placeData, setPlaceData] = useState({});
@@ -50,20 +52,24 @@ export default function FishSpotDetails() {
                     </div>
 
                     <div className="flex flex-col gap-5">
-                        <section>
-                            <h3 className="text-xl text-center">
-                                Можете да разгледате мястото чрез{' '}
-                                <span className="font-bold">Google Maps</span>
-                            </h3>
-                            <iframe
-                                className="w-full h-[600px] max-md:h-[400px] rounded shadow-lg"
-                                src={`https://maps.google.com/maps?q=${placeData.latitude},${placeData.longitude}&t=k&z=20&ie=UTF8&iwloc=&output=embed`}
-                                allowFullScreen={true}
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                title="Рибарско място"
-                            ></iframe>
-                        </section>
+                        {hasAgreed && (
+                            <section>
+                                <h3 className="text-xl text-center">
+                                    Можете да разгледате мястото чрез{' '}
+                                    <span className="font-bold">
+                                        Google Maps
+                                    </span>
+                                </h3>
+                                <iframe
+                                    className="w-full h-[600px] max-md:h-[400px] rounded shadow-lg"
+                                    src={`https://maps.google.com/maps?q=${placeData.latitude},${placeData.longitude}&t=k&z=20&ie=UTF8&iwloc=&output=embed`}
+                                    allowFullScreen={true}
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title="Рибарско място"
+                                ></iframe>
+                            </section>
+                        )}
 
                         <section>
                             <h3 className="text-xl text-center">
