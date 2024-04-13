@@ -30,6 +30,9 @@ class Place(models.Model):
         UserModel, on_delete=models.CASCADE, null=False, blank=False
     )
 
+    def get_absolute_url(self):
+        return f"{self.region}/{self.place.lower()}"
+
     def delete(self, *args, **kwargs):
         if self.image and os.path.exists(self.image.path):
             os.remove(self.image.path)
