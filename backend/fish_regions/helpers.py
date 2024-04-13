@@ -91,12 +91,8 @@ def update_region_model(model, data: dict) -> None:
 
 def create_region_object(model, data: dict) -> None:
     curr_city_name = data["city"]["name"]
-    curr_sunrise = datetime.datetime.fromtimestamp(data["city"]["sunrise"]).strftime(
-        "%H:%M"
-    )
-    curr_sunset = datetime.datetime.fromtimestamp(data["city"]["sunset"]).strftime(
-        "%H:%M"
-    )
+    curr_sunrise = datetime.fromtimestamp(data["city"]["sunrise"]).strftime("%H:%M")
+    curr_sunset = datetime.fromtimestamp(data["city"]["sunset"]).strftime("%H:%M")
 
     for data in data["list"]:
         curr_date, curr_time = data["dt_txt"].split()
@@ -120,19 +116,32 @@ def create_region_object(model, data: dict) -> None:
 
 
 def get_24h_data(model, place: str, use_date="") -> dict:
+    def format_date(date):
+        formatted_date = date.strftime("%d/%B/%Y")
+        day, month, year = formatted_date.split("/")
+        formatted_date = (
+            f"{day}/{region_settings.english_to_bulgarian_months.get(month, '')}/{year}"
+        )
+
+        search_db_date_format = date.strftime("%Y-%m-%d")
+        return formatted_date, search_db_date_format
+
     curr_date = timezone.now() if not use_date else use_date
-
-    formatted_date = curr_date.strftime("%d/%B/%Y")
-    day, month, year = formatted_date.split("/")
-    formatted_date = (
-        f"{day}/{region_settings.english_to_bulgarian_months.get(month, '')}/{year}"
-    )
-
-    search_db_date_format = curr_date.strftime("%Y-%m-%d")
+    formatted_date, search_in_db_format = format_date(curr_date)
 
     place_objects = model.objects.filter(
-        city_name=place, date=search_db_date_format
+        city_name=place, date=search_in_db_format
     ).order_by("time")
+    if not place_objects:
+        """
+        jump with 4 hours ahead to go to the next day. This will happen between 00:00 and 03:00
+        We will have data that is for the next day, but the lookup will search for the previous day because of the time zone difference
+        """
+        curr_date += timedelta(hours=4)
+        formatted_date, search_in_db_format = format_date(curr_date)
+        place_objects = model.objects.filter(
+            city_name=place, date=search_in_db_format
+        ).order_by("time")
 
     data = {}
 
@@ -141,8 +150,8 @@ def get_24h_data(model, place: str, use_date="") -> dict:
     )
     data["today_date"] = formatted_date
     data["bg_name_place"] = region_settings.english_to_bulgarian_places.get(place, "")
-    data["sunrise"] = place_objects[0].sunrise
-    data["sunset"] = place_objects[0].sunset
+    data["sunrise"] = place_objects[0].sunrise if place_objects else "N/A"
+    data["sunset"] = place_objects[0].sunset if place_objects else "N/A"
     data["list_hours"] = []
 
     for place in place_objects:
