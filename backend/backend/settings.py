@@ -12,6 +12,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -28,6 +30,8 @@ INSTALLED_APPS = [
     "corsheaders",
     "celery",
     "django_celery_beat",
+    "django.contrib.sitemaps",
+    "django.contrib.sites",
 ]
 
 
@@ -35,6 +39,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         # 'users.backends.CustomAuthentication',
     ),
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 9,
 }
