@@ -6,8 +6,13 @@ from django.contrib.sitemaps.views import sitemap
 
 from fish_places.sitemap import PlaceSitemap
 from base.sitemap import StaticViewSitemap
+from base.sitemap import DynamicPagesSitemap
 
-sitemaps = {"articles": PlaceSitemap, "static": StaticViewSitemap}
+sitemaps = {
+    "place_details": PlaceSitemap,
+    "dynamic": DynamicPagesSitemap,
+    "static": StaticViewSitemap,
+}
 
 urlpatterns = [
     path("admin/", admin.site.urls),
