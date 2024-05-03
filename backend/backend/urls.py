@@ -20,6 +20,7 @@ urlpatterns = [
     path("regions/", include("fish_regions.urls")),
     path("places/", include("fish_places.urls")),
     path("profile/", include("users.urls")),
+    path("chepareta/", include("chepareta.urls")),
     path(
         "sitemap.xml/",
         sitemap,
