@@ -42,11 +42,14 @@ const Footer = () => {
                 </section>
                 <section>
                     <h3 className="text-center mb-2">За Нас</h3>
-                    <ul className="text-cyan-400">
+                    <ul className="flex flex-col items-center text-cyan-400">
                         <li className={facebookFishGroups.cssClasses}>
                             <Link to="/privacy-policy">
                                 Политика за сигурност
                             </Link>
+                        </li>
+                        <li className={facebookFishGroups.cssClasses}>
+                            <Link to="/changelog">Новости</Link>
                         </li>
                     </ul>
                 </section>
