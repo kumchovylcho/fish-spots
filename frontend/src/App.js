@@ -13,6 +13,9 @@ import FishSpotDetails from './components/FishSpotDetails/FishSpotDetails';
 import { cityRoutes } from './util/routes';
 import CookieConsent from './components/CookieConsent/CookieConsent';
 import PrivacyPolicy from './components/PrivacyPolicy/PrivacyPolicy';
+import Chepareta from './components/Chepareta/Chepareta';
+import CheparetaDetails from './components/CheparetaDetails/CheparetaDetails';
+import Changelog from './components/Changelog/Changelog';
 
 function App() {
     return (
@@ -45,6 +48,12 @@ function App() {
                         element={<FishSpotDetails />}
                     />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/chepareta" element={<Chepareta />} />
+                    <Route
+                        path="/chepareta/:seller"
+                        element={<CheparetaDetails />}
+                    />
+                    <Route path="/changelog" element={<Changelog />} />
 
                     <Route path="*" element={<NotFound />} />
                 </Routes>
