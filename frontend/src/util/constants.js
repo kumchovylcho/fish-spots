@@ -24,10 +24,18 @@ const latinToBulgarianCities = {
     primorsko: 'Приморско',
 };
 
+const latinToBgChepareType = {
+    safrid: 'сафрид',
+    chernokop: 'чернокоп',
+    karagioz: 'карагьоз',
+    palamud: 'паламуд',
+};
+
 export {
     baseUrl,
     websiteName,
     fishSpotAreasInRegion,
     bulgarianToLatinCities,
     latinToBulgarianCities,
+    latinToBgChepareType,
 };
