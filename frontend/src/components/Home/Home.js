@@ -23,6 +23,12 @@ const cityCards = [
     },
 ];
 
+const chepareTypes = [
+    "Чепарета за сафрид",
+    "Чепарета за карагьоз",
+    "Чепарета за чернокоп"
+];
+
 const Home = () => {
     setDocTitle('Home');
 
@@ -36,10 +42,10 @@ const Home = () => {
                 ></img>
                 <div className="absolute bg-zinc-900 opacity-60 w-full h-full"></div>
                 <article className="flex flex-col justify-center gap-8 absolute text-white">
-                    <h2 className="max-md:text-2xl max-md:px-6 text-4xl text-center font-medium tracking-widest">
+                    <h1 className="max-md:text-2xl max-md:px-6 text-4xl text-center font-medium tracking-widest">
                         Тук ще откриете вашите места за{' '}
                         <span className="text-sky-400">риболов!</span>
-                    </h2>
+                    </h1>
 
                     <Link
                         to="/city"
@@ -51,7 +57,7 @@ const Home = () => {
             </div>
 
             <article className="py-16">
-                <h2 className="text-center max-md:text-2xl text-4xl max-md:mb-12 mb-24 relative">
+                <h2 className="text-center max-md:text-2xl text-4xl mb-12 px-4 relative">
                     Информация за над 25 места!
                     <div className="absolute top-[115%] left-2/4 -translate-x-2/4 -translate-y-1/2 max-md:w-40 w-60 h-0.5 bg-cyan-600"></div>
                 </h2>
@@ -67,6 +73,34 @@ const Home = () => {
                     ))}
                 </div>
             </article>
+
+            <section className="py-16 flex flex-col justify-center items-center">
+                <h2 className="text-center max-md:text-2xl text-4xl mb-12 px-4 relative">
+                    Чепарета от известни майстори!
+                    <div className="absolute top-[115%] left-2/4 -translate-x-2/4 -translate-y-1/2 max-md:w-40 w-60 h-0.5 bg-cyan-600"></div>
+                </h2>
+                <ul className="text-2xl max-w-lg bg-gray-200 p-8 rounded-3xl shadow-xl mb-6">
+                    {
+                        chepareTypes.map(chepareType => (
+                            <li key={chepareType}>
+                                <p className="mb-3 inline-flex justify-between items-center w-full gap-4">
+                                    {chepareType}
+                                    <span>
+                                        <i className="fa-solid fa-check text-white bg-green-500 p-1.5 rounded-full w-8 h-8"></i>
+                                    </span>
+                                </p>
+                            </li>
+                            )
+                        )
+                    }
+                </ul>
+                <Link
+                    to="/chepareta"
+                    className="bg-emerald-400 self-center px-8 py-3 text-2xl rounded-full font-medium hover:bg-teal-600 duration-300 hover:scale-105"
+                    >
+                        Разгледай!
+                    </Link>
+            </section>
         </main>
     );
 };
