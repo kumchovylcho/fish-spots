@@ -47,7 +47,7 @@ export default function Chepareta() {
     };
 
     return (
-        <main>
+        <main className="py-6">
             {isLogged && (
                 <>
                     <section
