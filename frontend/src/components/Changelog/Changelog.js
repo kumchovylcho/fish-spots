@@ -20,6 +20,19 @@ export default function Changelog() {
                         </li>
                     </ul>
                 </section>
+                <section className="mb-10">
+                    <h3 className="text-2xl font-medium text-center">
+                        14/06/2024
+                    </h3>
+                    <ul className="flex flex-col gap-2 list-disc text-xl">
+                        <li>
+                            Добавена е опция при която вече може да се добавят риболовните места в любими.
+                        </li>
+                        <li>
+                            Добавена информация за чепаретата в главната страница.
+                        </li>
+                    </ul>
+                </section>
             </article>
         </main>
     );
