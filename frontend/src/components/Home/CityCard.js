@@ -12,7 +12,7 @@ export default function CityCard({ city, linkTo, cityData }) {
                 <div className="flex justify-center gap-x-12">
                     <section className="text-2xl">
                         {cityData.map(data => (
-                            <p key={data} className="mb-3 inline-flex justify-between w-full"
+                            <p key={data} className="mb-3 inline-flex justify-between items-center w-full"
                                 >
                                 {data}
                                 <span>
