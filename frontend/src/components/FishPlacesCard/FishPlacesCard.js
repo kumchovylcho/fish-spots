@@ -1,15 +1,32 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-const favoriteButtonClasses = {
-    notAdded: "text-white hover:text-red-600",
-    added: "text-red-600 hover:text-white"
+const favoriteButtonImages = {
+    notAdded: "/assets/heart-69-16.png",
+    added: "/assets/heart-69-16 red.png"
 };
 
 const localStorageKey = "favSpots";
 
 export default function FishPlacesCard({ props, openDeleteModal, isLogged, onFavoriteClickHandler }) {
     const [isSpotFavorite, setIsSpotFavorite] = useState(() => isAddedToFavorites(props.id));
+    const [isFavButtonHovered, setIsFavButtonHovered] = useState(false);
+
+    const getHeartImageOnHover = () => {
+        if (isSpotFavorite) {
+            if (isFavButtonHovered) {
+                return favoriteButtonImages.notAdded;
+            }
+            return favoriteButtonImages.added;
+        }
+
+        if (!isSpotFavorite) {
+            if (!isFavButtonHovered) {
+                return favoriteButtonImages.notAdded;
+            }
+            return favoriteButtonImages.added;
+        }
+    };
 
     function addOrRemoveFromFavorites() {
         if (!isAddedToFavorites(props.id)) {
@@ -63,7 +80,7 @@ export default function FishPlacesCard({ props, openDeleteModal, isLogged, onFav
                 }`}
             >
                 <p className="mb-3">{props.description.slice(0, 50)}...</p>
-                <section className="flex justify-center items-center gap-4">
+                <section className="flex justify-center gap-4">
                     <Link
                         className="bg-cyan-600 py-2 px-4 rounded-xl font-medium hover:bg-cyan-800"
                         to={`/place/${
@@ -73,10 +90,15 @@ export default function FishPlacesCard({ props, openDeleteModal, isLogged, onFav
                         Детайли
                     </Link>
                     <span 
-                        className={`bg-cyan-600 rounded-xl py-2 px-4 text-lg cursor-pointer ${isSpotFavorite ? favoriteButtonClasses.added : favoriteButtonClasses.notAdded}`}
+                        className="flex items-center bg-cyan-600 rounded-xl py-2 px-4 text-lg cursor-pointer"
                         onClick={addOrRemoveFromFavorites}
+                        onMouseEnter={() => setIsFavButtonHovered(true)}
+                        onMouseLeave={() => setIsFavButtonHovered(false)}
                         >
-                        &#10084;
+                        <img                
+                            src={getHeartImageOnHover()}
+                            alt="heart"
+                        />
                     </span>
                 </section>
             </section>
