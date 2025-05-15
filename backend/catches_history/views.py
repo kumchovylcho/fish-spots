@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from django.db.models import Sum
+from django.db.models import Sum, Min
 from .models import CatchHistory
 from .serializers import CatchHistorySerializer
 from base.mixins import AuthorizedMixin
@@ -19,6 +19,18 @@ def catch_stats(request):
 
     year_param = request.query_params.get("year")
     month_param = request.query_params.get("month")  # 1-12 expected
+    ordering = request.query_params.get("ordering", "-date")
+    allowed_order_by_fields = {
+        "date",
+        "-date",
+        "quantity",
+        "-quantity",
+        "snaps",
+        "-snaps",
+    }
+
+    if ordering not in allowed_order_by_fields:
+        return Response({"error": "Bad order."}, status=status.HTTP_400_BAD_REQUEST)
 
     now = datetime.now()
     try:
@@ -46,35 +58,40 @@ def catch_stats(request):
     ]
 
     paginator = PageNumberPagination()
-    page_size_param = request.query_params.get("page_size")
+    page_size_param = request.query_params.get("pageSize")
     if page_size_param is None or not page_size_param.isdigit():
         page_size_param = 10
 
     paginator.page_size = int(page_size_param)
-    ordering = request.query_params.get("ordering", "-date")
     paginated_result = paginator.paginate_queryset(
         monthly_qs.order_by(ordering), request
     )
     serialized_data = CatchHistorySerializer(paginated_result, many=True)
 
+    oldest_date_obj = CatchHistory.objects.aggregate(oldest_date=Min("date"))
+    oldest_year = (
+        oldest_date_obj["oldest_date"].year if oldest_date_obj["oldest_date"] else None
+    )
+
     return Response(
         {
-            "yearly_stats": yearly_stats,
-            "monthly_stats": monthly_stats,
+            "oldestYearData": oldest_year,
+            "yearlyStats": yearly_stats,
+            "monthlyStats": monthly_stats,
             "results": serialized_data.data,
             "pagination": {
                 "current_page": paginator.page.number,
-                "total_items": paginator.page.paginator.count,
-                "total_pages": paginator.page.paginator.num_pages,
-                "page_size": paginator.page_size,
-                "has_next": paginator.page.has_next(),
-                "has_previous": paginator.page.has_previous(),
-                "next_page": (
+                "totalItems": paginator.page.paginator.count,
+                "totalPages": paginator.page.paginator.num_pages,
+                "pageSize": paginator.page_size,
+                "hasNext": paginator.page.has_next(),
+                "hasPrevious": paginator.page.has_previous(),
+                "nextPage": (
                     paginator.page.next_page_number()
                     if paginator.page.has_next()
                     else None
                 ),
-                "previous_page": (
+                "previousPage": (
                     paginator.page.previous_page_number()
                     if paginator.page.has_previous()
                     else None
@@ -85,7 +102,7 @@ def catch_stats(request):
 
 
 class CreateCatchHistory(AuthorizedMixin, APIView):
-    def post(request):
+    def post(self, request):
         serializer = CatchHistorySerializer(data=request.data)
 
         if not serializer.is_valid():
