@@ -7,6 +7,7 @@ import { logoutUser } from '../../services/users';
 const navigationLinks = {
     cssClasses: 'hover:text-stone-300 duration-300',
     links: [
+        { linkTo: '/catch-history', text: 'Риболовна История' },
         { linkTo: '/chepareta', text: 'Чепарета' },
         { linkTo: '/city?search=varna', text: 'Варна' },
         { linkTo: '/city?search=burgas', text: 'Бургас' },
