@@ -16,6 +16,7 @@ import PrivacyPolicy from './components/PrivacyPolicy/PrivacyPolicy';
 import Chepareta from './components/Chepareta/Chepareta';
 import CheparetaDetails from './components/CheparetaDetails/CheparetaDetails';
 import Changelog from './components/Changelog/Changelog';
+import CatchHistory from './components/CatchHistory/CatchHistory';
 
 function App() {
     return (
@@ -48,6 +49,7 @@ function App() {
                         element={<FishSpotDetails />}
                     />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/catch-history" element={<CatchHistory />} />
                     <Route path="/chepareta" element={<Chepareta />} />
                     <Route
                         path="/chepareta/:seller"
