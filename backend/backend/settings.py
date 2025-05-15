@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "fish_regions",
     "fish_places",
     "chepareta",
+    "catches_history",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
