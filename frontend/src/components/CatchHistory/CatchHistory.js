@@ -114,6 +114,7 @@ export default function CatchHistory() {
                         currentYear={now.getFullYear()}
                         selectedYear={fetchParams.year}
                         selectedMonth={fetchParams.month}
+                        currentPageSize={fetchParams.pageSize}
                         onChangeYear={(year) =>
                             setFetchParams((prev) => ({
                                 ...prev,
@@ -125,6 +126,13 @@ export default function CatchHistory() {
                             setFetchParams((prev) => ({
                                 ...prev,
                                 month,
+                                page: 1,
+                            }))
+                        }
+                        onChangePageSize={(pageSize) =>
+                            setFetchParams((prev) => ({
+                                ...prev,
+                                pageSize: pageSize,
                                 page: 1,
                             }))
                         }
