@@ -12,7 +12,7 @@ import AuthContext from '../../context/AuthContext';
 import DeleteAsker from '../Modals/DeleteAsker.js';
 
 export default function FishSpots() {
-    const { isLogged } = useContext(AuthContext);
+    const { isAdmin } = useContext(AuthContext);
     const city = useLocation();
     const searchParams = new URLSearchParams(city.search);
     const wantedRegion = searchParams.get('search');
@@ -53,7 +53,7 @@ export default function FishSpots() {
     }
 
     function getFavSpotsFromStorage(dataFetched) {
-        const favSpotsString = localStorage.getItem("favSpots");
+        const favSpotsString = localStorage.getItem('favSpots');
         const favSpots = favSpotsString ? JSON.parse(favSpotsString) : [];
         return dataFetched.filter((spot) => favSpots.includes(spot.id));
     }
@@ -126,7 +126,7 @@ export default function FishSpots() {
 
             {wantedRegion && <ChoiceContainer wantedCity={wantedRegion} />}
 
-            {isLogged && (
+            {isAdmin && (
                 <>
                     <section
                         className={`flex justify-center ${
@@ -152,7 +152,9 @@ export default function FishSpots() {
 
             {!isLoading && (
                 <>
-                    {!showFavSpots && <FilterFishSpots filterFishSpots={filterFishSpots} />}
+                    {!showFavSpots && (
+                        <FilterFishSpots filterFishSpots={filterFishSpots} />
+                    )}
 
                     {emptyFilter && (
                         <p className="text-2xl font-medium text-center mb-4">
@@ -163,39 +165,46 @@ export default function FishSpots() {
                     <section className="flex justify-center mb-2">
                         <button
                             type="button"
-                            className={`px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${favSpots.length ? "" : "disabled:opacity-75 cursor-not-allowed"}`}
-                            onClick={() => setShowFavSpots((currVisibility) => !currVisibility)}
+                            className={`px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${
+                                favSpots.length
+                                    ? ''
+                                    : 'disabled:opacity-75 cursor-not-allowed'
+                            }`}
+                            onClick={() =>
+                                setShowFavSpots(
+                                    (currVisibility) => !currVisibility
+                                )
+                            }
                             disabled={!favSpots.length}
-                            >
-                            {showFavSpots ? "Скрий любими места" : "Покажи любими места"}
+                        >
+                            {showFavSpots
+                                ? 'Скрий любими места'
+                                : 'Покажи любими места'}
                         </button>
                     </section>
 
                     {!emptyFilter && (
                         <div className="max-w-7xl mx-auto grid grid-cols-4 max-[1000px]:grid-cols-3 max-md:grid-cols-2 max-[460px]:grid-cols-1 gap-12 py-8 px-4 bg-slate-400 rounded-xl mb-16">
-                            {
-                                decideSpotsToShow()
-                                .map((obj) => (
-                                    <FishPlacesCard
-                                        key={obj.id}
-                                        props={obj}
-                                        isLogged={isLogged}
-                                        openDeleteModal={() =>
-                                            handleDeleteModal({
-                                                isOpened: true,
-                                                deleteId: obj.id,
-                                            })
-                                        }
-                                        onFavoriteClickHandler={handleSetFavSpots}
-                                    />
-                                ))
-                            }
+                            {decideSpotsToShow().map((obj) => (
+                                <FishPlacesCard
+                                    key={obj.id}
+                                    props={obj}
+                                    isAdmin={isAdmin}
+                                    openDeleteModal={() =>
+                                        handleDeleteModal({
+                                            isOpened: true,
+                                            deleteId: obj.id,
+                                        })
+                                    }
+                                    onFavoriteClickHandler={handleSetFavSpots}
+                                />
+                            ))}
                         </div>
                     )}
                 </>
             )}
 
-            {isLogged && (
+            {isAdmin && (
                 <DeleteAsker
                     isOpen={deleteModal.isOpened}
                     deleteOnAgree={deleteOnAgree}
