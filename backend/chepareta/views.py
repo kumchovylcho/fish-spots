@@ -34,6 +34,9 @@ def get_seller_chepareta(request, seller):
 
 class CreateChepareta(AuthorizedMixin, APIView):
     def post(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return Response({"detail": "Unauthorized."}, status=401)
+
         seller_serializer = CreateSellerSerializer(
             data={
                 "name": request.data.get("name"),

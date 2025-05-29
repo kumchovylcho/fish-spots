@@ -34,6 +34,9 @@ class PlacesView(APIView):
 class CreatePlaceView(AuthorizedMixin, APIView):
 
     def post(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return Response({"detail": "Unauthorized."}, status=401)
+
         serializer = CreatePlaceSerializer(
             data=request.data, context={"request": request}
         )
@@ -45,6 +48,11 @@ class CreatePlaceView(AuthorizedMixin, APIView):
 
 class DeletePlaceView(AuthorizedMixin, DestroyAPIView):
     queryset = Place.objects.all()
+
+    def delete(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return Response({"detail": "Unauthorized."}, status=401)
+        return super().destroy(request, *args, **kwargs)
 
 
 class SuggestedSpots(APIView):
