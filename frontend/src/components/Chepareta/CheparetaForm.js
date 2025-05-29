@@ -85,13 +85,23 @@ export default function CheparetaForm({
 
         setIsLoading(true);
         fetch(`${baseUrl}/chepareta/create/`, options)
-            .then((response) => response.json())
+            .then((response) => {
+                if (response.status === 400 || response.status === 401) {
+                    throw new Error(
+                        'Unauthorized or server failed to save images.'
+                    );
+                }
+
+                return response.json();
+            })
             .then((data) => {
                 addNewSellerHandler(data);
                 resetForm();
                 closeForm();
             })
-            .catch((err) => {})
+            .catch((err) => {
+                console.error(err);
+            })
             .finally(() => setIsLoading(false));
     };
 

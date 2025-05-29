@@ -1,15 +1,13 @@
-import FishPlacesCard from '../FishPlacesCard/FishPlacesCard';
 import CheparetaForm from './CheparetaForm';
 import Spinner from '../Spinner/Spinner';
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import setDocTitle from '../../util/setDocTitle';
 import AuthContext from '../../context/AuthContext';
-import DeleteAsker from '../Modals/DeleteAsker.js';
 import { baseUrl, latinToBgChepareType } from '../../util/constants';
 
 export default function Chepareta() {
-    const { isLogged } = useContext(AuthContext);
+    const { isLogged, isAdmin } = useContext(AuthContext);
 
     const [allChepareta, setAllChepareta] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +46,7 @@ export default function Chepareta() {
 
     return (
         <main className="py-6">
-            {isLogged && (
+            {isLogged && isAdmin && (
                 <>
                     <section
                         className={`flex justify-center ${
