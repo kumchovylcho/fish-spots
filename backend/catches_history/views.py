@@ -1,19 +1,37 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Sum, Min
+from django.utils.timezone import now
 from .models import CatchHistory
 from .serializers import CatchHistorySerializer
 from base.mixins import AuthorizedMixin
 from fish_regions.settings import english_to_bulgarian_months
+from users.backends import CustomAuthentication
 
 from datetime import datetime
 import calendar
 
 
 @api_view(["GET"])
+@authentication_classes([CustomAuthentication])
+def get_oldest_catch_year(request):
+    oldest_date_obj = CatchHistory.objects.filter(user=request.user).aggregate(
+        oldest_date=Min("date")
+    )
+    oldest_year = (
+        oldest_date_obj["oldest_date"].year
+        if oldest_date_obj["oldest_date"]
+        else now().year
+    )
+
+    return Response({"oldestYear": oldest_year}, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@authentication_classes([CustomAuthentication])
 def catch_stats(request):
     # e.g: catch_history/?page_size=10&page=1&year=2025&month=5&ordering=-date
 
@@ -43,12 +61,14 @@ def catch_stats(request):
     except ValueError:
         month = now.month
 
-    yearly_stats = CatchHistory.objects.filter(date__year=year).aggregate(
-        total_catch=Sum("quantity"), total_snaps=Sum("snaps")
-    )
+    yearly_stats = CatchHistory.objects.filter(
+        date__year=year, user=request.user
+    ).aggregate(total_catch=Sum("quantity"), total_snaps=Sum("snaps"))
     yearly_stats["year"] = year
 
-    monthly_qs = CatchHistory.objects.filter(date__year=year, date__month=month)
+    monthly_qs = CatchHistory.objects.filter(
+        date__year=year, date__month=month, user=request.user
+    )
     monthly_stats = monthly_qs.aggregate(
         total_catch=Sum("quantity"), total_snaps=Sum("snaps")
     )
@@ -68,14 +88,8 @@ def catch_stats(request):
     )
     serialized_data = CatchHistorySerializer(paginated_result, many=True)
 
-    oldest_date_obj = CatchHistory.objects.aggregate(oldest_date=Min("date"))
-    oldest_year = (
-        oldest_date_obj["oldest_date"].year if oldest_date_obj["oldest_date"] else None
-    )
-
     return Response(
         {
-            "oldestYearData": oldest_year,
             "yearlyStats": yearly_stats,
             "monthlyStats": monthly_stats,
             "results": serialized_data.data,
@@ -108,5 +122,5 @@ class CreateCatchHistory(AuthorizedMixin, APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer.save()
+        serializer.save(user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
