@@ -21,7 +21,7 @@ urlpatterns = [
     path("places/", include("fish_places.urls")),
     path("profile/", include("users.urls")),
     path("chepareta/", include("chepareta.urls")),
-    path("catch_history/", include("catches_history.urls")),
+    path("catch-history/", include("catches_history.urls")),
     path(
         "sitemap.xml/",
         sitemap,
