@@ -1,7 +1,11 @@
 from django.db import models
+from django.conf import settings
 
 
 class CatchHistory(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True
+    )
     # year-month-day
     date = models.DateField()
     city = models.CharField()
