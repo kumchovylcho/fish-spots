@@ -7,6 +7,22 @@ export default function Changelog() {
                 </h1>
                 <section className="mb-10">
                     <h3 className="text-2xl font-medium text-center">
+                        29/05/2025
+                    </h3>
+                    <ul className="flex flex-col gap-2 list-disc text-xl">
+                        <li>
+                            Риболовната история вече може да се използва от хора
+                            които имат акаунти.
+                        </li>
+                        <li>
+                            Вече не се запазват само админски записи. Всеки
+                            вижда своите риболовни записи.
+                        </li>
+                        <li>Подобрено рендериране при филтриране.</li>
+                    </ul>
+                </section>
+                <section className="mb-10">
+                    <h3 className="text-2xl font-medium text-center">
                         15/05/2025
                     </h3>
                     <ul className="flex flex-col gap-2 list-disc text-xl">
