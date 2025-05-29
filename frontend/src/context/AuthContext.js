@@ -8,6 +8,7 @@ export default AuthContext;
 export const AuthProvider = ({ children }) => {
     const [Id, setId] = useState('');
     const [user, setUser] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
     const [isLogged, setIsLogged] = useState(false);
 
     useEffect(() => {
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }) => {
                 const data = await response.json();
 
                 if (response.status === 200) {
-                    handleSetUser(data.user, data.id);
+                    handleSetUser(data.user, data.id, data.admin);
                 } else if (response.status === 401) {
                     resetUser();
                 }
@@ -39,21 +40,24 @@ export const AuthProvider = ({ children }) => {
         authorize();
     }, []);
 
-    const handleSetUser = (username, id) => {
+    const handleSetUser = (username, id, admin) => {
         setUser(username);
         setId(id);
+        setIsAdmin(admin);
         setIsLogged(true);
     };
 
     const resetUser = () => {
         setUser('');
         setId('');
+        setIsAdmin(false);
         setIsLogged(false);
     };
 
     let contextData = {
         Id,
         user,
+        isAdmin,
         isLogged,
         handleSetUser,
         resetUser,
