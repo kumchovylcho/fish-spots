@@ -1,22 +1,35 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
 import Hamburger from './Hamburger';
 import { logoutUser } from '../../services/users';
 
-const navigationLinks = {
+const staticNavigationLinks = {
     cssClasses: 'hover:text-stone-300 duration-300',
     links: [
-        { linkTo: '/catch-history', text: 'Риболовна История' },
-        { linkTo: '/chepareta', text: 'Чепарета' },
-        { linkTo: '/city?search=varna', text: 'Варна' },
-        { linkTo: '/city?search=burgas', text: 'Бургас' },
+        {
+            linkTo: '/catch-history',
+            text: 'Риболовна История',
+            hideWhenNotLogged: true,
+        },
+        { linkTo: '/chepareta', text: 'Чепарета', hideWhenNotLogged: false },
+        {
+            linkTo: '/city?search=varna',
+            text: 'Варна',
+            hideWhenNotLogged: false,
+        },
+        {
+            linkTo: '/city?search=burgas',
+            text: 'Бургас',
+            hideWhenNotLogged: false,
+        },
     ],
 };
 
 const Navigation = () => {
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const { isLogged, resetUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleHamburgerMenu = () => {
         // used for when the hamburger menu is clicked
@@ -59,6 +72,7 @@ const Navigation = () => {
 
             if (response.status === 200) {
                 resetUser();
+                navigate('/', { replace: true });
             }
         } catch (error) {
             console.error('failed to log out.');
@@ -76,7 +90,7 @@ const Navigation = () => {
                 <section className="max-md:w-full max-md:text-center">
                     <Link
                         onClick={handleCloseHamburgerMenu}
-                        className={navigationLinks.cssClasses}
+                        className={staticNavigationLinks.cssClasses}
                         to="/"
                     >
                         Риболовни места
@@ -84,23 +98,37 @@ const Navigation = () => {
                 </section>
 
                 <ul className="flex gap-12 flex-wrap max-md:hidden">
-                    {navigationLinks.links.map((link) => (
-                        <li key={link.text}>
+                    {staticNavigationLinks.links.map((link) => {
+                        if (!isLogged && link.hideWhenNotLogged) return null;
+
+                        return (
+                            <li key={link.text}>
+                                <Link
+                                    className={staticNavigationLinks.cssClasses}
+                                    to={link.linkTo}
+                                >
+                                    {link.text}
+                                </Link>
+                            </li>
+                        );
+                    })}
+                    {!isLogged && (
+                        <li>
                             <Link
-                                className={navigationLinks.cssClasses}
-                                to={link.linkTo}
+                                className={`cursor-pointer ${staticNavigationLinks.cssClasses}`}
+                                to="/login"
                             >
-                                {link.text}
+                                Вход
                             </Link>
                         </li>
-                    ))}
+                    )}
                     {isLogged && (
                         <li
                             key="logout"
-                            className={`cursor-pointer ${navigationLinks.cssClasses}`}
+                            className={`cursor-pointer ${staticNavigationLinks.cssClasses}`}
                             onClick={handleLogOut}
                         >
-                            Logout
+                            Изход
                         </li>
                     )}
                 </ul>
@@ -112,27 +140,41 @@ const Navigation = () => {
                             : 'opacity-0 pointer-events-none'
                     }`}
                 >
-                    {navigationLinks.links.map((link) => (
-                        <li
-                            key={link.text}
-                            className="border-b-2 border-red-900"
-                            onClick={handleCloseHamburgerMenu}
-                        >
-                            <Link
-                                className={navigationLinks.cssClasses}
-                                to={link.linkTo}
+                    {staticNavigationLinks.links.map((link) => {
+                        if (!isLogged && link.hideWhenNotLogged) return null;
+
+                        return (
+                            <li
+                                key={link.text}
+                                className="border-b-2 border-red-900"
+                                onClick={handleCloseHamburgerMenu}
                             >
-                                {link.text}
+                                <Link
+                                    className={staticNavigationLinks.cssClasses}
+                                    to={link.linkTo}
+                                >
+                                    {link.text}
+                                </Link>
+                            </li>
+                        );
+                    })}
+                    {!isLogged && (
+                        <li>
+                            <Link
+                                className={`cursor-pointer ${staticNavigationLinks.cssClasses}`}
+                                to="/login"
+                            >
+                                Вход
                             </Link>
                         </li>
-                    ))}
+                    )}
                     {isLogged && (
                         <li
                             key="logout-mobile"
-                            className={`cursor-pointer ${navigationLinks.cssClasses}`}
+                            className={`cursor-pointer ${staticNavigationLinks.cssClasses}`}
                             onClick={handleLogOut}
                         >
-                            Logout
+                            Изход
                         </li>
                     )}
                 </ul>
