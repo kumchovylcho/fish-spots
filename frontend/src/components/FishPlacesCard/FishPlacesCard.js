@@ -2,14 +2,21 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 const favoriteButtonImages = {
-    notAdded: "/assets/heart-69-16.png",
-    added: "/assets/heart-69-16 red.png"
+    notAdded: '/assets/heart-69-16.png',
+    added: '/assets/heart-69-16 red.png',
 };
 
-const localStorageKey = "favSpots";
+const localStorageKey = 'favSpots';
 
-export default function FishPlacesCard({ props, openDeleteModal, isLogged, onFavoriteClickHandler }) {
-    const [isSpotFavorite, setIsSpotFavorite] = useState(() => isAddedToFavorites(props.id));
+export default function FishPlacesCard({
+    props,
+    openDeleteModal,
+    isAdmin,
+    onFavoriteClickHandler,
+}) {
+    const [isSpotFavorite, setIsSpotFavorite] = useState(() =>
+        isAddedToFavorites(props.id)
+    );
     const [isFavButtonHovered, setIsFavButtonHovered] = useState(false);
 
     const getHeartImageOnHover = () => {
@@ -35,7 +42,7 @@ export default function FishPlacesCard({ props, openDeleteModal, isLogged, onFav
         } else {
             removeFromLocalStorage(props.id);
             setIsSpotFavorite(false);
-        };
+        }
         onFavoriteClickHandler();
     }
 
@@ -60,7 +67,6 @@ export default function FishPlacesCard({ props, openDeleteModal, isLogged, onFav
         return favSpotsString ? JSON.parse(favSpotsString) : [];
     }
 
-
     return (
         <section className="text-center rounded p-3 bg-cyan-950 shadow-2xl shadow-black">
             <h3 className="font-medium mb-2 text-white">
@@ -76,7 +82,7 @@ export default function FishPlacesCard({ props, openDeleteModal, isLogged, onFav
             </div>
             <section
                 className={`bg-white py-2 max-h-[200px] px-1 ${
-                    isLogged ? '' : 'rounded-b'
+                    isAdmin ? '' : 'rounded-b'
                 }`}
             >
                 <p className="mb-3">{props.description.slice(0, 50)}...</p>
@@ -89,20 +95,17 @@ export default function FishPlacesCard({ props, openDeleteModal, isLogged, onFav
                     >
                         Детайли
                     </Link>
-                    <span 
+                    <span
                         className="flex items-center bg-cyan-600 rounded-xl py-2 px-4 text-lg cursor-pointer"
                         onClick={addOrRemoveFromFavorites}
                         onMouseEnter={() => setIsFavButtonHovered(true)}
                         onMouseLeave={() => setIsFavButtonHovered(false)}
-                        >
-                        <img                
-                            src={getHeartImageOnHover()}
-                            alt="heart"
-                        />
+                    >
+                        <img src={getHeartImageOnHover()} alt="heart" />
                     </span>
                 </section>
             </section>
-            {isLogged && (
+            {isAdmin && (
                 <section className="bg-slate-400 py-2 rounded-b">
                     <button
                         className="bg-cyan-600 py-2 px-4 rounded-xl font-medium hover:bg-cyan-800"
