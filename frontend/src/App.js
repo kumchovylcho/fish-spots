@@ -3,6 +3,7 @@ import Navigation from './components/Navigation/Navigation';
 import Home from './components/Home/Home';
 import Footer from './components/Footer/Footer';
 import Login from './components/Login/Login';
+import PublicOnlyRoute from './util/PublicOnlyRoute';
 import PrivateRoute from './util/PrivateRoute';
 import City from './components/City/City';
 import Weather from './components/Weather/Weather';
@@ -39,9 +40,9 @@ function App() {
                     <Route
                         path="/login"
                         element={
-                            <PrivateRoute navigateTo="/">
+                            <PublicOnlyRoute navigateTo="/">
                                 <Login />
-                            </PrivateRoute>
+                            </PublicOnlyRoute>
                         }
                     />
                     <Route
@@ -49,7 +50,14 @@ function App() {
                         element={<FishSpotDetails />}
                     />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                    <Route path="/catch-history" element={<CatchHistory />} />
+                    <Route
+                        path="/catch-history"
+                        element={
+                            <PrivateRoute>
+                                <CatchHistory />
+                            </PrivateRoute>
+                        }
+                    />
                     <Route path="/chepareta" element={<Chepareta />} />
                     <Route
                         path="/chepareta/:seller"
