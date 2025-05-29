@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -13,6 +14,9 @@ from .utils import set_token_in_cookie
 from .mixins import AuthorizedMixin
 
 from jwt import decode
+
+
+UserModel = get_user_model()
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -45,6 +49,13 @@ class MyTokenObtainPairView(TokenObtainPairView):
             response.data = {}
             response.data["user"] = payload.get("username", "")
             response.data["id"] = payload.get("user_id", "")
+            response.data["admin"] = False
+            if response.data["user"]:
+                response.data["admin"] = (
+                    UserModel.objects.filter(username=response.data["user"])
+                    .first()
+                    .is_superuser
+                )
 
         return response
 
@@ -86,5 +97,10 @@ class CheckAuthenticationView(AuthorizedMixin, APIView):
 
     def get(self, request):
         return Response(
-            {"msg": "Logged.", "user": request.user.username, "id": request.user.pk}
+            {
+                "msg": "Logged.",
+                "user": request.user.username,
+                "id": request.user.pk,
+                "admin": request.user.is_superuser,
+            }
         )
