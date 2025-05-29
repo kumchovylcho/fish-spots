@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { createCatchStats } from './services';
 import Spinner from '../Spinner/Spinner';
 
-export default function CatchHistoryForm({ showForm, closeForm }) {
+export default function CatchHistoryForm({ showForm, onSuccess, closeForm }) {
     const [formData, setFormData] = useState({
         date: '',
         city: '',
@@ -60,6 +60,7 @@ export default function CatchHistoryForm({ showForm, closeForm }) {
                     good_weather: false,
                 });
                 closeForm();
+                onSuccess();
             })
             .catch((error) => {
                 console.error(error.message);

@@ -1,5 +1,11 @@
 import { baseUrl } from '../../util/constants';
 
+export const fetchOldestCatchYear = async () => {
+    return await fetch(`${baseUrl}/catch-history/oldest-catch-year/`, {
+        credentials: 'include',
+    });
+};
+
 export const fetchCatchStats = async ({
     year,
     month,
@@ -15,11 +21,13 @@ export const fetchCatchStats = async ({
         ordering,
     });
 
-    return await fetch(`${baseUrl}/catch_history/?${params.toString()}`);
+    return await fetch(`${baseUrl}/catch-history/?${params.toString()}`, {
+        credentials: 'include',
+    });
 };
 
 export const createCatchStats = async (payload) => {
-    return await fetch(`${baseUrl}/catch_history/create/`, {
+    return await fetch(`${baseUrl}/catch-history/create/`, {
         headers: {
             'Content-Type': 'application/json',
         },
