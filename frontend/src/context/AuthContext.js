@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
     const [isLogged, setIsLogged] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const authorize = async () => {
@@ -34,6 +35,8 @@ export const AuthProvider = ({ children }) => {
                 }
             } catch (error) {
                 console.error('authentication error');
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -59,6 +62,7 @@ export const AuthProvider = ({ children }) => {
         user,
         isAdmin,
         isLogged,
+        loading,
         handleSetUser,
         resetUser,
     };
