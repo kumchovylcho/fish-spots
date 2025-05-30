@@ -1,4 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
+import { useContext } from 'react';
+import AuthContext from './context/AuthContext';
 import Navigation from './components/Navigation/Navigation';
 import Home from './components/Home/Home';
 import Footer from './components/Footer/Footer';
@@ -18,8 +20,15 @@ import Chepareta from './components/Chepareta/Chepareta';
 import CheparetaDetails from './components/CheparetaDetails/CheparetaDetails';
 import Changelog from './components/Changelog/Changelog';
 import CatchHistory from './components/CatchHistory/CatchHistory';
+import AuthLoader from './components/AuthLoader/AuthLoader';
 
 function App() {
+    const { loading } = useContext(AuthContext);
+
+    if (loading) {
+        return <AuthLoader />;
+    }
+
     return (
         <>
             <div className="flex flex-col min-h-screen bg-zinc-300">
