@@ -1,5 +1,7 @@
 from rest_framework.test import APIRequestFactory
 from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -18,6 +20,7 @@ class AuthorizedMixin:
     The frontend must send (credentials: "include") so that this mixin can read the cookies.
     Otherwise you will be always unauthorized.
     """
+
     authentication_classes = [CustomAuthentication]
 
     def dispatch(self, request, *args, **kwargs):
@@ -26,29 +29,48 @@ class AuthorizedMixin:
         # unauthorized request (access token is expired or cookie doesn't exist)
         if response.status_code == 401:
 
+            # checks existence
             refresh_token = request.COOKIES.get("refresh_token")
             if not refresh_token or refresh_token == "None":
                 return response
 
-            payload = decode(refresh_token, settings.SIMPLE_JWT.get(
-                "SIGNING_KEY"), algorithms=[settings.SIMPLE_JWT.get("ALGORITHM")])
+            # now we have the refresh token so we check its expiration and signature
+            try:
+                RefreshToken(refresh_token)
+            except TokenError:
+                return response
+
+            payload = decode(
+                refresh_token,
+                settings.SIMPLE_JWT.get("SIGNING_KEY"),
+                algorithms=[settings.SIMPLE_JWT.get("ALGORITHM")],
+            )
             if not payload:
                 return response
 
-            user = UserModel.objects.filter(
-                pk=payload.get("user_id", "")).first()
+            user = UserModel.objects.filter(pk=payload.get("user_id", "")).first()
             if not user or not user.is_superuser:
                 return response
 
             factory = APIRequestFactory()
             factory_request = factory.post(
-                "/api/token/refresh", {"refresh": refresh_token})
+                "/api/token/refresh", {"refresh": refresh_token}
+            )
             factory_response = TokenRefreshView.as_view()(factory_request)
 
             one_month = 3600 * 24 * 30
             response = set_token_in_cookie(
-                response, "access_token", str(factory_response.data.get("access", "")), one_month)
+                response,
+                "access_token",
+                str(factory_response.data.get("access", "")),
+                one_month,
+            )
             response = set_token_in_cookie(
-                response, "refresh_token", str(factory_response.data.get("refresh", "")), one_month)
+                response,
+                "refresh_token",
+                str(factory_response.data.get("refresh", "")),
+                one_month,
+            )
+            response.status_code = 200
 
         return response
