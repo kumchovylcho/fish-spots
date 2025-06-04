@@ -36,3 +36,10 @@ export const createCatchStats = async (payload) => {
         credentials: 'include',
     });
 };
+
+export const deleteCatchStat = async (id) => {
+    return await fetch(`${baseUrl}/catch-history/delete/${id}/`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+};
