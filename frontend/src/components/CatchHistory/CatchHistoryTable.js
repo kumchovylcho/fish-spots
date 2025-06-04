@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
-import { fetchCatchStats } from './services';
+import { fetchCatchStats, deleteCatchStat } from './services';
 import Pagination from './Pagination';
 import StatsSummary from './StatsSummary';
+import SuccessToast from '../SuccessToast/SuccessToast';
+import useToast from '../../hooks/useToast';
 import Spinner from '../Spinner/Spinner';
+import { Trash2 } from 'lucide-react';
 
 export default function CatchHistoryTable({ fetchParams, setFetchParams }) {
+    const { toast, showToast, hideToast } = useToast();
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
-        setError(null);
         setLoading(true);
         fetchCatchStats({ ...fetchParams })
             .then((response) => {
@@ -23,7 +25,7 @@ export default function CatchHistoryTable({ fetchParams, setFetchParams }) {
             .then((data) => setStats(data))
             .catch((error) => {
                 console.error(error.message);
-                setError(error.message);
+                showToast(true, error.message);
             })
             .finally(() => setLoading(false));
 
@@ -32,19 +34,42 @@ export default function CatchHistoryTable({ fetchParams, setFetchParams }) {
         };
     }, [fetchParams]);
 
-    if (error) {
-        return (
-            <p className="bg-red-100 text-red-800 text-center border border-red-300 rounded-md px-4 py-2 mb-4">
-                ⚠️ {error}
-            </p>
-        );
-    }
+    const handleDeleteItem = (id) => {
+        setLoading(true);
+        deleteCatchStat(id)
+            .then((response) => {
+                if (response.status !== 200)
+                    throw new Error('Моля опитайте по-късно.');
+                return response.json();
+            })
+            .then((data) => {
+                setFetchParams((prev) => ({
+                    ...prev,
+                    page: 1,
+                }));
+                showToast(false, data.detail);
+            })
+            .catch((error) => {
+                console.error(error.message);
+                showToast(true, error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
 
     return (
         <>
-            {loading ? (
-                <Spinner />
-            ) : (
+            <SuccessToast
+                error={toast.error}
+                message={toast.message}
+                trigger={toast.trigger}
+                onClose={hideToast}
+            />
+
+            {loading && <Spinner />}
+
+            {!loading && stats && (
                 <>
                     <StatsSummary
                         yearlyStats={stats.yearlyStats}
@@ -87,6 +112,7 @@ export default function CatchHistoryTable({ fetchParams, setFetchParams }) {
                                     <th className="px-4 py-3 text-center">
                                         Добро Време
                                     </th>
+                                    <th className="px-4 py-3"></th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100 text-sm text-gray-800">
@@ -96,37 +122,50 @@ export default function CatchHistoryTable({ fetchParams, setFetchParams }) {
                                             key={index}
                                             className="hover:bg-gray-50 even:bg-gray-200"
                                         >
-                                            <td className="px-4 py-2">
+                                            <td className="px-4 py-2 align-middle">
                                                 {item.date}
                                             </td>
-                                            <td className="px-4 py-2">
+                                            <td className="px-4 py-2 align-middle">
                                                 {item.city}
                                             </td>
-                                            <td className="px-4 py-2">
+                                            <td className="px-4 py-2 align-middle">
                                                 {item.fish_spot}
                                             </td>
-                                            <td className="px-4 py-2">
+                                            <td className="px-4 py-2 align-middle">
                                                 {item.fish_type}
                                             </td>
-                                            <td className="px-4 py-2 text-right">
+                                            <td className="px-4 py-2 text-right align-middle">
                                                 {item.quantity}
                                             </td>
-                                            <td className="px-4 py-2">
+                                            <td className="px-4 py-2 align-middle">
                                                 {item.lure_type}
                                             </td>
-                                            <td className="px-4 py-2">
+                                            <td className="px-4 py-2 align-middle">
                                                 {item.from_hour}
                                             </td>
-                                            <td className="px-4 py-2">
+                                            <td className="px-4 py-2 align-middle">
                                                 {item.to_hour}
                                             </td>
-                                            <td className="px-4 py-2 text-right">
+                                            <td className="px-4 py-2 text-right align-middle">
                                                 {item.snaps}
                                             </td>
-                                            <td className="px-4 py-2 text-center">
+                                            <td className="px-4 py-2 text-center align-middle">
                                                 {item.good_weather
                                                     ? '✅'
                                                     : '❌'}
+                                            </td>
+                                            <td className="px-4 py-2 text-center align-middle">
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteItem(
+                                                            item.id
+                                                        )
+                                                    }
+                                                    className="bg-red-500 hover:bg-red-600 text-white rounded-md p-1.5 flex items-center justify-center mx-auto"
+                                                    title="Изтрий"
+                                                >
+                                                    <Trash2 className="w-4 h-4 stroke-white" />
+                                                </button>
                                             </td>
                                         </tr>
                                     ))
