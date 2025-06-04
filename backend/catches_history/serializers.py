@@ -6,6 +6,7 @@ class CatchHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = CatchHistory
         fields = (
+            "id",
             "date",
             "city",
             "fish_spot",
