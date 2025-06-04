@@ -124,3 +124,20 @@ class CreateCatchHistory(AuthorizedMixin, APIView):
 
         serializer.save(user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(["DELETE"])
+@authentication_classes([CustomAuthentication])
+def delete_catch_history(request, pk):
+    try:
+        # check if the user is the author and fetch the object owned by the user
+        catch = CatchHistory.objects.get(pk=pk, user=request.user)
+    except CatchHistory.DoesNotExist:
+        return Response(
+            {"detail": "Записът не съществува."}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    catch.delete()
+    return Response(
+        {"detail": "Записът беше изтрит успешно."}, status=status.HTTP_200_OK
+    )
